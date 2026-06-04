@@ -1,0 +1,75 @@
+By installing and activating the QuadToneProfiler-QuickCurve-DN software you agree to enter into the End-User License Agreement (EULA) of QuadToneProfiler-QuickCurve-DN.
+
+If you do not agree to enter into this agreement deactivate and uninstall the software and all resources included in the download. 
+
+
+--- 
+
+This End-User License Agreement ("EULA") is a legal agreement between you and Richard Boutwell Photography.
+
+This EULA agreement governs your acquisition and use of our  QuadToneProfiler-QuickCurve-DN software ("Software") directly from Richard Boutwell Photography or indirectly through a Richard Boutwell Photography authorized reseller or distributor (a "Reseller").
+
+Please read this EULA agreement carefully before completing the installation process and using the  QuadToneProfiler-QuickCurve-DN software. It provides a license to use the  QuadToneProfiler-QuickCurve-DN software and contains warranty information and liability disclaimers.
+
+By clicking "accept" or installing and/or using the  QuadToneProfiler-QuickCurve-DN software, you are confirming your acceptance of the Software and agreeing to become bound by the terms of this EULA agreement.
+
+If you are entering into this EULA agreement on behalf of a Richard Boutwell Photography or other legal entity, you represent that you have the authority to bind such entity and its affiliates to these terms and conditions. If you do not have such authority or if you do not agree with the terms and conditions of this EULA agreement, do not install or use the Software, and you must not accept this EULA agreement.
+
+This EULA agreement shall apply only to the Software supplied by Richard Boutwell Photography herewith regardless of whether other software is referred to or described herein. The terms also apply to any Richard Boutwell Photography updates, supplements, Internet-based services, and support services for the Software, unless other terms acRichard Boutwell Photography those items on delivery. If so, those terms apply.
+
+License Grant
+
+Richard Boutwell Photography hereby grants you a personal, non-transferable, non-exclusive licence to use the  QuadToneProfiler-QuickCurve-DN software on your devices in accordance with the terms of this EULA agreement.
+
+You are permitted to load the QuadToneProfiler-QuickCurve-DN software for up to two devices under your control. You are responsible for ensuring your device meets the minimum requirements of the  QuadToneProfiler-QuickCurve-DN software.
+
+You are not permitted to:
+
+
+- Edit, alter, modify, adapt, translate or otherwise change the whole or any part of the Software nor permit the whole or any part of the Software to be combined with or become incorporated in any other software, nor decompile, disassemble or reverse engineer the Software or attempt to do any such things
+- Reproduce, copy, distribute, resell, or otherwise use the Software for any commercial profiling service
+- Allow any third party to use the Software on behalf of or for the benefit of any third party
+- Use the Software in any way which breaches any applicable local, national or international law
+- use the Software for any purpose that Richard Boutwell Photography considers is a breach of this EULA agreement
+
+
+Intellectual Property and Ownership
+
+Richard Boutwell Photography shall at all times retain ownership of the Software as originally downloaded by you and all subsequent downloads of the Software by you. The Software (and the copyright, and other intellectual property rights of whatever nature in the Software, including any modifications made thereto) are and shall remain the property of Richard Boutwell Photography.
+
+Richard Boutwell Photography reserves the right to grant licenses to use the Software to third parties.
+
+10.  Privacy.
+
+10.1 Richard Boutwell Photography collects User information in an effort to improve User’s online experience, and to communicate with User about Richard Boutwell Photography’s products, services and promotions. Richard Boutwell Photography does not sell or rent User’s personal information to third parties. Richard Boutwell Photography does, however, share User’s information with third parties that provide services on Richard Boutwell Photography’s behalf or with whom Richard Boutwell Photography has partnered to offer a particular product or service.
+
+10.2 If Richard Boutwell Photography privacy policy changes, Richard Boutwell Photography shall post an updated version on Richard Boutwell Photography’s website. The policy revision date will be posted at the top of the page. User may exercise User’s choices about how Richard Boutwell Photography collects User information from time to time.
+
+10.3  Richard Boutwell Photography may collect information — User voluntarily submits to Richard Boutwell Photography, for example:
+(i) Identifying information such as User’s name and email address;
+(ii) Contact information such as User's name, mailing address and phone number;
+(iii) Queries for Technical Support;
+(iv) Browser information such as browser version, IP address, and the presence of various plug-ins and tools.
+
+10.4  Richard Boutwell Photography collects information from User when User voluntarily submit that information to Richard Boutwell Photography, including, for example: registering on our websites, placing an order, subscribing to services, participating in one of our surveys, attending a seminar or workshop, or contacting Richard Boutwell Photography for technical or customer support.
+
+10.5  Richard Boutwell Photography employs third party vendors, service providers and suppliers to perform various functions on our behalf. Third-party services may include, but are not limited to: customer information management; processing credit card or check card payments analyzing data; developing, hosting and maintaining our websites and databases. Richard Boutwell Photography does not authorize any of these service providers to make any other use of User’s information or to contact User outside the context of these services.
+
+10.6  Richard Boutwell Photography utilizes security measures to protect the customer information it collects.
+
+10.7  Richard Boutwell Photography site may contain links to other sites. Richard Boutwell Photography does not control the privacy practices of those websites. Richard Boutwell Photography shall not be responsible for the content and/or practices of any linked websites, and Richard Boutwell Photography provides these links solely for the convenience and information.
+
+10.8 In the event of a security breach of Companies systems, Richard Boutwell Photography agrees to notify users via their supplied email address as to the severity of the breach within 1 business day of the breach being identified.
+
+
+
+Termination
+
+This EULA agreement is effective from the date you first use the Software and shall continue until terminated. You may terminate it at any time upon written notice to Richard Boutwell Photography.
+
+
+It will also terminate immediately if you fail to comply with any term of this EULA agreement. Upon such termination, the licenses granted by this EULA agreement will immediately terminate and you agree to stop all access and use of the Software. The provisions that by their nature continue and survive will survive any termination of this EULA agreement.
+
+Governing Law
+
+This EULA agreement, and any dispute arising out of or in connection with this EULA agreement, shall be governed by and construed in accordance with the laws of The United States of America.

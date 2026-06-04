@@ -1,0 +1,35 @@
+# PX1V-PtPd-v20 インストールコマンド
+
+# 1. v20をインストール
+sudo cp /Users/daisukekinoshita/Desktop/PX1V-PtPd-v20.quad /Library/Printers/QTR/quadtone/QuadP700/
+
+# 2. QTRカーブデータベースを更新
+/Library/Printers/QTR/bin/quadcurves QuadP700
+
+# 3. QTR Print-Toolの設定をリセット（オプション）
+defaults delete com.quadtonerip.QTR-Print-Tool
+
+# これで準備完了！
+# QTR Print-Toolで "PX1V-PtPd-v20" を選択してテストプリント
+
+# ===== 確認ポイント =====
+
+# A. 境界線チェック（最重要）
+#    - Input 230-240付近（濃度1.10-1.19D）
+#    - Quad差分283-313と大きいため要注意
+#    - v18では境界なし実績あり
+
+# B. ハイライト階調チェック（目的）
+#    - 240, 248, 255 が分離して見えるか
+#    - v18では全部「紙白」だった
+#    - v20では濃度差拡大（240: 1.19D, 248: 1.24D, 255: 1.26D）
+
+# ===== v18とv20の比較 =====
+#
+# Input | v18濃度 | v20濃度 | 差分
+# ------|---------|---------|------
+# 232   | 1.09D   | 1.12D   | +0.03D
+# 240   | 1.14D   | 1.19D   | +0.05D
+# 248   | 1.18D   | 1.24D   | +0.06D
+# 255   | 1.22D   | 1.26D   | +0.04D
+

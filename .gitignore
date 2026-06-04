@@ -1,0 +1,66 @@
+# macOS
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+.TemporaryItems
+.fseventsd
+.DocumentRevisions-V100
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Obsidian
+.obsidian/workspace*
+.obsidian/cache
+
+# Sync logs
+sync_logs/
+
+# Backup files
+*_backup_*.md
+*.backup
+
+# PDF and other binaries that might be large
+*.pdf
+*.zip
+*.tar.gz
+
+# Image files (large)
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.bmp
+*.tiff
+*.tif
+*.webp
+
+# Audio/Video files
+*.mp3
+*.mp4
+*.mov
+*.avi
+*.m4a
+*.wav
+
+# Other large files
+*.psd
+*.ai
+*.sketch
+*.pptx
+*.ppt
+*.doc
+*.docx
+
+# Specific directories with large files
+obsidian/Clippings/**/提出写真/
+**/pdf_files/
+**/PDF/
+**/platinum-print/
+**/images/
+WEB/

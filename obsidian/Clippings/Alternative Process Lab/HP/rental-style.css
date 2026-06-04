@@ -1,0 +1,803 @@
+/* Rental Page Styles */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Noto Serif JP', serif;
+    line-height: 1.8;
+    color: #333;
+    background-color: #ffffff;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* Header */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #000;
+    padding: 1.5rem 3rem;
+    border-bottom: 1px solid #e0e0e0;
+    z-index: 1000;
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.site-logo {
+    height: 45px;
+    width: auto;
+    display: block;
+}
+
+/* Navigation Menu */
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #fff;
+    font-family: 'Antic Didone', 'Noto Serif JP', serif;
+    font-size: 0.9em;
+    letter-spacing: 0.07em;
+    font-weight: normal;
+    transition: opacity 0.3s ease;
+}
+
+.nav-link:hover {
+    opacity: 0.6;
+}
+
+.nav-link.active {
+    opacity: 0.6;
+}
+
+/* Dropdown Menu */
+.nav-item-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgba(0, 0, 0, 0.95);
+    list-style: none;
+    padding: 1rem 0;
+    min-width: 200px;
+    margin-top: 0.5rem;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-item-dropdown:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+}
+
+.dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -1rem;
+    left: 0;
+    right: 0;
+    height: 1rem;
+}
+
+.dropdown-link {
+    display: block;
+    padding: 0.5rem 1.5rem;
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Antic Didone', 'Noto Serif JP', serif;
+    font-size: 0.85em;
+    letter-spacing: 0.05em;
+    transition: background 0.3s ease;
+}
+
+.dropdown-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Hamburger Menu (Hidden on Desktop) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.hamburger-line {
+    width: 25px;
+    height: 2px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    .nav {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        width: 250px;
+        height: calc(100vh - 70px);
+        background-color: #000;
+        transition: right 0.3s;
+        overflow-y: auto;
+    }
+
+    .nav.active {
+        right: 0;
+    }
+
+    .nav-menu {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 2rem;
+        gap: 0;
+    }
+
+    .nav-menu li {
+        width: 100%;
+        border-bottom: 1px solid #333;
+        padding: 1rem 0;
+    }
+
+    .dropdown-menu {
+        position: static;
+        display: none;
+        box-shadow: none;
+        padding-left: 1rem;
+    }
+
+    .nav-item-dropdown.active .dropdown-menu {
+        display: block;
+    }
+}
+
+/* Main Content */
+.main-content {
+    min-height: calc(100vh - 200px);
+    padding-top: 90px;
+    padding-bottom: 4rem;
+}
+
+/* Hero Section */
+.hero {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+    padding: 6rem 3rem;
+    text-align: center;
+}
+
+.page-title {
+    font-family: 'Antic Didone', serif;
+    font-size: 1.75em;
+    color: #333;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+}
+
+/* Sections */
+.intro-section,
+.pricing-section,
+.flow-section,
+.cta-section,
+.notes-section {
+    padding: 4rem 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.equipment-section {
+    padding: 4rem 0;
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+}
+
+.section-title {
+    font-family: 'Antic Didone', 'Noto Serif JP', serif;
+    font-size: 16.5px;
+    font-weight: normal;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 2.5em;
+    text-align: center;
+}
+
+.intro-text {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+    font-size: 1.1rem;
+    line-height: 2;
+}
+
+.intro-text p {
+    margin-bottom: 1rem;
+}
+
+/* Equipment Grid */
+.equipment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.equipment-card {
+    background-color: #111;
+    border: 1px solid #333;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.equipment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+}
+
+.equipment-image {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    background-color: #1a1a1a;
+}
+
+.equipment-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.equipment-info {
+    padding: 1.5rem;
+}
+
+.equipment-name {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #fff;
+}
+
+.equipment-specs {
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 1rem;
+}
+
+.equipment-description {
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    color: #ccc;
+}
+
+.equipment-price {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+/* Darkroom Gallery */
+.darkroom-gallery {
+    display: flex;
+    gap: 1.5rem;
+    margin: 2rem 0;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #ccc #f5f5f5;
+    padding-bottom: 1rem;
+}
+
+.darkroom-gallery::-webkit-scrollbar {
+    height: 8px;
+}
+
+.darkroom-gallery::-webkit-scrollbar-track {
+    background: #f5f5f5;
+    border-radius: 4px;
+}
+
+.darkroom-gallery::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.darkroom-gallery::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
+
+.gallery-item {
+    flex: 0 0 400px;
+    overflow: hidden;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    scroll-snap-align: start;
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    transition: transform 0.3s;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.05);
+}
+
+/* Darkroom Description */
+.darkroom-description {
+    max-width: 800px;
+    margin: 2rem auto;
+    text-align: center;
+    color: #666;
+    line-height: 2;
+}
+
+.darkroom-description p {
+    margin-bottom: 1rem;
+}
+
+/* Equipment List */
+.equipment-list {
+    max-width: 700px;
+    margin: 2rem auto;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 2rem;
+}
+
+.equipment-list h4 {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+    color: #000;
+    text-align: center;
+}
+
+.equipment-list ul {
+    list-style: none;
+    color: #333;
+}
+
+.equipment-list li {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e8e8e8;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.equipment-list li:last-child {
+    border-bottom: none;
+}
+
+.equipment-list li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: #000;
+    font-size: 1.2rem;
+}
+
+/* Pricing Table */
+.pricing-table {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.pricing-item {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.pricing-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.pricing-item h4 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: #000;
+}
+
+.price {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: #000;
+}
+
+.price-note {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.75rem;
+}
+
+.price-student {
+    font-size: 0.95rem;
+    color: #555;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e8e8e8;
+}
+
+/* Additional Fees */
+.additional-fees {
+    max-width: 600px;
+    margin: 3rem auto 0;
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 1.5rem 2rem;
+    text-align: center;
+}
+
+.additional-fees h4 {
+    font-size: 1.2rem;
+    margin-bottom: 0.75rem;
+    color: #000;
+}
+
+.additional-fees p {
+    color: #333;
+    font-size: 1rem;
+}
+
+/* Options Section */
+.options-section {
+    padding: 4rem 0;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+}
+
+.option-item {
+    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.option-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.option-item h4 {
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    color: #000;
+}
+
+.option-item p {
+    color: #666;
+    line-height: 1.8;
+}
+
+/* Flow Steps */
+.flow-steps {
+    max-width: 900px;
+    margin: 3rem auto;
+    position: relative;
+}
+
+.flow-steps::before {
+    content: '';
+    position: absolute;
+    left: 35px;
+    top: 50px;
+    bottom: 50px;
+    width: 2px;
+    background: linear-gradient(180deg, #000 0%, #999 100%);
+    z-index: 0;
+}
+
+.flow-step {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    align-items: flex-start;
+    position: relative;
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    border: 1px solid #e8e8e8;
+    transition: all 0.3s ease;
+    z-index: 1;
+}
+
+.flow-step:hover {
+    transform: translateX(10px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border-color: #000;
+}
+
+.flow-step:last-child {
+    margin-bottom: 0;
+}
+
+.step-number {
+    font-family: 'Antic Didone', serif;
+    font-size: 3rem;
+    font-weight: normal;
+    color: #000;
+    flex-shrink: 0;
+    min-width: 70px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    transition: all 0.3s ease;
+    line-height: 1;
+}
+
+.flow-step:hover .step-number {
+    color: #666;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    color: #000;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+}
+
+.step-description {
+    color: #666;
+    line-height: 1.9;
+    font-size: 1rem;
+}
+
+/* CTA Section */
+.cta-section {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-block;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 1rem;
+    transition: all 0.3s;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: #000;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #333;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    color: #000;
+    border: 1px solid #000;
+}
+
+.btn-secondary:hover {
+    background-color: #000;
+    color: #fff;
+}
+
+.btn-large {
+    padding: 1.2rem 2.5rem;
+    font-size: 1.1rem;
+}
+
+/* Notes Section */
+.notes-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.notes-content h4 {
+    font-size: 1.3rem;
+    margin: 2rem 0 1rem;
+    color: #000;
+}
+
+.notes-content h4:first-child {
+    margin-top: 0;
+}
+
+.notes-content ul {
+    list-style-position: inside;
+    color: #666;
+    line-height: 2;
+}
+
+.notes-content p {
+    color: #666;
+    line-height: 2;
+}
+
+.notes-content a {
+    color: #000;
+    text-decoration: underline;
+}
+
+.notes-content a:hover {
+    color: #666;
+}
+
+/* Footer */
+.footer {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 1.5rem 3rem;
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-left span {
+    font-family: 'Antic Didone', serif;
+    font-size: 0.9em;
+    color: #333;
+}
+
+.footer-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.footer-links a {
+    color: rgba(7, 0, 0, 1);
+    text-decoration: none;
+    font-family: 'Antic Didone', serif;
+    font-size: 1em;
+    transition: opacity 0.3s ease;
+}
+
+.footer-links a:hover {
+    opacity: 0.6;
+}
+
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 2rem;
+    }
+
+    .hero {
+        padding: 4rem 1rem;
+    }
+
+    .darkroom-gallery {
+        flex-direction: row;
+        overflow-x: auto;
+    }
+
+    .gallery-item {
+        flex: 0 0 300px;
+    }
+
+    .gallery-item img {
+        height: 250px;
+    }
+
+    .equipment-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .pricing-table {
+        grid-template-columns: 1fr;
+    }
+
+    .options-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn-large {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .flow-steps::before {
+        left: 20px;
+    }
+
+    .flow-step {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1.5rem;
+        transform: none !important;
+    }
+
+    .flow-step:hover {
+        transform: none !important;
+    }
+
+    .step-number {
+        min-width: 50px;
+        font-size: 2.5rem;
+    }
+
+    .step-title {
+        font-size: 1.1rem;
+    }
+
+    .step-description {
+        font-size: 0.95rem;
+    }
+}

@@ -1,0 +1,428 @@
+*PPD-Adobe: "4.3"
+*%PPD file for QuadToneRIP
+*%Inks K,C,M,Y,LC,LM,LK,LLK,V,MK
+*FormatVersion: "4.3"
+*FileVersion:   "2.8.2"
+*LanguageVersion: English
+*LanguageEncoding: ISOLatin1
+*PCFileName:    "QuadP9500.ppd"
+*Manufacturer:  "QuadToneRIP"
+*Product:       "(EPSON SureColor P9500)"
+*ModelName:     "escp2-P700"
+*ShortNickName: "QuadToneRIP 2.8.2 Epson SC-P9500"
+*NickName:      "QuadToneRIP 2.8.2 Epson SC-P9500"
+*PSVersion:     "(2017.000) 705"
+*LanguageLevel: "2"
+*ColorDevice:   True
+*DefaultColorSpace: RGB
+*FileSystem:    False
+*LandscapeOrientation: Minus90
+*APDialogExtension: "/Library/Printers/QTR/plugin/QuadTonePDE.plugin"
+*%APPrinterUtilityPath: "/Library/Printers/EPSON/Utilities/EPSON Printer Utility.app"
+*TTRasterizer:  Type42
+*cupsVersion:   1.1
+*cupsManualCopies: True
+*cupsFilter:    "application/vnd.cups-raster 100 /Library/Printers/QTR/filter/quadtoneprint"
+
+*cupsICCProfile ../Default:      "/System/Library/ColorSync/Profiles/sRGB Profile.icc"
+*APSupportsCustomColorMatching: true
+*APDefaultCustomColorMatchingProfile: sRGB
+*APCustomColorMatchingProfile: sRGB
+*APCustomColorMatchingName QTR/QuadToneRIP: ""
+
+*VariablePaperSize: true
+
+*MaxMediaWidth:  "936"
+*MaxMediaHeight: "9216"
+*HWMargins:      9 9 9 9
+*CustomPageSize True: "pop pop pop <</PageSize[5 -2 roll]/ImagingBBox null>>setpagedevice"
+*ParamCustomPageSize Width:        1 points 252 936
+*ParamCustomPageSize Height:       2 points 252 9216
+*ParamCustomPageSize WidthOffset:  3 points 0 0
+*ParamCustomPageSize HeightOffset: 4 points 0 0
+*ParamCustomPageSize Orientation:  5 int 0 0
+
+*OpenUI *PageSize: PickOne
+*OrderDependency: 10 AnySetup *PageSize
+*DefaultPageSize: Letter
+*PageSize Letter/Letter: "<</PageSize[612 792]>>setpagedevice"
+*PageSize Tabloid/Tabloid: "<</PageSize[792 1224]>>setpagedevice"
+*PageSize 13x19/13x19: "<</PageSize[936 1368]>>setpagedevice"
+*PageSize 13x44/13x44: "<</PageSize[936 3168]>>setpagedevice"
+*PageSize 4x6/4x6: "<</PageSize[288 432]>>setpagedevice"
+*PageSize 5x7/5x7: "<</PageSize[360 504]>>setpagedevice"
+*PageSize 7x10/7x10: "<</PageSize[504 720]>>setpagedevice"
+*PageSize 8x10/8x10: "<</PageSize[576 720]>>setpagedevice"
+*PageSize 11x14/11x14: "<</PageSize[792 1008]>>setpagedevice"
+*PageSize A6/A6: "<</PageSize[297 420]>>setpagedevice"
+*PageSize A5/A5: "<</PageSize[420 595]>>setpagedevice"
+*PageSize A4/A4: "<</PageSize[595 842]>>setpagedevice"
+*PageSize A3/A3: "<</PageSize[842 1191]>>setpagedevice"
+*CloseUI *PageSize
+
+*OpenUI *PageRegion: PickOne
+*OrderDependency: 10 AnySetup *PageRegion
+*DefaultPageRegion: Letter
+*PageRegion Letter/Letter: "<</PageSize[612 792]>>setpagedevice"
+*PageRegion Tabloid/Tabloid: "<</PageSize[792 1224]>>setpagedevice"
+*PageRegion 13x19/13x19: "<</PageSize[936 1368]>>setpagedevice"
+*PageRegion 13x44/13x44: "<</PageSize[936 3168]>>setpagedevice"
+*PageRegion 4x6/4x6: "<</PageSize[288 432]>>setpagedevice"
+*PageRegion 5x7/5x7: "<</PageSize[360 504]>>setpagedevice"
+*PageRegion 7x10/7x10: "<</PageSize[504 720]>>setpagedevice"
+*PageRegion 8x10/8x10: "<</PageSize[576 720]>>setpagedevice"
+*PageRegion 11x14/11x14: "<</PageSize[792 1008]>>setpagedevice"
+*PageRegion A6/A6: "<</PageSize[297 420]>>setpagedevice"
+*PageRegion A5/A5: "<</PageSize[420 595]>>setpagedevice"
+*PageRegion A4/A4: "<</PageSize[595 842]>>setpagedevice"
+*PageRegion A3/A3: "<</PageSize[842 1191]>>setpagedevice"
+*CloseUI *PageRegion
+
+*DefaultImageableArea: Letter
+*ImageableArea Letter/Letter: "9 9 603 783"
+*ImageableArea Tabloid/Tabloid: "9 9 783 1215"
+*ImageableArea 13x19/13x19: "9 9 927 1359"
+*ImageableArea 13x44/13x44: "9 9 927 3159"
+*ImageableArea 4x6/4x6: "9 9 279 423"
+*ImageableArea 5x7/5x7: "9 9 351 495"
+*ImageableArea 7x10/7x10: "9 9 495 711"
+*ImageableArea 8x10/8x10: "9 9 567 711"
+*ImageableArea 11x14/11x14: "9 9 783 999"
+*ImageableArea A6/A6: "9 9 288 411"
+*ImageableArea A5/A5: "9 9 411 586"
+*ImageableArea A4/A4: "9 9 586 833"
+*ImageableArea A3/A3: "9 9 833 1182"
+
+*DefaultPaperDimension: Letter
+*PaperDimension Letter/Letter: "612 792"
+*PaperDimension Tabloid/Tabloid: "792 1224"
+*PaperDimension 13x19/13x19: "936 1368"
+*PaperDimension 13x44/13x44: "936 3168"
+*PaperDimension 4x6/4x6: "288 432"
+*PaperDimension 5x7/5x7: "360 504"
+*PaperDimension 7x10/7x10: "504 720"
+*PaperDimension 8x10/8x10: "576 720"
+*PaperDimension 11x14/11x14: "792 1008"
+*PaperDimension A6/A6: "297 420"
+*PaperDimension A5/A5: "420 595"
+*PaperDimension A4/A4: "595 842"
+*PaperDimension A3/A3: "842 1191"
+
+        
+*OpenGroup: MAIN/Basic settings
+
+*OpenUI *ripFeed/Paper Feed: PickOne
+*OrderDependency: 20 AnySetup *ripFeed
+*DefaultripFeed: Sheet
+*ripFeed Sheet/Sheet Feed:     "<</MediaClass(Sheet)>>setpagedevice"
+*ripFeed Roll/Roll Feed:     "<</MediaClass(Roll)>>setpagedevice"
+*ripFeed RollSave/Roll - Save Paper:     "<</MediaClass(RollSave)>>setpagedevice"
+*ripFeed FrontFineArt/Front - Fine Art:     "<</MediaClass(FrontFineArt)>>setpagedevice"
+*ripFeed FrontPoster/Front - Poster Board:     "<</MediaClass(FrontPoster)>>setpagedevice"
+*ripFeed FrontNoEject/Front - No Eject Roller:     "<</MediaClass(FrontNoEject)>>setpagedevice"
+*CloseUI: *ripFeed
+
+*OpenUI *EPIJ_PSrc/Page Setup: PickOne
+*OrderDependency: 100 AnySetup *EPIJ_PSrc
+*DefaultEPIJ_PSrc: 5
+*EPIJ_PSrc 14/Roll Paper: ""
+*EPIJ_PSrc 18/Roll Paper - Borderless, Auto Expand: ""
+*EPIJ_PSrc 19/Roll Paper - Borderless, Retain Size: ""
+*EPIJ_PSrc 16/Roll Paper - Banner: ""
+*EPIJ_PSrc 20/Roll Paper - Borderless Banner: ""
+*EPIJ_PSrc 5/Sheet: ""
+*EPIJ_PSrc 51/Sheet - Centering: ""
+*EPIJ_PSrc 7/Sheet - Borderless, Auto Expand: ""
+*EPIJ_PSrc 8/Sheet - Borderless, Retain Size: ""
+*EPIJ_PSrc 74/Poster Board: ""
+*EPIJ_PSrc 75/Poster Board - Centering: ""
+*nl.Translation EPIJ_PSrc/Pagina-instelling: ""
+*fr.Translation EPIJ_PSrc/Format d'impression : ""
+*de.Translation EPIJ_PSrc/Papierformat: ""
+*it.Translation EPIJ_PSrc/Formato di Stampa: ""
+*ja.Translation EPIJ_PSrc/ページ設定: ""
+*pt.Translation EPIJ_PSrc/Configurar página: ""
+*pt_PT.Translation EPIJ_PSrc/Configurar página: ""
+*es.Translation EPIJ_PSrc/Ajustar página: ""
+*ko.Translation EPIJ_PSrc/페이지 설정: ""
+*zh_TW.Translation EPIJ_PSrc/頁面設定: ""
+*zh_CN.Translation EPIJ_PSrc/页面设置: ""
+*ru.Translation EPIJ_PSrc/Парам<2E> стр<2E>: ""
+*nl.EPIJ_PSrc 14/Rolpapier: ""
+*nl.EPIJ_PSrc 18/Rolpapier - Randloos,Autom<2E> vergroten: ""
+*nl.EPIJ_PSrc 19/Rolpapier - Randloos,Behoud grootte: ""
+*nl.EPIJ_PSrc 16/Rolpapier - Banner: ""
+*nl.EPIJ_PSrc 20/Rolpapier - Randloos Banier: ""
+*nl.EPIJ_PSrc 5/Vel: ""
+*nl.EPIJ_PSrc 51/Vel - Centreren: ""
+*nl.EPIJ_PSrc 7/Vel - Randloos, Automatisch vergroten: ""
+*nl.EPIJ_PSrc 8/Vel - Randloos, Behoud grootte: ""
+*nl.EPIJ_PSrc 74/Kartonnen poster: ""
+*nl.EPIJ_PSrc 75/Kartonnen poster - Centreren: ""
+*fr.EPIJ_PSrc 14/Papier rouleau: ""
+*fr.EPIJ_PSrc 18/Papier rouleau - Sans marges,Agrandir auto: ""
+*fr.EPIJ_PSrc 19/Papier rouleau - Ss marg,Format à conserver: ""
+*fr.EPIJ_PSrc 16/Papier rouleau - Bannière: ""
+*fr.EPIJ_PSrc 20/Papier rouleau - Sans marges Bannière: ""
+*fr.EPIJ_PSrc 5/Feuille: ""
+*fr.EPIJ_PSrc 51/Feuille - Centrage: ""
+*fr.EPIJ_PSrc 7/Feuille - Sans marges, Agrandir auto: ""
+*fr.EPIJ_PSrc 8/Feuille - Sans marges, Format à conserver: ""
+*fr.EPIJ_PSrc 74/affiche: ""
+*fr.EPIJ_PSrc 75/affiche - Centrage: ""
+*de.EPIJ_PSrc 14/Rollenpapier: ""
+*de.EPIJ_PSrc 18/Rollenpapier - randlos,Auto<2E> erweit<2E>: ""
+*de.EPIJ_PSrc 19/Rollenpapier - randlos,Größe erhalt<2E>: ""
+*de.EPIJ_PSrc 16/Rollenpapier - Banner: ""
+*de.EPIJ_PSrc 20/Rollenpapier - Randlos Banner: ""
+*de.EPIJ_PSrc 5/Blatt: ""
+*de.EPIJ_PSrc 51/Blatt - Zentrieren: ""
+*de.EPIJ_PSrc 7/Blatt - Randlos, Automatisch erweitern: ""
+*de.EPIJ_PSrc 8/Blatt - Randlos, Größe erhalten: ""
+*de.EPIJ_PSrc 74/Pinnwand: ""
+*de.EPIJ_PSrc 75/Pinnwand - Zentrieren: ""
+*it.EPIJ_PSrc 14/Carta in rotolo: ""
+*it.EPIJ_PSrc 18/Carta in rotolo-senza marg<2E>,Autoespansione: ""
+*it.EPIJ_PSrc 19/Carta in rotolo-senza marg<2E>,Conserva formato: ""
+*it.EPIJ_PSrc 16/Carta in rotolo - Striscione: ""
+*it.EPIJ_PSrc 20/Carta in rotolo - Senza margini Striscione: ""
+*it.EPIJ_PSrc 5/Foglio: ""
+*it.EPIJ_PSrc 51/Foglio - Centratura: ""
+*it.EPIJ_PSrc 7/Foglio - Senza margini, Autoespansione: ""
+*it.EPIJ_PSrc 8/Foglio - Senza margini, Conserva formato: ""
+*it.EPIJ_PSrc 74/Cartoncino Poster: ""
+*it.EPIJ_PSrc 75/Cartoncino Poster - Centratura: ""
+*ja.EPIJ_PSrc 14/ロール紙: ""
+*ja.EPIJ_PSrc 18/ロール紙 - フチなし、自動拡大: ""
+*ja.EPIJ_PSrc 19/ロール紙 - フチなし、原寸維持: ""
+*ja.EPIJ_PSrc 16/ロール紙 - 長尺: ""
+*ja.EPIJ_PSrc 20/ロール紙 - フチなし、長尺: ""
+*ja.EPIJ_PSrc 5/単票紙: ""
+*ja.EPIJ_PSrc 51/単票紙 - センタリング: ""
+*ja.EPIJ_PSrc 7/単票紙 - フチなし、自動拡大: ""
+*ja.EPIJ_PSrc 8/単票紙 - フチなし、原寸維持: ""
+*ja.EPIJ_PSrc 74/ボード紙: ""
+*ja.EPIJ_PSrc 75/ボード紙 - センタリング: ""
+*pt.EPIJ_PSrc 14/Papel em rolo: ""
+*pt.EPIJ_PSrc 18/Papel em rolo - sem margens, expand<2E> autom<2E>: ""
+*pt.EPIJ_PSrc 19/Papel em rolo - sem margens, manter tam<2E>: ""
+*pt.EPIJ_PSrc 16/Papel em rolo - faixa: ""
+*pt.EPIJ_PSrc 20/Papel em rolo - sem margens, faixa: ""
+*pt.EPIJ_PSrc 5/Folha: ""
+*pt.EPIJ_PSrc 51/Folha - centrar: ""
+*pt.EPIJ_PSrc 7/Folha - sem margens, expandir autom<2E>: ""
+*pt.EPIJ_PSrc 8/Folha - sem margens, manter tamanho: ""
+*pt.EPIJ_PSrc 74/Cartaz: ""
+*pt.EPIJ_PSrc 75/Cartaz - centrar: ""
+*pt_PT.EPIJ_PSrc 14/Papel em Rolo: ""
+*pt_PT.EPIJ_PSrc 18/Papel em Rolo - Sem Margens,Expand<2E> Autom<2E>: ""
+*pt_PT.EPIJ_PSrc 19/Papel em Rolo - Sem Margens,Manter Tam<2E>: ""
+*pt_PT.EPIJ_PSrc 16/Papel em Rolo - Banner: ""
+*pt_PT.EPIJ_PSrc 20/Papel em Rolo - Sem margens Rolo: ""
+*pt_PT.EPIJ_PSrc 5/Folha: ""
+*pt_PT.EPIJ_PSrc 51/Folha - Centrar: ""
+*pt_PT.EPIJ_PSrc 7/Folha - Sem margens, Expandir Automat: ""
+*pt_PT.EPIJ_PSrc 8/Folha - Sem margens, Manter Tamanho: ""
+*pt_PT.EPIJ_PSrc 74/Cartaz: ""
+*pt_PT.EPIJ_PSrc 75/Cartaz - Centrar: ""
+*es.EPIJ_PSrc 14/Rollo de papel: ""
+*es.EPIJ_PSrc 18/Rollo de papel - Sin márg<2E>,Auto Ampliac<2E>: ""
+*es.EPIJ_PSrc 19/Rollo de papel - Sin márg<2E>,Mantener Tam<2E>: ""
+*es.EPIJ_PSrc 16/Rollo de papel - Banner: ""
+*es.EPIJ_PSrc 20/Rollo de Papel - Sin márgenes Banner: ""
+*es.EPIJ_PSrc 5/Hoja: ""
+*es.EPIJ_PSrc 51/Hoja - Centrado: ""
+*es.EPIJ_PSrc 7/Hoja - Sin márgenes, Auto Ampliación: ""
+*es.EPIJ_PSrc 8/Hoja - Sin márgenes, Manetener Tamaño: ""
+*es.EPIJ_PSrc 74/Cartulina: ""
+*es.EPIJ_PSrc 75/Cartulina - Centrado: ""
+*ko.EPIJ_PSrc 14/롤 용지: ""
+*ko.EPIJ_PSrc 18/롤 용지 - 여백 없음, 자동 확장: ""
+*ko.EPIJ_PSrc 19/롤 용지 - 여백 없음, 크기 유지: ""
+*ko.EPIJ_PSrc 16/롤 용지 - 배너: ""
+*ko.EPIJ_PSrc 20/롤 용지 - 배너 여백 없음: ""
+*ko.EPIJ_PSrc 5/낱장: ""
+*ko.EPIJ_PSrc 51/낱장 - 가운데 맞춤: ""
+*ko.EPIJ_PSrc 7/낱장 - 여백 없음, 자동 확장: ""
+*ko.EPIJ_PSrc 8/낱장 - 여백 없음, 크기 유지: ""
+*ko.EPIJ_PSrc 74/포스터 용지: ""
+*ko.EPIJ_PSrc 75/포스터 용지 - 가운데 맞춤: ""
+*zh_TW.EPIJ_PSrc 14/滾筒紙: ""
+*zh_TW.EPIJ_PSrc 18/滾筒紙 - 無邊, 自動放大: ""
+*zh_TW.EPIJ_PSrc 19/滾筒紙 - 無邊, 原尺寸: ""
+*zh_TW.EPIJ_PSrc 16/滾筒紙 - 長條紙: ""
+*zh_TW.EPIJ_PSrc 20/滾筒紙 - 無邊 長條紙: ""
+*zh_TW.EPIJ_PSrc 5/單張紙: ""
+*zh_TW.EPIJ_PSrc 51/單張紙 - 置中: ""
+*zh_TW.EPIJ_PSrc 7/單張紙 - 無邊, 自動放大: ""
+*zh_TW.EPIJ_PSrc 8/單張紙 - 無邊, 原尺寸: ""
+*zh_TW.EPIJ_PSrc 74/海報紙板: ""
+*zh_TW.EPIJ_PSrc 75/海報紙板 - 置中: ""
+*zh_CN.EPIJ_PSrc 14/卷纸: ""
+*zh_CN.EPIJ_PSrc 18/卷纸 - 无边距, 自动扩展: ""
+*zh_CN.EPIJ_PSrc 19/卷纸 - 无边距, 保持大小: ""
+*zh_CN.EPIJ_PSrc 16/卷纸 - 横幅: ""
+*zh_CN.EPIJ_PSrc 20/卷纸 - 无边距横幅: ""
+*zh_CN.EPIJ_PSrc 5/单页纸: ""
+*zh_CN.EPIJ_PSrc 51/单页纸 - 居中: ""
+*zh_CN.EPIJ_PSrc 7/单页纸 - 无边距, 自动扩展: ""
+*zh_CN.EPIJ_PSrc 8/单页纸 - 无边距, 保持大小: ""
+*zh_CN.EPIJ_PSrc 74/展板: ""
+*zh_CN.EPIJ_PSrc 75/展板 - 居中: ""
+*ru.EPIJ_PSrc 14/Рулонная бумага: ""
+*ru.EPIJ_PSrc 18/Рул<2E>бум<2E>-Без полей,Авт<2E>расш<2E>: ""
+*ru.EPIJ_PSrc 19/Рул<2E>бум<2E>-Без полей,Сохр<2E>раз<2E>: ""
+*ru.EPIJ_PSrc 16/Рулонная бумага - Плакат: ""
+*ru.EPIJ_PSrc 20/Рул<2E>бум<2E> - Без полей Плакат: ""
+*ru.EPIJ_PSrc 5/Лист: ""
+*ru.EPIJ_PSrc 51/Лист - центрирование : ""
+*ru.EPIJ_PSrc 7/Лист - Без пол<2E>, Ав<2E>рас<2E>: ""
+*ru.EPIJ_PSrc 8/Лист - Без пол<2E>, Сохр<2E> раз: ""
+*ru.EPIJ_PSrc 74/Плакат<2E>панель: ""
+*ru.EPIJ_PSrc 75/Плакат<2E>панель - центр: ""
+*CloseUI: *EPIJ_PSrc
+
+
+*OpenUI *Resolution/Resolution: PickOne
+*OrderDependency: 20 AnySetup *Resolution
+*DefaultResolution: 2880
+*Resolution 1440dpi/1440 dpi:     "<</HWResolution[720 720]>>setpagedevice"
+*Resolution 1441super/1440 super:     "<</HWResolution[720 720]>>setpagedevice"
+*Resolution 1442x1440dpi/1440x1440:     "<</HWResolution[720 720]>>setpagedevice"
+*Resolution 1443x1440super/1440x1440 super:     "<</HWResolution[720 720]>>setpagedevice"
+*Resolution 2880/2880 dpi:     "<</HWResolution[720 720]>>setpagedevice"
+*Resolution 2881super/2880 super:     "<</HWResolution[720 720]>>setpagedevice"
+*CloseUI: *Resolution
+
+*OpenUI *ripSpeed/Speed: PickOne
+*OrderDependency: 20 AnySetup *ripSpeed
+*DefaultripSpeed: hispeed
+*ripSpeed hispeed/Bi-directional: ""
+*ripSpeed lospeed/Uni-directional: ""
+*CloseUI: *ripSpeed
+
+*OpenUI *stpDither/Dither Algorithm: PickOne
+*OrderDependency: 20 AnySetup *stpDither
+*DefaultstpDither: Ordered
+*stpDither Ordered/Ordered: ""
+*stpDither Adaptive/Adaptive Hybrid: ""
+*stpDither Fast/Fast: ""
+*stpDither VeryFast/Very Fast: ""
+*CloseUI: *stpDither
+
+*CloseGroup: MAIN
+
+*OpenGroup: RIP/QuadTone RIP Settings
+*OpenUI *ColorModel: PickOne
+*OrderDependency: 20 AnySetup *ColorModel
+*DefaultColorModel: QTRIP
+*ColorModel QTRIP/QuadTone RIP 8-bit: "<</cupsColorSpace 1/cupsColorOrder 0/cupsBitsPerColor 8/cupsBorderlessScalingFactor 1.00>>setpagedevice"
+*ColorModel QTRIP16/QuadTone RIP 16-bit: "<</cupsColorSpace 1/cupsColorOrder 0/cupsBitsPerColor 16/cupsBorderlessScalingFactor 1.00>>setpagedevice"
+*ColorModel QTCAL/QuadTone RIP Calibration: "<</cupsColorSpace 1/cupsColorOrder 0/cupsBitsPerColor 8/cupsBorderlessScalingFactor 1.00>>setpagedevice"
+*%ColorModel QTRIP3/QuadTone RIP RGB 8-bit: "<</cupsColorSpace 1/cupsColorOrder 0/cupsBitsPerColor 8/cupsBorderlessScalingFactor 1.00>>setpagedevice"
+*%ColorModel QTRIP316/QuadTone RIP RGB 16-bit:  "<</cupsColorSpace 1/cupsColorOrder 0/cupsBitsPerColor 16/cupsBorderlessScalingFactor 1.00>>setpagedevice"
+*CloseUI: *ColorModel
+
+*OpenUI *ripCurve1/QuadTone RIP Curve 1: PickOne
+*OrderDependency: 20 AnySetup *ripCurve1
+*DefaultripCurve1: -
+*ripCurve1 P9550-PtPd-xf1-3ink: ""
+*ripCurve1 -/None: ""
+*%*ripCurve1 PX1V-PtPd-xf1-2ink: ""
+*%*ripCurve1 PX1V-PtPd-xf1-3ink-v2: ""
+*%*ripCurve1 PX1V-PtPd-xf1-v14: ""
+*ripCurve1 UCmk-EnhMatte-neut: ""
+*ripCurve1 UCmk-EnhMatte-sepia: ""
+*ripCurve1 UCmk-EnhMatte-warm: ""
+*ripCurve1 UCmk-EnhMatte-warmer: ""
+*ripCurve1 UCmk-HMPRduo-neutral: ""
+*ripCurve1 UCmk-HMPRduo-warm: ""
+*ripCurve1 UCmk-raw-cool: ""
+*ripCurve1 UCmk-raw-neut: ""
+*ripCurve1 UCmk-raw-sepia: ""
+*ripCurve1 UCmk-raw-warm: ""
+*ripCurve1 UCmk-raw-warmer: ""
+*ripCurve1 UCpk-HMBaryta-neut: ""
+*ripCurve1 UCpk-HMBaryta-sepia: ""
+*ripCurve1 UCpk-HMBaryta-warm: ""
+*ripCurve1 UCpk-HMBaryta-warmer: ""
+*ripCurve1 UCpk-PremPhoto-neut: ""
+*ripCurve1 UCpk-PremPhoto-sepia: ""
+*ripCurve1 UCpk-PremPhoto-warm: ""
+*ripCurve1 UCpk-PremPhoto-warmer: ""
+*ripCurve1 UCpk-raw-neut: ""
+*ripCurve1 UCpk-raw-sepia: ""
+*ripCurve1 UCpk-raw-warm: ""
+*ripCurve1 UCpk-raw-warmer: ""
+*CloseUI: *ripCurve1
+
+*OpenUI *ripCurve2/QuadTone RIP Curve 2: PickOne
+*OrderDependency: 20 AnySetup *ripCurve2
+*DefaultripCurve2: -
+*ripCurve2 -/None: ""
+*%*ripCurve2 PX1V-PtPd-xf1-2ink: ""
+*%*ripCurve2 PX1V-PtPd-xf1-3ink-v2: ""
+*%*ripCurve2 PX1V-PtPd-xf1-v14: ""
+*ripCurve2 UCmk-EnhMatte-neut: ""
+*ripCurve2 UCmk-EnhMatte-sepia: ""
+*ripCurve2 UCmk-EnhMatte-warm: ""
+*ripCurve2 UCmk-EnhMatte-warmer: ""
+*ripCurve2 UCmk-HMPRduo-neutral: ""
+*ripCurve2 UCmk-HMPRduo-warm: ""
+*ripCurve2 UCmk-raw-cool: ""
+*ripCurve2 UCmk-raw-neut: ""
+*ripCurve2 UCmk-raw-sepia: ""
+*ripCurve2 UCmk-raw-warm: ""
+*ripCurve2 UCmk-raw-warmer: ""
+*ripCurve2 UCpk-HMBaryta-neut: ""
+*ripCurve2 UCpk-HMBaryta-sepia: ""
+*ripCurve2 UCpk-HMBaryta-warm: ""
+*ripCurve2 UCpk-HMBaryta-warmer: ""
+*ripCurve2 UCpk-PremPhoto-neut: ""
+*ripCurve2 UCpk-PremPhoto-sepia: ""
+*ripCurve2 UCpk-PremPhoto-warm: ""
+*ripCurve2 UCpk-PremPhoto-warmer: ""
+*ripCurve2 UCpk-raw-neut: ""
+*ripCurve2 UCpk-raw-sepia: ""
+*ripCurve2 UCpk-raw-warm: ""
+*ripCurve2 UCpk-raw-warmer: ""
+*CloseUI: *ripCurve2
+
+*OpenUI *ripCurve3/QuadTone RIP Curve 3: PickOne
+*OrderDependency: 20 AnySetup *ripCurve3
+*DefaultripCurve3: -
+*ripCurve3 -/None: ""
+*%*ripCurve3 PX1V-PtPd-xf1-2ink: ""
+*%*ripCurve3 PX1V-PtPd-xf1-3ink-v2: ""
+*%*ripCurve3 PX1V-PtPd-xf1-v14: ""
+*ripCurve3 UCmk-EnhMatte-neut: ""
+*ripCurve3 UCmk-EnhMatte-sepia: ""
+*ripCurve3 UCmk-EnhMatte-warm: ""
+*ripCurve3 UCmk-EnhMatte-warmer: ""
+*ripCurve3 UCmk-HMPRduo-neutral: ""
+*ripCurve3 UCmk-HMPRduo-warm: ""
+*ripCurve3 UCmk-raw-cool: ""
+*ripCurve3 UCmk-raw-neut: ""
+*ripCurve3 UCmk-raw-sepia: ""
+*ripCurve3 UCmk-raw-warm: ""
+*ripCurve3 UCmk-raw-warmer: ""
+*ripCurve3 UCpk-HMBaryta-neut: ""
+*ripCurve3 UCpk-HMBaryta-sepia: ""
+*ripCurve3 UCpk-HMBaryta-warm: ""
+*ripCurve3 UCpk-HMBaryta-warmer: ""
+*ripCurve3 UCpk-PremPhoto-neut: ""
+*ripCurve3 UCpk-PremPhoto-sepia: ""
+*ripCurve3 UCpk-PremPhoto-warm: ""
+*ripCurve3 UCpk-PremPhoto-warmer: ""
+*ripCurve3 UCpk-raw-neut: ""
+*ripCurve3 UCpk-raw-sepia: ""
+*ripCurve3 UCpk-raw-warm: ""
+*ripCurve3 UCpk-raw-warmer: ""
+*CloseUI: *ripCurve3
+
+*CloseGroup: RIP
+
+*DefaultFont: Courier
+
+*%End of $ppdname
+

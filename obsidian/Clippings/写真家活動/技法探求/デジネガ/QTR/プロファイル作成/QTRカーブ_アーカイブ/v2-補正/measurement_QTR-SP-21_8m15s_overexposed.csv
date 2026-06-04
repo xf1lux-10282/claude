@@ -1,0 +1,42 @@
+# SP1v21 Measurement Data - OVEREXPOSED VERSION
+# Exposure: 8min 15sec (1/3 stop overexposed)
+# Negative: SP1v21 - measured in TRANSMISSION density
+# Print: Pt/Pd on COT320 - measured in REFLECTION density
+# Date: 2026-03-19
+# Issue: Input 0-32 highlights crushed due to overexposure
+# Action: Re-measure with 7min exposure for proper highlight separation
+#
+input,negative_density_transmission,print_density_reflection
+0,0.07,1.44
+8,0.08,1.46
+16,0.12,1.44
+24,0.14,1.44
+32,0.17,1.42
+40,0.20,1.40
+48,0.22,1.40
+56,0.25,1.38
+64,0.28,1.34
+72,0.30,1.31
+80,0.33,1.25
+88,0.36,1.17
+96,0.39,1.19
+104,0.42,1.12
+112,0.44,1.05
+120,0.46,1.00
+128,0.50,0.88
+136,0.55,0.74
+144,0.58,0.75
+152,0.62,0.67
+160,0.66,0.57
+168,0.70,0.48
+176,0.74,0.39
+184,0.79,0.30
+192,0.84,0.28
+200,0.89,0.23
+208,0.93,0.19
+216,0.98,0.15
+224,1.04,0.11
+232,1.08,0.09
+240,1.17,0.08
+248,1.23,0.07
+255,1.29,0.06

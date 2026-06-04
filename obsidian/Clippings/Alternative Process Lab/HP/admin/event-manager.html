@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>イベント管理 - ap2lab Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Antic+Didone&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-style.css">
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>イベント管理システム</h1>
+            <p class="admin-subtitle">ap2lab Event Manager</p>
+        </header>
+
+        <main class="admin-main">
+            <!-- Add Event Form -->
+            <section class="form-section">
+                <h2 class="section-title">イベント追加・編集</h2>
+
+                <form id="event-form" class="event-form">
+                    <input type="hidden" id="event-id" name="eventId">
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="event-title">イベントタイトル *</label>
+                            <input type="text" id="event-title" name="title" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="event-type">イベント種別 *</label>
+                            <select id="event-type" name="type" required>
+                                <option value="">選択してください</option>
+                                <option value="workshop">Workshop</option>
+                                <option value="seminar">Seminar</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="event-status">募集状況 *</label>
+                            <select id="event-status" name="status" required>
+                                <option value="">選択してください</option>
+                                <option value="recruiting">募集中</option>
+                                <option value="waiting">キャンセル待ち</option>
+                                <option value="closed">募集終了</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="event-date">開催日 *</label>
+                            <input type="date" id="event-date" name="date" required>
+                            <p class="date-display" id="date-display"></p>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>開始時間</label>
+                            <div class="time-inputs">
+                                <select id="start-hour" name="startHour">
+                                    <option value="">--</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                </select>
+                                <span>:</span>
+                                <select id="start-minute" name="startMinute">
+                                    <option value="">--</option>
+                                    <option value="00">00</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="40">40</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>終了時間（予定）</label>
+                            <div class="time-inputs">
+                                <select id="end-hour" name="endHour">
+                                    <option value="">--</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                </select>
+                                <span>:</span>
+                                <select id="end-minute" name="endMinute">
+                                    <option value="">--</option>
+                                    <option value="00">00</option>
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                    <option value="40">40</option>
+                                    <option value="50">50</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="event-techniques">技法（複数選択可）</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="techniques" value="platinum-print">
+                                    <span>Platinum Print</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="techniques" value="cyanotype">
+                                    <span>Cyanotype</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="techniques" value="digital-negative">
+                                    <span>Digital Negative</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="techniques" value="albumen-print">
+                                    <span>Albumen Print</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="techniques" value="wet-plate">
+                                    <span>Wet Plate</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="techniques" value="gum-print">
+                                    <span>Gum Print</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="techniques" value="kallitype">
+                                    <span>Kallitype</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="techniques" value="alternative-process">
+                                    <span>Alternative Process</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group full-width">
+                            <label for="event-description">説明文 *</label>
+                            <textarea id="event-description" name="description" rows="5" required></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="event-capacity">募集人数</label>
+                            <select id="event-capacity" name="capacity">
+                                <option value="">選択してください</option>
+                                <option value="1">1名</option>
+                                <option value="2">2名</option>
+                                <option value="3">3名</option>
+                                <option value="4">4名</option>
+                                <option value="5">5名</option>
+                                <option value="6">6名</option>
+                                <option value="7">7名</option>
+                                <option value="8">8名</option>
+                                <option value="9">9名</option>
+                                <option value="10">10名</option>
+                                <option value="11">11名</option>
+                                <option value="12">12名</option>
+                                <option value="13">13名</option>
+                                <option value="14">14名</option>
+                                <option value="15">15名</option>
+                            </select>
+                            <p style="font-size: 0.85em; color: #666; margin-top: 0.5rem;">未選択の場合は表示されません</p>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="event-apply-url">申込URL（外部サイト）</label>
+                            <input type="url" id="event-apply-url" name="applyUrl" placeholder="https://example.com/apply">
+                            <p style="font-size: 0.85em; color: #666; margin-top: 0.5rem;">空欄の場合は表示されません</p>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="event-image">画像URL</label>
+                            <input type="text" id="event-image" name="image" placeholder="workshop-placeholder.jpg">
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn btn-primary">保存</button>
+                        <button type="button" class="btn btn-secondary" id="reset-form">リセット</button>
+                    </div>
+                </form>
+            </section>
+
+            <!-- Event List -->
+            <section class="list-section">
+                <h2 class="section-title">登録イベント一覧</h2>
+
+                <div class="event-list" id="event-list">
+                    <!-- Events will be dynamically loaded here -->
+                </div>
+            </section>
+
+            <!-- Export Section -->
+            <section class="export-section">
+                <h2 class="section-title">データ管理</h2>
+
+                <div class="export-actions">
+                    <button class="btn btn-primary" id="export-json">JSONエクスポート</button>
+                    <button class="btn btn-secondary" id="export-html">HTML生成</button>
+                    <div class="import-group">
+                        <label for="import-json" class="btn btn-secondary">JSONインポート</label>
+                        <input type="file" id="import-json" accept=".json" style="display: none;">
+                    </div>
+                </div>
+
+                <div class="info-box">
+                    <p><strong>自動非表示機能について:</strong></p>
+                    <p>イベント開催日の翌日11:59に自動的に非表示になります。この機能はevent.htmlのJavaScriptで実装されており、ページ読み込み時に日時をチェックします。</p>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="event-manager.js"></script>
+</body>
+</html>

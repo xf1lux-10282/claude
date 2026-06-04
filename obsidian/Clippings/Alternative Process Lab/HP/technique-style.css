@@ -1,0 +1,401 @@
+/* ===========================
+   Reset & Base Styles
+   =========================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Antic Didone', 'Noto Serif JP', serif;
+    background: #ffffff;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* ===========================
+   Header
+   =========================== */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #000;
+    padding: 1.5rem 3rem;
+    border-bottom: 1px solid #e0e0e0;
+    z-index: 1000;
+}
+
+.header-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.site-logo {
+    height: 45px;
+    width: auto;
+    display: block;
+}
+
+/* Navigation Menu */
+.nav-menu {
+    display: flex;
+    list-style: none;
+    gap: 2rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #fff;
+    font-family: 'Antic Didone', 'Noto Serif JP', serif;
+    font-size: 0.9em;
+    letter-spacing: 0.07em;
+    font-weight: normal;
+    transition: opacity 0.3s ease;
+}
+
+.nav-link:hover {
+    opacity: 0.6;
+}
+
+/* Dropdown Menu */
+.nav-item-dropdown {
+    position: relative;
+}
+
+.dropdown-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: rgba(0, 0, 0, 0.95);
+    list-style: none;
+    padding: 1rem 0;
+    min-width: 200px;
+    margin-top: 0.5rem;
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-item-dropdown:hover .dropdown-menu {
+    display: block;
+    opacity: 1;
+}
+
+.dropdown-menu::before {
+    content: '';
+    position: absolute;
+    top: -1rem;
+    left: 0;
+    right: 0;
+    height: 1rem;
+}
+
+.dropdown-link {
+    display: block;
+    padding: 0.5rem 1.5rem;
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Antic Didone', 'Noto Serif JP', serif;
+    font-size: 0.85em;
+    letter-spacing: 0.05em;
+    transition: background 0.3s ease;
+}
+
+.dropdown-link:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Hamburger Menu (Hidden on Desktop) */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.hamburger-line {
+    width: 25px;
+    height: 2px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+/* ===========================
+   Main Content
+   =========================== */
+.main-content {
+    min-height: calc(100vh - 200px);
+    padding-top: 90px;
+    padding-bottom: 4rem;
+}
+
+/* ===========================
+   Hero Section
+   =========================== */
+.hero {
+    background: linear-gradient(135deg, #f5f5f5 0%, #e8e8e8 100%);
+    padding: 6rem 3rem;
+    text-align: center;
+}
+
+.page-title {
+    font-family: 'Antic Didone', serif;
+    font-size: 1.75em;
+    color: #333;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+}
+
+/* ===========================
+   Container
+   =========================== */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+/* ===========================
+   Content Section
+   =========================== */
+.content {
+    padding: 5rem 0;
+    background: #fff;
+}
+
+.section-title {
+    font-family: 'Antic Didone', 'Noto Serif JP', serif;
+    font-size: 11px;
+    font-weight: normal;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #999;
+    margin-bottom: 2.5em;
+    text-align: center;
+}
+
+.text-content {
+    font-family: 'Antic Didone', 'Noto Serif JP', serif;
+    font-size: 0.9em;
+    line-height: 1.9em;
+    letter-spacing: 0.05em;
+}
+
+.text-content p {
+    margin-bottom: 1.5em;
+    text-align: justify;
+}
+
+.text-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* ===========================
+   Footer
+   =========================== */
+.footer {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 1.5rem 3rem;
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-left span {
+    font-family: 'Antic Didone', serif;
+    font-size: 0.9em;
+    color: #333;
+}
+
+.footer-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.footer-links a {
+    color: rgba(7, 0, 0, 1);
+    text-decoration: none;
+    font-family: 'Antic Didone', serif;
+    font-size: 1em;
+    transition: opacity 0.3s ease;
+}
+
+.footer-links a:hover {
+    opacity: 0.6;
+}
+
+/* ===========================
+   Responsive Design
+   =========================== */
+
+/* Tablet (768px以下) */
+@media screen and (max-width: 768px) {
+    .header {
+        padding: 1.125rem 2rem;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+
+    .nav {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: rgba(0, 0, 0, 0.95);
+        transition: right 0.3s ease;
+        z-index: 999;
+    }
+
+    .nav.active {
+        right: 0;
+    }
+
+    .nav-menu {
+        flex-direction: column;
+        gap: 2rem;
+        padding: 5rem 2rem;
+        align-items: flex-start;
+    }
+
+    .nav-link {
+        font-size: 1.1em;
+    }
+
+    .dropdown-menu {
+        position: static;
+        display: none;
+        background: rgba(255, 255, 255, 0.1);
+        padding: 0.5rem 0 0.5rem 1rem;
+        margin-top: 0.5rem;
+        border-radius: 0;
+    }
+
+    .nav-item-dropdown.active .dropdown-menu {
+        display: block;
+    }
+
+    .dropdown-link {
+        font-size: 0.95em;
+        padding: 0.4rem 1rem;
+    }
+
+    .site-logo {
+        height: 33.75px;
+    }
+
+    .hero {
+        padding: 4rem 2rem;
+    }
+
+    .page-title {
+        font-size: 1.25em;
+    }
+
+    .content {
+        padding: 3rem 0;
+    }
+
+    .text-content {
+        font-size: 1em;
+    }
+
+    .text-content p {
+        margin-bottom: 1.5rem;
+    }
+
+    .footer {
+        padding: 1rem 1.5rem;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .footer-links {
+        gap: 1rem;
+        font-size: 0.9em;
+    }
+
+    .footer-left span {
+        font-size: 0.8em;
+    }
+}
+
+/* Mobile (480px以下) */
+@media screen and (max-width: 480px) {
+    .header {
+        padding: 0.75rem 1.5rem;
+    }
+
+    .nav-menu {
+        gap: 1rem;
+    }
+
+    .nav-link {
+        font-size: 0.75em;
+    }
+
+    .site-logo {
+        height: 26.25px;
+    }
+
+    .hero {
+        padding: 3rem 1.5rem;
+    }
+
+    .page-title {
+        font-size: 1em;
+    }
+
+    .container {
+        padding: 0 1.5rem;
+    }
+
+    .content {
+        padding: 2rem 0;
+    }
+
+    .text-content {
+        font-size: 0.95em;
+        line-height: 1.9;
+    }
+
+    .text-content p {
+        margin-bottom: 1.2rem;
+        text-align: left;
+    }
+
+    .footer {
+        padding: 0.75rem 1rem;
+    }
+
+    .footer-links {
+        gap: 0.75rem;
+        font-size: 0.85em;
+    }
+
+    .footer-left span {
+        font-size: 0.75em;
+    }
+}

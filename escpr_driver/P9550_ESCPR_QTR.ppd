@@ -1,0 +1,171 @@
+*PPD-Adobe: "4.3"
+*%PPD file for QuadToneRIP with ESC/P-Raster Driver
+*%Custom PPD for EPSON SC-P9550 with ESC/P-Raster Protocol
+*%Inks K,C,M,Y,LC,LM,LK,LLK,OR,GR
+*FormatVersion: "4.3"
+*FileVersion: "1.0"
+*LanguageVersion: English
+*LanguageEncoding: ISOLatin1
+*PCFileName: "P9550_ESCPR_QTR.PPD"
+*Product: "(EPSON SC-P9550 Series ESC/P-Raster)"
+*PSVersion: "(3011.106) 0"
+*ModelName: "EPSON SC-P9550 QTR ESC/P-R"
+*ShortNickName: "P9550 QTR ESC/P-R"
+*NickName: "EPSON SC-P9550 QuadToneRIP ESC/P-Raster"
+*Manufacturer: "EPSON"
+*LanguageLevel: "3"
+*ColorDevice: True
+*DefaultColorSpace: Gray
+*cupsSNMPSupplies: False
+*cupsIPPSupplies: False
+*FileSystem: False
+*Throughput: "1"
+*TTRasterizer: Type42
+
+*cupsVersion: 1.7
+*cupsManualCopies: False
+*cupsModelNumber: 1
+
+*% Custom CUPS filter for ESC/P-Raster with QuadToneRIP
+*cupsFilter: "application/vnd.cups-raster 0 /tmp/escpr_driver/rastertop9550"
+
+*% Paper sizes
+*OpenUI *PageSize: PickOne
+*OrderDependency: 10 AnySetup *PageSize
+*DefaultPageSize: A4
+*PageSize Letter/Letter: "<</PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageSize A4/A4: "<</PageSize[595 842]/ImagingBBox null>>setpagedevice"
+*PageSize A3/A3: "<</PageSize[842 1191]/ImagingBBox null>>setpagedevice"
+*PageSize A3+/A3+: "<</PageSize[932 1369]/ImagingBBox null>>setpagedevice"
+*PageSize B/B (11x17): "<</PageSize[792 1224]/ImagingBBox null>>setpagedevice"
+*PageSize SuperB/Super B (13x19): "<</PageSize[936 1368]/ImagingBBox null>>setpagedevice"
+*PageSize 4x6/4x6 in: "<</PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageSize 5x7/5x7 in: "<</PageSize[360 504]/ImagingBBox null>>setpagedevice"
+*PageSize 8x10/8x10 in: "<</PageSize[576 720]/ImagingBBox null>>setpagedevice"
+*CloseUI: *PageSize
+
+*OpenUI *PageRegion: PickOne
+*OrderDependency: 10 AnySetup *PageRegion
+*DefaultPageRegion: A4
+*PageRegion Letter/Letter: "<</PageSize[612 792]/ImagingBBox null>>setpagedevice"
+*PageRegion A4/A4: "<</PageSize[595 842]/ImagingBBox null>>setpagedevice"
+*PageRegion A3/A3: "<</PageSize[842 1191]/ImagingBBox null>>setpagedevice"
+*PageRegion A3+/A3+: "<</PageSize[932 1369]/ImagingBBox null>>setpagedevice"
+*PageRegion B/B (11x17): "<</PageSize[792 1224]/ImagingBBox null>>setpagedevice"
+*PageRegion SuperB/Super B (13x19): "<</PageSize[936 1368]/ImagingBBox null>>setpagedevice"
+*PageRegion 4x6/4x6 in: "<</PageSize[288 432]/ImagingBBox null>>setpagedevice"
+*PageRegion 5x7/5x7 in: "<</PageSize[360 504]/ImagingBBox null>>setpagedevice"
+*PageRegion 8x10/8x10 in: "<</PageSize[576 720]/ImagingBBox null>>setpagedevice"
+*CloseUI: *PageRegion
+
+*DefaultImageableArea: A4
+*ImageableArea Letter/Letter: "18 18 594 774"
+*ImageableArea A4/A4: "18 18 577 824"
+*ImageableArea A3/A3: "18 18 824 1173"
+*ImageableArea A3+/A3+: "18 18 914 1351"
+*ImageableArea B/B (11x17): "18 18 774 1206"
+*ImageableArea SuperB/Super B (13x19): "18 18 918 1350"
+*ImageableArea 4x6/4x6 in: "18 18 270 414"
+*ImageableArea 5x7/5x7 in: "18 18 342 486"
+*ImageableArea 8x10/8x10 in: "18 18 558 702"
+
+*DefaultPaperDimension: A4
+*PaperDimension Letter/Letter: "612 792"
+*PaperDimension A4/A4: "595 842"
+*PaperDimension A3/A3: "842 1191"
+*PaperDimension A3+/A3+: "932 1369"
+*PaperDimension B/B (11x17): "792 1224"
+*PaperDimension SuperB/Super B (13x19): "936 1368"
+*PaperDimension 4x6/4x6 in: "288 432"
+*PaperDimension 5x7/5x7 in: "360 504"
+*PaperDimension 8x10/8x10 in: "576 720"
+
+*% Resolution
+*OpenUI *Resolution/Resolution: PickOne
+*OrderDependency: 15 AnySetup *Resolution
+*DefaultResolution: 720dpi
+*Resolution 360dpi/360 DPI: "<</HWResolution[360 360]>>setpagedevice"
+*Resolution 720dpi/720 DPI: "<</HWResolution[720 720]>>setpagedevice"
+*Resolution 1440dpi/1440 DPI: "<</HWResolution[1440 1440]>>setpagedevice"
+*Resolution 2880dpi/2880 DPI: "<</HWResolution[2880 2880]>>setpagedevice"
+*CloseUI: *Resolution
+
+*% Media Type
+*OpenUI *MediaType/Media Type: PickOne
+*OrderDependency: 16 AnySetup *MediaType
+*DefaultMediaType: PlainPaper
+*MediaType PlainPaper/Plain Paper: ""
+*MediaType PhotoPaper/Photo Paper: ""
+*MediaType MattePaper/Matte Paper: ""
+*MediaType Glossy/Glossy Photo Paper: ""
+*MediaType FineArt/Fine Art Paper: ""
+*MediaType Canvas/Canvas: ""
+*MediaType Baryta/Baryta Paper: ""
+*CloseUI: *MediaType
+
+*% QuadToneRIP Curve Selection
+*OpenUI *ripCurve1/QuadTone RIP Curve 1: PickOne
+*OrderDependency: 20 AnySetup *ripCurve1
+*DefaultripCurve1: P9550-PtPd-xf1-3ink
+*ripCurve1 -/None (Linear): ""
+*ripCurve1 P9550-PtPd-xf1-3ink/P9550 PtPd xf1 3ink: ""
+*CloseUI: *ripCurve1
+
+*% Color model
+*OpenUI *ColorModel/Color Mode: PickOne
+*OrderDependency: 10 AnySetup *ColorModel
+*DefaultColorModel: Gray
+*ColorModel Gray/Grayscale: "<</cupsColorSpace 18/cupsColorOrder 0/cupsBitsPerColor 8>>setpagedevice"
+*CloseUI: *ColorModel
+
+*% Duplex
+*OpenUI *Duplex/Duplex: PickOne
+*OrderDependency: 10 AnySetup *Duplex
+*DefaultDuplex: None
+*Duplex None/Off: "<</Duplex false>>setpagedevice"
+*CloseUI: *Duplex
+
+*% Input slot
+*OpenUI *InputSlot/Paper Source: PickOne
+*OrderDependency: 10 AnySetup *InputSlot
+*DefaultInputSlot: AutoSelect
+*InputSlot AutoSelect/Auto Select: ""
+*InputSlot Roll/Roll Paper: ""
+*InputSlot Sheet/Sheet: ""
+*CloseUI: *InputSlot
+
+*% Default fonts
+*DefaultFont: Courier
+*Font AvantGarde-Book: Standard "(1.05)" Standard ROM
+*Font AvantGarde-BookOblique: Standard "(1.05)" Standard ROM
+*Font AvantGarde-Demi: Standard "(1.05)" Standard ROM
+*Font AvantGarde-DemiOblique: Standard "(1.05)" Standard ROM
+*Font Bookman-Demi: Standard "(1.05)" Standard ROM
+*Font Bookman-DemiItalic: Standard "(1.05)" Standard ROM
+*Font Bookman-Light: Standard "(1.05)" Standard ROM
+*Font Bookman-LightItalic: Standard "(1.05)" Standard ROM
+*Font Courier: Standard "(1.05)" Standard ROM
+*Font Courier-Bold: Standard "(1.05)" Standard ROM
+*Font Courier-BoldOblique: Standard "(1.05)" Standard ROM
+*Font Courier-Oblique: Standard "(1.05)" Standard ROM
+*Font Helvetica: Standard "(1.05)" Standard ROM
+*Font Helvetica-Bold: Standard "(1.05)" Standard ROM
+*Font Helvetica-BoldOblique: Standard "(1.05)" Standard ROM
+*Font Helvetica-Oblique: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-Bold: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-BoldItalic: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-Italic: Standard "(1.05)" Standard ROM
+*Font NewCenturySchlbk-Roman: Standard "(1.05)" Standard ROM
+*Font Palatino-Bold: Standard "(1.05)" Standard ROM
+*Font Palatino-BoldItalic: Standard "(1.05)" Standard ROM
+*Font Palatino-Italic: Standard "(1.05)" Standard ROM
+*Font Palatino-Roman: Standard "(1.05)" Standard ROM
+*Font Symbol: Special "(001.005)" Special ROM
+*Font Times-Bold: Standard "(1.05)" Standard ROM
+*Font Times-BoldItalic: Standard "(1.05)" Standard ROM
+*Font Times-Italic: Standard "(1.05)" Standard ROM
+*Font Times-Roman: Standard "(1.05)" Standard ROM
+*Font ZapfChancery-MediumItalic: Standard "(1.05)" Standard ROM
+*Font ZapfDingbats: Special "(001.005)" Special ROM
+
+*% End of P9550_ESCPR_QTR.ppd

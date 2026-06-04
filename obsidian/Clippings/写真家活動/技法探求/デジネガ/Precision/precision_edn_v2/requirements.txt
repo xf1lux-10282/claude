@@ -1,0 +1,19 @@
+# Precision EDN v2 - Python依存関係
+# Python 3.8以上推奨
+
+# コア依存関係
+numpy>=1.20.0
+scipy>=1.7.0
+
+# Webアプリケーション
+streamlit>=1.28.0
+
+# データ処理
+pandas>=1.3.0
+
+# グラフ描画
+matplotlib>=3.4.0
+plotly>=5.14.0
+
+# 画像処理（オプション）
+Pillow>=9.0.0

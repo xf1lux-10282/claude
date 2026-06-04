@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約申込 - ap2lab Rental</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Antic+Didone&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="rental-style.css">
+    <style>
+        .booking-container {
+            max-width: 800px;
+            margin: 3rem auto;
+            background-color: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 2.5rem;
+        }
+
+        .booking-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .form-group label .required {
+            color: #ff6b6b;
+            margin-left: 0.25rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            padding: 0.75rem;
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: #fff;
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #fff;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .form-group select {
+            cursor: pointer;
+        }
+
+        .form-group input[type="date"] {
+            font-family: 'Noto Serif JP', serif;
+        }
+
+        .time-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .time-selector select {
+            flex: 1;
+            max-width: 80px;
+        }
+
+        .time-separator {
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            padding: 1rem;
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: #ccc;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.3s;
+        }
+
+        .checkbox-label:hover {
+            background-color: #222;
+        }
+
+        .checkbox-label input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 0.25rem;
+        }
+
+        .selected-date-display {
+            background-color: #1a4d1a;
+            border: 1px solid #2a6d2a;
+            border-radius: 4px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .selected-date-display h3 {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .selected-date-display p {
+            color: #ccc;
+            font-size: 0.95rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .btn-submit {
+            flex: 1;
+            padding: 1rem 2rem;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-submit:hover {
+            background-color: #ddd;
+        }
+
+        .btn-reset {
+            padding: 1rem 2rem;
+            background-color: transparent;
+            color: #fff;
+            border: 1px solid #fff;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-reset:hover {
+            background-color: #fff;
+            color: #000;
+        }
+
+        .info-box {
+            background-color: #1a1a2e;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .info-box h3 {
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-box ul {
+            color: #ccc;
+            line-height: 2;
+            list-style-position: inside;
+        }
+
+        .info-box p {
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-message {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .status-message.success {
+            background-color: #1a4d1a;
+            border: 1px solid #2a6d2a;
+            color: #fff;
+            display: block;
+        }
+
+        .status-message.error {
+            background-color: #4d1a1a;
+            border: 1px solid #6d2a2a;
+            color: #fff;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .booking-container {
+                padding: 1.5rem;
+                margin: 1.5rem 1rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .btn-submit,
+            .btn-reset {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-content">
+            <img src="images/logos/AP2lab-white.png" alt="ap2lab" class="site-logo">
+            <nav class="nav" id="nav">
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="about.html" class="nav-link">About</a></li>
+                    <li class="nav-item-dropdown">
+                        <a href="#" class="nav-link">Technique</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="technique-albumen.html" class="dropdown-link">Albumen Print</a></li>
+                            <li><a href="technique-cyanotype.html" class="dropdown-link">Cyanotype</a></li>
+                            <li><a href="technique-daguerreotype.html" class="dropdown-link">Daguerreotype</a></li>
+                            <li><a href="technique-digitalnegative.html" class="dropdown-link">Digital Negative</a></li>
+                            <li><a href="technique-dryplate.html" class="dropdown-link">Dry Plate</a></li>
+                            <li><a href="technique-gum.html" class="dropdown-link">Gum Print</a></li>
+                            <li><a href="technique-kallitype.html" class="dropdown-link">Kallitype</a></li>
+                            <li><a href="technique-platinum.html" class="dropdown-link">Platinum Print</a></li>
+                            <li><a href="technique-silver.html" class="dropdown-link">Silver Gelatin Print</a></li>
+                            <li><a href="technique-wetplate.html" class="dropdown-link">Wet Plate</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="rental.html" class="nav-link active">Rental</a></li>
+                    <li><a href="event.html" class="nav-link">Event</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                    <li><a href="access.html" class="nav-link">Access</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger" id="hamburger">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2 class="page-title">予約申込フォーム</h2>
+            <p class="hero-subtitle">機材レンタルの予約申込</p>
+        </section>
+
+        <!-- Booking Form Section -->
+        <section class="intro-section">
+            <div class="container">
+                <div class="booking-container">
+                    <!-- Selected Date Display -->
+                    <div class="selected-date-display" id="selected-date-display" style="display: none;">
+                        <h3>選択された日時</h3>
+                        <p id="selected-date-text"></p>
+                    </div>
+
+                    <form class="booking-form" id="booking-form">
+                        <!-- Rental Date -->
+                        <div class="form-group">
+                            <label for="rental-date">
+                                利用希望日<span class="required">*</span>
+                            </label>
+                            <input type="text" id="rental-date" name="rentalDate" required readonly style="background-color: #2a2a2a; cursor: not-allowed;">
+                            <p class="help-text">予約カレンダーから選択された日付が表示されます</p>
+                        </div>
+
+                        <!-- Start Time -->
+                        <div class="form-group">
+                            <label>
+                                開始時間<span class="required">*</span>
+                            </label>
+                            <div class="time-selector">
+                                <select id="start-hour" name="startHour" required>
+                                    <option value="">--</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                </select>
+                                <span class="time-separator">:</span>
+                                <select id="start-minute" name="startMinute" required>
+                                    <option value="">--</option>
+                                    <option value="00">00</option>
+                                    <option value="15">15</option>
+                                    <option value="30">30</option>
+                                    <option value="45">45</option>
+                                </select>
+                            </div>
+                            <p class="help-text">最低4時間からのご利用となります（18時以降は夜間料金）</p>
+                        </div>
+
+                        <!-- End Time -->
+                        <div class="form-group">
+                            <label>
+                                終了予定時間<span class="required">*</span>
+                            </label>
+                            <div class="time-selector">
+                                <select id="end-hour" name="endHour" required>
+                                    <option value="">--</option>
+                                    <option value="09">09</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                </select>
+                                <span class="time-separator">:</span>
+                                <select id="end-minute" name="endMinute" required>
+                                    <option value="">--</option>
+                                    <option value="00">00</option>
+                                    <option value="15">15</option>
+                                    <option value="30">30</option>
+                                    <option value="45">45</option>
+                                </select>
+                            </div>
+                            <p class="help-text">開始時間から4時間以上を選択してください</p>
+                        </div>
+
+                        <!-- Name -->
+                        <div class="form-group">
+                            <label for="customer-name">
+                                お名前<span class="required">*</span>
+                            </label>
+                            <input type="text" id="customer-name" name="customerName" required placeholder="山田太郎">
+                        </div>
+
+                        <!-- Email -->
+                        <div class="form-group">
+                            <label for="customer-email">
+                                メールアドレス<span class="required">*</span>
+                            </label>
+                            <input type="email" id="customer-email" name="customerEmail" required placeholder="example@email.com">
+                            <p class="help-text">予約確認メールを送信します</p>
+                        </div>
+
+                        <!-- Email Confirmation -->
+                        <div class="form-group">
+                            <label for="customer-email-confirm">
+                                メールアドレス（確認用）<span class="required">*</span>
+                            </label>
+                            <input type="email" id="customer-email-confirm" name="customerEmailConfirm" required placeholder="example@email.com">
+                            <p class="help-text">確認のため、もう一度メールアドレスを入力してください</p>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="form-group">
+                            <label for="customer-phone">
+                                電話番号<span class="required">*</span>
+                            </label>
+                            <input type="tel" id="customer-phone" name="customerPhone" required placeholder="090-1234-5678">
+                        </div>
+
+                        <!-- Usage Purpose -->
+                        <div class="form-group">
+                            <label for="usage-purpose">
+                                利用目的
+                            </label>
+                            <select id="usage-purpose" name="usagePurpose">
+                                <option value="">選択してください</option>
+                                <option value="artwork">作品制作</option>
+                                <option value="learning">技法習得・練習</option>
+                                <option value="workshop">ワークショップ</option>
+                                <option value="commercial">商業利用</option>
+                                <option value="other">その他</option>
+                            </select>
+                        </div>
+
+                        <!-- Technique Selection -->
+                        <div class="form-group">
+                            <label for="technique">
+                                使用技法
+                            </label>
+                            <select id="technique" name="technique">
+                                <option value="">選択してください</option>
+                                <option value="albumen">鶏卵紙（Albumen Print）</option>
+                                <option value="cyanotype">サイアノタイプ（Cyanotype）</option>
+                                <option value="daguerreotype">ダゲレオタイプ（Daguerreotype）</option>
+                                <option value="gum">ガムプリント（Gum Print）</option>
+                                <option value="kallitype">カリタイプ（Kallitype）</option>
+                                <option value="platinum">プラチナプリント（Platinum Print）</option>
+                                <option value="silver">ゼラチンシルバープリント（Silver Gelatin Print）</option>
+                                <option value="wetplate">湿板写真（Wet Plate Collodion）</option>
+                                <option value="dryplate">乾板（Dry Plate）</option>
+                                <option value="other">その他</option>
+                            </select>
+                            <p class="help-text">使用予定の技法を選択してください</p>
+                        </div>
+
+                        <!-- Optional Rental Items -->
+                        <div class="form-group">
+                            <label>
+                                オプション機材（任意）
+                            </label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="items" value="large-uv-exposure">
+                                    <span>大型紫外線露光機</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="items" value="materials">
+                                    <span>資材販売</span>
+                                </label>
+                                <label class="checkbox-label">
+                                    <input type="checkbox" name="items" value="digital-negative">
+                                    <span>デジタルネガ出力</span>
+                                </label>
+                            </div>
+                            <p class="help-text">※必要に応じてオプションを選択してください。オプションはご利用日に清算をお願いします。薬品によってはキャンセルできないものもあります。その場合は後日清算のご案内をお送りします。</p>
+                        </div>
+
+                        <!-- Message -->
+                        <div class="form-group">
+                            <label for="message">
+                                備考・質問など
+                            </label>
+                            <textarea id="message" name="message" placeholder="ご質問やご要望などございましたらご記入ください"></textarea>
+                        </div>
+
+                        <!-- Form Actions -->
+                        <div class="form-actions">
+                            <button type="submit" class="btn-submit">予約を申し込む</button>
+                            <button type="button" class="btn-reset" id="reset-btn">リセット</button>
+                        </div>
+                    </form>
+
+                    <!-- Status Message -->
+                    <div class="status-message" id="status-message"></div>
+
+                    <!-- Info Box -->
+                    <div class="info-box">
+                        <h3>予約の流れ</h3>
+                        <ul>
+                            <li>予約申込後、自動確認メールが送信されます</li>
+                            <li>3営業日以内に正式な予約可否をご連絡します</li>
+                            <li>予約確定後、お支払い方法をご案内します</li>
+                            <li>入金確認後、予約が確定します</li>
+                        </ul>
+                        <h3 style="margin-top: 1.5rem;">キャンセルポリシー</h3>
+                        <p>利用日の3日前まで：無料</p>
+                        <p>利用日の2日前〜前日：50%</p>
+                        <p>利用日当日：100%</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <span>&copy; 2026 ap2lab. All rights reserved.</span>
+            </div>
+            <div class="footer-links">
+                <a href="https://www.instagram.com/ap2_lab/?hl=ja" target="_blank">Instagram</a>
+                <a href="https://x.com/ap2_lab" target="_blank">X</a>
+                <a href="https://www.facebook.com/profile.php?id=61589184392449" target="_blank">Facebook</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Hamburger Menu -->
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+
+        hamburger.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const parent = link.parentElement;
+                if (parent.classList.contains('nav-item-dropdown')) {
+                    if (window.innerWidth <= 768) {
+                        e.preventDefault();
+                        parent.classList.toggle('active');
+                    }
+                } else {
+                    nav.classList.remove('active');
+                }
+            });
+        });
+
+        const dropdownLinks = document.querySelectorAll('.dropdown-link');
+        dropdownLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
+                nav.classList.remove('active');
+            }
+        });
+    </script>
+
+    <!-- Booking Form JavaScript -->
+    <script src="rental-booking.js"></script>
+</body>
+</html>

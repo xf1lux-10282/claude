@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gum Print - ap2lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Antic+Didone&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="technique-style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-content">
+            <img src="images/logos/AP2lab-white.png" alt="ap2lab" class="site-logo">
+            <nav class="nav" id="nav">
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="about.html" class="nav-link">About</a></li>
+                    <li class="nav-item-dropdown">
+                        <a href="technique.html" class="nav-link">Technique</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="technique-albumen.html" class="dropdown-link">Albumen Print</a></li>
+                            <li><a href="technique-cyanotype.html" class="dropdown-link">Cyanotype</a></li>
+                            <li><a href="technique-daguerreotype.html" class="dropdown-link">Daguerreotype</a></li>
+                            <li><a href="technique-digitalnegative.html" class="dropdown-link">Digital Negative</a></li>
+                            <li><a href="technique-dryplate.html" class="dropdown-link">Dry Plate</a></li>
+                            <li><a href="technique-gum.html" class="dropdown-link">Gum Print</a></li>
+                            <li><a href="technique-kallitype.html" class="dropdown-link">Kallitype</a></li>
+                            <li><a href="technique-platinum.html" class="dropdown-link">Platinum Print</a></li>
+                            <li><a href="technique-silver.html" class="dropdown-link">Silver Gelatin Print</a></li>
+                            <li><a href="technique-wetplate.html" class="dropdown-link">Wet Plate</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="rental.html" class="nav-link">Rental</a></li>
+                    <li><a href="event.html" class="nav-link">Event</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger" id="hamburger">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2 class="page-title">Gum Print</h2>
+        </section>
+
+        <!-- Content Section -->
+        <section class="content">
+            <div class="container">
+                <h3 class="section-title">ガムプリント</h3>
+
+                <div class="text-content">
+                    <p>コンテンツは準備中です。</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <span>&copy; 2026 ap2lab. All rights reserved.</span>
+            </div>
+            <div class="footer-links">
+                <a href="https://www.instagram.com/ap2_lab/?hl=ja" target="_blank">Instagram</a>
+                <a href="https://x.com/ap2_lab" target="_blank">X</a>
+                <a href="https://www.facebook.com/profile.php?id=61589184392449" target="_blank">Facebook</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Hamburger Menu -->
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+
+        hamburger.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const parent = link.parentElement;
+                if (parent.classList.contains('nav-item-dropdown')) {
+                    if (window.innerWidth <= 768) {
+                        e.preventDefault();
+                        parent.classList.toggle('active');
+                    }
+                } else {
+                    nav.classList.remove('active');
+                }
+            });
+        });
+
+        const dropdownLinks = document.querySelectorAll('.dropdown-link');
+        dropdownLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
+                nav.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

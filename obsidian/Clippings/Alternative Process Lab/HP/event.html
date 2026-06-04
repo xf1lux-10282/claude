@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event - ap2lab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Antic+Didone&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="event-style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-content">
+            <img src="images/logos/AP2lab-white.png" alt="ap2lab" class="site-logo">
+            <nav class="nav" id="nav">
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li class="nav-item-dropdown">
+                        <a href="about.html" class="nav-link">About</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="about.html#intro" class="dropdown-link">Intro</a></li>
+                            <li><a href="about.html#staff" class="dropdown-link">Staff</a></li>
+                            <li><a href="about.html#access" class="dropdown-link">Access</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item-dropdown">
+                        <a href="#" class="nav-link">Technique</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="technique-albumen.html" class="dropdown-link">Albumen Print</a></li>
+                            <li><a href="technique-cyanotype.html" class="dropdown-link">Cyanotype</a></li>
+                            <li><a href="technique-daguerreotype.html" class="dropdown-link">Daguerreotype</a></li>
+                            <li><a href="technique-digitalnegative.html" class="dropdown-link">Digital Negative</a></li>
+                            <li><a href="technique-dryplate.html" class="dropdown-link">Dry Plate</a></li>
+                            <li><a href="technique-gum.html" class="dropdown-link">Gum Print</a></li>
+                            <li><a href="technique-kallitype.html" class="dropdown-link">Kallitype</a></li>
+                            <li><a href="technique-platinum.html" class="dropdown-link">Platinum Print</a></li>
+                            <li><a href="technique-silver.html" class="dropdown-link">Silver Gelatin Print</a></li>
+                            <li><a href="technique-wetplate.html" class="dropdown-link">Wet Plate</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="rental.html" class="nav-link">Rental</a></li>
+                    <li><a href="event.html" class="nav-link">Event</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger" id="hamburger">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2 class="page-title">Event</h2>
+        </section>
+
+        <!-- Event Section with Filters -->
+        <section class="event-section">
+            <div class="container-wide">
+                <!-- Filter Section -->
+                <aside class="filter-sidebar">
+                    <div class="filter-group">
+                        <h3 class="filter-title">技法で選択</h3>
+                        <div class="filter-options">
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="platinum-print" class="technique-filter">
+                                <span>Platinum Print</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="cyanotype" class="technique-filter">
+                                <span>Cyanotype</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="digital-negative" class="technique-filter">
+                                <span>Digital Negative</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="albumen-print" class="technique-filter">
+                                <span>Albumen Print</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="wet-plate" class="technique-filter">
+                                <span>Wet Plate</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="gum-print" class="technique-filter">
+                                <span>Gum Print</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="kallitype" class="technique-filter">
+                                <span>Kallitype</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="alternative-process" class="technique-filter">
+                                <span>Alternative Process</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <h3 class="filter-title">Eventで選択</h3>
+                        <div class="filter-options">
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="workshop" class="event-type-filter">
+                                <span>Workshop</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="seminar" class="event-type-filter">
+                                <span>Seminar</span>
+                            </label>
+                            <label class="filter-checkbox">
+                                <input type="checkbox" value="other" class="event-type-filter">
+                                <span>Other</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="filter-group">
+                        <h3 class="filter-title">キーワード検索</h3>
+                        <input type="text" id="keyword-search" class="keyword-input" placeholder="キーワードを入力">
+                    </div>
+                </aside>
+
+                <!-- Event Grid -->
+                <div class="event-grid-container">
+                    <div class="event-count">
+                        <span id="event-count-text">全 2 件</span>
+                    </div>
+                    <div class="event-grid">
+
+                        <!-- Event Card: テストイベント - プラチナプリントワークショップ -->
+                        <div class="event-card" data-technique="platinum-print" data-type="workshop" data-date="2026-06-15">
+                            <div class="event-card-image">
+                                <img src="images/events/1779678641855_L1000935_DNG_DxO_DeepPRIMEXD.jpg" alt="テストイベント - プラチナプリントワークショップ">
+                                <span class="event-type-badge workshop">Workshop</span>
+                            </div>
+                            <div class="event-card-content">
+                                <h4 class="event-card-title">テストイベント - プラチナプリントワークショップ</h4>
+                                <p class="event-card-date">開催日：2026年6月15日（月） 14:00-16:00</p>
+                                <p class="event-card-capacity">募集人数：6名</p>
+                                <p class="event-card-status recruiting">募集中</p>
+                                <p class="event-card-description">
+                                    プラチナプリントの基礎から応用まで学べるワークショップです。初心者の方も大歓迎です。19世紀から続く古典技法を体験し、デジタル時代における手作業の価値を再発見しましょう。
+                                </p>
+                                <p class="event-card-link">
+                                    <a href="event-detail.html?id=event_1779678652673_nvbckqefe" class="btn-detail">詳細を見る</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Event Card: プラチナプリント　テスト -->
+                        <div class="event-card" data-technique="platinum-print" data-type="workshop" data-date="2026-06-21">
+                            <div class="event-card-image">
+                                <img src="workshop-placeholder.jpg" alt="プラチナプリント　テスト">
+                                <span class="event-type-badge workshop">Workshop</span>
+                            </div>
+                            <div class="event-card-content">
+                                <h4 class="event-card-title">プラチナプリント　テスト</h4>
+                                <p class="event-card-date">開催日：2026年6月21日（日） 12:00-13:10</p>
+                                <p class="event-card-capacity">募集人数：5名</p>
+                                <p class="event-card-status waiting">キャンセル待ち</p>
+                                <p class="event-card-description">
+                                    プラチナプリントの基礎から応用まで学べるワークショップです。初心者の方も大歓迎です。19世紀から続く古典技法を体験し、デジタル時代における手作業の価値を再発見しましょう。
+
+
+                                </p>
+                                <p class="event-card-link">
+                                    <a href="event-detail.html?id=event_1779715751339_jqrnvbbu6" class="btn-detail">詳細を見る</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- No Results Message -->
+                    <div class="no-results" id="no-results" style="display: none;">
+                        <p>該当するイベントが見つかりませんでした。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Notice Section -->
+        <section class="notice">
+            <div class="container">
+                <p class="notice-text">
+                    最新情報は公式SNSでもお知らせいたします。
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <span>&copy; 2026 ap2lab. All rights reserved.</span>
+            </div>
+            <div class="footer-links">
+                <a href="https://www.instagram.com/ap2_lab/?hl=ja" target="_blank">Instagram</a>
+                <a href="https://x.com/ap2_lab" target="_blank">X</a>
+                <a href="https://www.facebook.com/profile.php?id=61589184392449" target="_blank">Facebook</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Hamburger Menu
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+
+        hamburger.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const parent = link.parentElement;
+                if (parent.classList.contains('nav-item-dropdown')) {
+                    e.preventDefault();
+                    if (window.innerWidth <= 768) {
+                        parent.classList.toggle('active');
+                    }
+                } else {
+                    nav.classList.remove('active');
+                }
+            });
+        });
+
+        const dropdownLinks = document.querySelectorAll('.dropdown-link');
+        dropdownLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
+                nav.classList.remove('active');
+            }
+        });
+
+        // Event Filtering and Auto-hide
+        const techniqueFilters = document.querySelectorAll('.technique-filter');
+        const eventTypeFilters = document.querySelectorAll('.event-type-filter');
+        const keywordSearch = document.getElementById('keyword-search');
+        const eventCards = document.querySelectorAll('.event-card');
+        const eventCountText = document.getElementById('event-count-text');
+        const noResults = document.getElementById('no-results');
+
+        // Auto-hide events after event date + 1 day at 11:59
+        function shouldHideEvent(eventDate) {
+            if (!eventDate) return false;
+
+            const eventDateObj = new Date(eventDate);
+            // Set hide time to next day at 11:59
+            const hideDateTime = new Date(eventDateObj);
+            hideDateTime.setDate(hideDateTime.getDate() + 1);
+            hideDateTime.setHours(11, 59, 0, 0);
+
+            const now = new Date();
+            return now > hideDateTime;
+        }
+
+        // Initially hide past events
+        eventCards.forEach(card => {
+            const eventDate = card.dataset.date;
+            if (shouldHideEvent(eventDate)) {
+                card.remove(); // Permanently remove from DOM
+            }
+        });
+
+        function filterEvents() {
+            const selectedTechniques = Array.from(techniqueFilters)
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.value);
+
+            const selectedEventTypes = Array.from(eventTypeFilters)
+                .filter(checkbox => checkbox.checked)
+                .map(checkbox => checkbox.value);
+
+            const keyword = keywordSearch.value.toLowerCase().trim();
+
+            let visibleCount = 0;
+
+            eventCards.forEach(card => {
+                // Skip if card was removed (past event)
+                if (!card.parentElement) return;
+
+                const cardTechniques = card.dataset.technique.split(' ');
+                const cardType = card.dataset.type;
+                const cardTitle = card.querySelector('.event-card-title').textContent.toLowerCase();
+                const cardDescription = card.querySelector('.event-card-description').textContent.toLowerCase();
+
+                // Check technique filter
+                const techniqueMatch = selectedTechniques.length === 0 ||
+                    selectedTechniques.some(technique => cardTechniques.includes(technique));
+
+                // Check event type filter
+                const eventTypeMatch = selectedEventTypes.length === 0 ||
+                    selectedEventTypes.includes(cardType);
+
+                // Check keyword search
+                const keywordMatch = keyword === '' ||
+                    cardTitle.includes(keyword) ||
+                    cardDescription.includes(keyword);
+
+                if (techniqueMatch && eventTypeMatch && keywordMatch) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Update count and show/hide no results message
+            eventCountText.textContent = `全 ${visibleCount} 件`;
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+            }
+        }
+
+        // Add event listeners
+        techniqueFilters.forEach(filter => {
+            filter.addEventListener('change', filterEvents);
+        });
+
+        eventTypeFilters.forEach(filter => {
+            filter.addEventListener('change', filterEvents);
+        });
+
+        keywordSearch.addEventListener('input', filterEvents);
+    </script>
+</body>
+</html>

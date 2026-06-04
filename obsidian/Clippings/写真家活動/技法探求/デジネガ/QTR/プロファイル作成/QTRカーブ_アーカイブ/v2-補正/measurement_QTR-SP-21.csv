@@ -1,0 +1,41 @@
+# SP1v21 Measurement Data - CORRECTED EXPOSURE
+# Exposure: 7min (420 sec) - corrected from 8min15sec (-1/3 stop)
+# Negative: SP1v21 - measured in TRANSMISSION density
+# Print: Pt/Pd on COT320 - measured in REFLECTION density
+# Date: 2026-03-XX (to be filled)
+# Purpose: Determine optimal negative density curve based on proper print exposure
+#
+input,negative_density_transmission,print_density_reflection
+0,0.07,
+8,0.08,
+16,0.12,
+24,0.14,
+32,0.17,
+40,0.20,
+48,0.22,
+56,0.25,
+64,0.28,
+72,0.30,
+80,0.33,
+88,0.36,
+96,0.39,
+104,0.42,
+112,0.44,
+120,0.46,
+128,0.50,
+136,0.55,
+144,0.58,
+152,0.62,
+160,0.66,
+168,0.70,
+176,0.74,
+184,0.79,
+192,0.84,
+200,0.89,
+208,0.93,
+216,0.98,
+224,1.04,
+232,1.08,
+240,1.17,
+248,1.23,
+255,1.29,

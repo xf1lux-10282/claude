@@ -1,0 +1,72 @@
+#  QuadToneRIP curve descriptor file
+#
+#  PX1V-PtPd-Linear-v14
+#  Platinum/Palladium Print Optimized Curve
+#  Based on v12 with smoothed Input 48-104 (spline interpolation)
+#  Target: Remove all boundaries in 0.27-0.47 range
+#  BOOST_K=0 (NO ink boost)
+#  Ink Limits: 100% (fixed)
+#  Created: 2026-03-14
+
+N_OF_INKS=8
+DEFAULT_INK_LIMIT=100
+
+LIMIT_K=100
+BOOST_K=0
+LIMIT_C=0
+LIMIT_M=0
+LIMIT_Y=0
+LIMIT_LC=0
+LIMIT_LM=0
+LIMIT_LK=100
+LIMIT_LLK=100
+
+#
+#  Describe usage of each ink
+#  All inks must be listed
+#
+
+# Gray Partitioning Information
+
+N_OF_GRAY_PARTS=3
+GRAY_INK_1=K
+GRAY_VAL_1=100
+
+GRAY_INK_2=LK
+GRAY_VAL_2=55
+
+GRAY_INK_3=LLK
+GRAY_VAL_3=16
+
+GRAY_HIGHLIGHT=1
+GRAY_SHADOW=1
+
+GRAY_GAMMA=1
+GRAY_CURVE=
+
+# Toner Partition Information
+
+TONER_INK_1=M
+TONER_VAL_1=100
+TONER_INK_2=LM
+TONER_VAL_2=40
+
+TONER_HIGHLIGHT=1
+TONER_SHADOW=1
+TONER_GAMMA=1
+TONER_CURVE=
+
+TONER_2_INK_1=C
+TONER_2_VAL_1=100
+TONER_2_INK_2=LC
+TONER_2_VAL_2=40
+
+TONER_2_HIGHLIGHT=1
+TONER_2_SHADOW=1
+TONER_2_GAMMA=1
+
+# Smoothed Input 48-104 using cubic spline interpolation
+# Target density 1.22 at Input 255 maintained
+# Always use Ink Limits 100% in Print-Tool
+# No color inks, gray only
+#LINEARIZE=""

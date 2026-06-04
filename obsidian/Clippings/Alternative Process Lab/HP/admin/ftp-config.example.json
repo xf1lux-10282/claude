@@ -1,0 +1,7 @@
+{
+  "host": "your-ftp-server.com",
+  "user": "your-username",
+  "password": "your-password",
+  "secure": false,
+  "remotePath": "/public_html/"
+}

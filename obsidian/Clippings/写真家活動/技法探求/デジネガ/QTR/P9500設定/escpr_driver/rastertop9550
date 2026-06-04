@@ -1,0 +1,307 @@
+#!/Library/Frameworks/Python.framework/Versions/3.13/bin/python3
+"""
+rastertop9550 -- CUPS Raster to ESC/P-Raster Filter for P9500/P9550
+
+CUPS Filter for EPSON SC-P9500/P9550 with QuadToneRIP curve support
+
+Usage (called by CUPS):
+    rastertop9550 job-id user title copies options [file]
+"""
+
+import sys
+import os
+
+# Add driver directory to path
+DRIVER_DIR = "/Library/Printers/QTR/escpr_driver"
+sys.path.insert(0, DRIVER_DIR)
+
+from escpr_driver import ESCPRDriver
+from quad_parser import QuadCurveApplier
+from PIL import Image
+import numpy as np
+import subprocess
+import tempfile
+
+
+def log(message):
+    """Log to stderr (CUPS captures this)"""
+    print(f"INFO: {message}", file=sys.stderr)
+
+
+def parse_cups_options(options_str):
+    """Parse CUPS options string
+
+    Args:
+        options_str: Space-separated key=value pairs
+
+    Returns:
+        dict of options
+    """
+    options = {}
+    if not options_str:
+        return options
+
+    for option in options_str.split():
+        if '=' in option:
+            key, value = option.split('=', 1)
+            options[key] = value
+
+    return options
+
+
+def read_cups_raster_header(f):
+    """Read CUPS Raster page header
+
+    Returns:
+        dict with width, height, bitspercolor, colorspace, etc.
+    """
+    import struct
+
+    # CUPS Raster v2/v3 header is 1796 bytes
+    header_data = f.read(1796)
+    if len(header_data) < 1796:
+        return None
+
+    # Parse key fields (little-endian)
+    # Offsets from CUPS raster specification
+    width = struct.unpack('<I', header_data[372:376])[0]
+    height = struct.unpack('<I', header_data[376:380])[0]
+    bytes_per_line = struct.unpack('<I', header_data[380:384])[0]
+    bits_per_color = struct.unpack('<I', header_data[388:392])[0]
+    color_space = struct.unpack('<I', header_data[392:396])[0]
+
+    return {
+        'width': width,
+        'height': height,
+        'bits_per_color': bits_per_color,
+        'color_space': color_space,
+        'bytes_per_line': bytes_per_line
+    }
+
+
+def raster_to_image(raster_file):
+    """Convert CUPS Raster to PIL Image
+
+    Args:
+        raster_file: Path to CUPS raster file
+
+    Returns:
+        PIL Image in grayscale
+    """
+    try:
+        log(f"Converting CUPS raster file: {raster_file}")
+
+        with open(raster_file, 'rb') as f:
+            # Read CUPS raster header
+            header = read_cups_raster_header(f)
+
+            if not header:
+                log("WARNING: Failed to read CUPS raster header, trying PIL fallback")
+                raise Exception("Invalid CUPS raster format")
+
+            width = header['width']
+            height = header['height']
+            bytes_per_line = header['bytes_per_line']
+            color_space = header['color_space']
+
+            log(f"Raster header: {width}x{height}, bpl={bytes_per_line}, colorspace={color_space}")
+
+            # Read raster data
+            # Color space 18 = CUPS_CSPACE_W (white/grayscale)
+            # Color space 0 = CUPS_CSPACE_K (black)
+            # Color space 3 = CUPS_CSPACE_RGB
+            # Color space 1 = CUPS_CSPACE_CMYK
+
+            raster_data = []
+            for y in range(height):
+                line_data = f.read(bytes_per_line)
+                if len(line_data) < bytes_per_line:
+                    # Pad with white if incomplete
+                    line_data += b'\xff' * (bytes_per_line - len(line_data))
+                raster_data.append(line_data)
+
+            # Convert to numpy array based on colorspace
+            if color_space == 18:  # Grayscale (white)
+                img_array = np.frombuffer(b''.join(raster_data), dtype=np.uint8)
+                img_array = img_array[:height*width].reshape(height, width)
+
+            elif color_space == 0:  # Black (inverted grayscale)
+                img_array = np.frombuffer(b''.join(raster_data), dtype=np.uint8)
+                img_array = 255 - img_array  # Invert: 0=white, 255=black
+                img_array = img_array[:height*width].reshape(height, width)
+
+            elif color_space == 3:  # RGB
+                img_array = np.frombuffer(b''.join(raster_data), dtype=np.uint8)
+                total_pixels = height * width * 3
+                img_array = img_array[:total_pixels].reshape(height, width, 3)
+                # Convert RGB to grayscale using standard formula
+                img_array = (0.299 * img_array[:,:,0] +
+                            0.587 * img_array[:,:,1] +
+                            0.114 * img_array[:,:,2]).astype(np.uint8)
+
+            elif color_space == 1:  # CMYK
+                img_array = np.frombuffer(b''.join(raster_data), dtype=np.uint8)
+                total_pixels = height * width * 4
+                img_array = img_array[:total_pixels].reshape(height, width, 4)
+                # Convert CMYK to grayscale (use K channel)
+                img_array = img_array[:,:,3]  # K channel
+
+            else:
+                log(f"WARNING: Unsupported colorspace {color_space}, using raw data")
+                img_array = np.frombuffer(b''.join(raster_data), dtype=np.uint8)
+                img_array = img_array[:height*width].reshape(height, width)
+
+            # Create PIL image
+            img = Image.fromarray(img_array, mode='L')
+
+            log(f"Successfully converted raster: {width}x{height}")
+            return img
+
+    except Exception as e:
+        log(f"Error converting raster: {e}")
+        import traceback
+        traceback.print_exc(file=sys.stderr)
+
+        # Fallback: Try PIL direct read (works for TIFF and other formats)
+        try:
+            log("Attempting fallback: PIL direct read")
+            img = Image.open(raster_file)
+            img_gray = img.convert('L')
+            log(f"Fallback successful: {img_gray.size}")
+            return img_gray
+        except Exception as e2:
+            log(f"Fallback also failed: {e2}")
+            # Last resort: return empty image
+            log("ERROR: Using empty image fallback")
+            return Image.new('L', (100, 100), 255)
+
+
+def main():
+    """Main CUPS filter entry point"""
+
+    # CUPS filter arguments
+    if len(sys.argv) < 6:
+        log("ERROR: Not enough arguments")
+        log(f"Usage: {sys.argv[0]} job-id user title copies options [file]")
+        return 1
+
+    job_id = sys.argv[1]
+    user = sys.argv[2]
+    title = sys.argv[3]
+    copies = sys.argv[4]
+    options_str = sys.argv[5] if len(sys.argv) > 5 else ""
+    input_file = sys.argv[6] if len(sys.argv) > 6 else None
+
+    log(f"Job ID: {job_id}")
+    log(f"User: {user}")
+    log(f"Title: {title}")
+    log(f"Copies: {copies}")
+    log(f"Options: {options_str}")
+
+    # Parse options
+    options = parse_cups_options(options_str)
+
+    # Get QuadToneRIP curve from options
+    curve_name = options.get('ripCurve1', '-')
+    log(f"Curve: {curve_name}")
+
+    # Default curve path
+    if curve_name != '-':
+        curve_path = f"/Library/Printers/QTR/quadtone/QTR_P9550/{curve_name}.quad"
+    else:
+        # Use linear curve if not specified
+        curve_path = "/tmp/linear_curve_full.quad"
+
+    if not os.path.exists(curve_path):
+        log(f"WARNING: Curve file not found: {curve_path}")
+        log("Using linear curve")
+        curve_path = "/tmp/linear_curve_full.quad"
+
+    # Input source
+    if input_file:
+        log(f"Reading from file: {input_file}")
+        input_source = input_file
+    else:
+        log("Reading from stdin")
+        # Save stdin to temp file
+        with tempfile.NamedTemporaryFile(delete=False) as tmp:
+            tmp.write(sys.stdin.buffer.read())
+            input_source = tmp.name
+
+    try:
+        # Convert raster to image
+        log("Converting raster to image...")
+        img = raster_to_image(input_source)
+        img_array = np.array(img, dtype=np.uint8)
+
+        height, width = img_array.shape
+        log(f"Image size: {width}x{height} pixels")
+
+        # Apply QuadToneRIP curve
+        log(f"Loading curve: {curve_path}")
+        curve_applier = QuadCurveApplier(curve_path)
+        img_curved = curve_applier.apply(img_array, channel='K')
+
+        # Get paper size from options
+        page_width = float(options.get('PageWidth', '210'))
+        page_height = float(options.get('PageHeight', '297'))
+
+        # Get resolution from options
+        dpi_x = int(options.get('Resolution', '720'))
+        dpi_y = dpi_x
+
+        log(f"Paper: {page_width}x{page_height} mm")
+        log(f"Resolution: {dpi_x}x{dpi_y} DPI")
+
+        # Generate ESC/P-R binary to stdout
+        log("Generating ESC/P-R data...")
+
+        with ESCPRDriver(output_file=None) as driver:
+            # Write to stdout
+            driver.file = sys.stdout.buffer
+
+            # Initialize
+            driver.initialize()
+
+            # Start job
+            driver.start_job(
+                width_mm=page_width,
+                height_mm=page_height,
+                dpi_x=dpi_x,
+                dpi_y=dpi_y,
+                color_mode=1,
+                color_plane=1
+            )
+
+            # Start page
+            driver.start_page()
+
+            # Send image data
+            for i, line in enumerate(img_curved):
+                if i % 100 == 0:
+                    log(f"Line {i}/{height}")
+                driver.print_line(line.tobytes())
+
+            # End page and job
+            driver.end_page()
+            driver.end_job()
+
+        log("Done!")
+        return 0
+
+    except Exception as e:
+        log(f"ERROR: {e}")
+        import traceback
+        traceback.print_exc(file=sys.stderr)
+        return 1
+    finally:
+        # Cleanup temp file if created
+        if not input_file and input_source:
+            try:
+                os.unlink(input_source)
+            except:
+                pass
+
+
+if __name__ == '__main__':
+    sys.exit(main())

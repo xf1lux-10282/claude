@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>レンタル管理 - ap2lab Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Antic+Didone&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-style.css">
+    <style>
+        .calendar-section {
+            margin-bottom: 3rem;
+        }
+
+        .calendar-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .current-month {
+            font-size: 1.5rem;
+            color: #000;
+            min-width: 180px;
+            text-align: center;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+            background-color: #111;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            padding: 0.75rem;
+            font-weight: bold;
+            color: #aaa;
+            border-bottom: 1px solid #333;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #fff;
+            position: relative;
+        }
+
+        .calendar-day.other-month {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        .calendar-day.today {
+            border: 2px solid #fff;
+        }
+
+        .calendar-day:not(.other-month):hover {
+            background-color: #2a2a2a;
+            transform: scale(1.05);
+        }
+
+        .calendar-day.available {
+            background-color: #d4f4dd;
+        }
+
+        .calendar-day.pending {
+            background-color: #fff9db;
+        }
+
+        .calendar-day.booked {
+            background-color: #ffd4d4;
+        }
+
+        .calendar-day.closed {
+            background-color: #e8e8e8;
+        }
+
+        .calendar-day.past {
+            opacity: 0.4;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .calendar-day.past:hover {
+            transform: none;
+            background-color: #1a1a1a;
+        }
+
+        .calendar-day.no-status {
+            opacity: 1;
+            background-color: #fff;
+            border: 2px dashed #999;
+        }
+
+        .calendar-day.no-status:hover {
+            opacity: 1;
+            background-color: #f0f0f0;
+            border: 2px dashed #666;
+        }
+
+        .calendar-day.no-status .day-number {
+            color: #000;
+        }
+
+        /* Status dropdown menu */
+        .status-dropdown {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #fff;
+            border: 2px solid #000;
+            border-radius: 4px;
+            padding: 0.5rem;
+            min-width: 150px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            display: none;
+        }
+
+        .status-dropdown.show {
+            display: block;
+        }
+
+        .status-option {
+            padding: 0.5rem 0.75rem;
+            cursor: pointer;
+            color: #000;
+            font-size: 0.95rem;
+            border-radius: 2px;
+            transition: background-color 0.2s;
+        }
+
+        .status-option:hover {
+            background-color: #f0f0f0;
+        }
+
+        .status-option.selected {
+            background-color: #e0e0e0;
+            font-weight: bold;
+        }
+
+        .day-number {
+            font-size: 1.1rem;
+            color: #000;
+            margin-bottom: 0.25rem;
+        }
+
+        .day-status {
+            font-size: 1.3rem;
+            color: #000;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-symbol {
+            font-size: 1.3rem;
+            color: #333;
+        }
+
+        .legend-text {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .booking-list {
+            margin-top: 2rem;
+        }
+
+        .booking-card {
+            background-color: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s;
+        }
+
+        .booking-card:hover {
+            border-color: #555;
+        }
+
+        .booking-card.pending {
+            border-left: 4px solid #d4aa00;
+        }
+
+        .booking-card.available {
+            border-left: 4px solid #2a7d2a;
+        }
+
+        .booking-card.booked {
+            border-left: 4px solid #7d2a2a;
+        }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .booking-date {
+            font-size: 1.3rem;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .booking-status {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .booking-status.pending {
+            background-color: #d4aa00;
+            color: #000;
+        }
+
+        .booking-status.available {
+            background-color: #2a7d2a;
+            color: #fff;
+        }
+
+        .booking-status.booked {
+            background-color: #7d2a2a;
+            color: #fff;
+        }
+
+        .booking-status.closed {
+            background-color: #555;
+            color: #fff;
+        }
+
+        .booking-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .info-item {
+            color: #ccc;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 0.25rem;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            color: #fff;
+        }
+
+        .booking-items {
+            margin: 1rem 0;
+        }
+
+        .booking-items ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .booking-items li {
+            color: #ccc;
+            padding: 0.25rem 0;
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-approve {
+            background-color: #2a7d2a;
+            color: #fff;
+        }
+
+        .btn-approve:hover {
+            background-color: #1a6d1a;
+        }
+
+        .btn-cancel {
+            background-color: #7d2a2a;
+            color: #fff;
+        }
+
+        .btn-cancel:hover {
+            background-color: #6d1a1a;
+        }
+
+        .btn-delete {
+            background-color: #4d1a1a;
+            color: #fff;
+        }
+
+        .btn-delete:hover {
+            background-color: #3d1a1a;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 10px rgba(255, 255, 255, 0);
+            }
+        }
+
+        .filter-section {
+            background-color: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            .calendar-grid {
+                gap: 0.25rem;
+                padding: 1rem;
+            }
+
+            .calendar-day {
+                padding: 0.25rem;
+            }
+
+            .day-number {
+                font-size: 0.9rem;
+            }
+
+            .day-status {
+                font-size: 1.1rem;
+            }
+
+            .booking-header {
+                flex-direction: column;
+            }
+
+            .booking-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>レンタル管理システム</h1>
+            <p class="admin-subtitle">ap2lab Rental Manager</p>
+        </header>
+
+        <main class="admin-main">
+            <!-- Calendar Section -->
+            <section class="calendar-section">
+                <h2 class="section-title">カレンダー表示</h2>
+
+                <div class="calendar-controls">
+                    <div class="calendar-nav">
+                        <button class="btn btn-secondary" id="prev-month">← 前月</button>
+                        <h3 class="current-month" id="current-month">2026年5月</h3>
+                        <button class="btn btn-secondary" id="next-month">次月 →</button>
+                    </div>
+                    <button class="btn btn-secondary" id="save-calendar-btn">💾 カレンダーを保存</button>
+                </div>
+
+                <div class="calendar-grid" id="calendar-grid">
+                    <div class="calendar-day-header">日</div>
+                    <div class="calendar-day-header">月</div>
+                    <div class="calendar-day-header">火</div>
+                    <div class="calendar-day-header">水</div>
+                    <div class="calendar-day-header">木</div>
+                    <div class="calendar-day-header">金</div>
+                    <div class="calendar-day-header">土</div>
+                </div>
+
+                <div class="legend">
+                    <div class="legend-item">
+                        <span class="legend-symbol">○</span>
+                        <span class="legend-text">予約可能</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-symbol">△</span>
+                        <span class="legend-text">仮予約（キャンセル待ち）</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-symbol">×</span>
+                        <span class="legend-text">予約確定（予約不可）</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-symbol">-</span>
+                        <span class="legend-text">休業日</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Filter Section -->
+            <section class="filter-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                    <h3 style="color: #fff; margin: 0;">予約フィルター</h3>
+                    <button class="btn btn-primary btn-small" id="export-excel-btn">📊 Excelエクスポート</button>
+                </div>
+                <div class="filter-controls">
+                    <button class="btn btn-secondary btn-small" data-filter="all">すべて</button>
+                    <button class="btn btn-secondary btn-small" data-filter="pending">仮予約のみ</button>
+                    <button class="btn btn-secondary btn-small" data-filter="booked">予約確定のみ</button>
+                    <button class="btn btn-secondary btn-small" data-filter="available">予約可能のみ</button>
+                </div>
+            </section>
+
+            <!-- Booking List Section -->
+            <section class="booking-list-section">
+                <h2 class="section-title">予約一覧</h2>
+
+                <div class="booking-list" id="booking-list">
+                    <!-- Bookings will be dynamically loaded here -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="rental-manager.js"></script>
+</body>
+</html>

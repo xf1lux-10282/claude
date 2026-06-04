@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>予約カレンダー - ap2lab Rental</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Antic+Didone&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="rental-style.css">
+    <style>
+        .calendar-container {
+            max-width: 900px;
+            margin: 3rem auto;
+            background-color: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 2rem;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .nav-btn {
+            background-color: #fff;
+            color: #000;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .nav-btn:hover {
+            background-color: #ddd;
+        }
+
+        .current-month {
+            font-family: 'Antic Didone', serif;
+            font-size: 1.8rem;
+            color: #fff;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 0.5rem;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            padding: 1rem 0.5rem;
+            font-weight: bold;
+            color: #aaa;
+            border-bottom: 1px solid #333;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: #1a1a1a;
+            position: relative;
+        }
+
+        .calendar-day.other-month {
+            opacity: 0.3;
+            cursor: default;
+        }
+
+        .calendar-day.today {
+            border: 2px solid #fff;
+        }
+
+        .calendar-day.available {
+            background-color: #d4f4dd;
+        }
+
+        .calendar-day.available .day-number,
+        .calendar-day.available .day-status {
+            color: #000;
+        }
+
+        .calendar-day.pending {
+            background-color: #fff9db;
+        }
+
+        .calendar-day.pending .day-number,
+        .calendar-day.pending .day-status {
+            color: #000;
+        }
+
+        .calendar-day.booked {
+            background-color: #ffd4d4;
+        }
+
+        .calendar-day.booked .day-number,
+        .calendar-day.booked .day-status {
+            color: #000;
+        }
+
+        .calendar-day.closed {
+            background-color: #e8e8e8;
+        }
+
+        .calendar-day.closed .day-number,
+        .calendar-day.closed .day-status {
+            color: #000;
+        }
+
+        /* Hover effect for all future dates (not just available) */
+        .calendar-day:not(.past):hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+        }
+
+        .calendar-day.available:hover {
+            background-color: #c0e8cc;
+        }
+
+        .calendar-day.pending:hover {
+            background-color: #fff4b3;
+        }
+
+        .calendar-day.booked:hover {
+            background-color: #ffb3b3;
+        }
+
+        .calendar-day.closed:hover {
+            background-color: #d0d0d0;
+        }
+
+        .calendar-day.past {
+            opacity: 0.5;
+            cursor: default;
+        }
+
+        .calendar-day.past:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .day-number {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+
+        .day-status {
+            font-size: 1.5rem;
+        }
+
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-symbol {
+            font-size: 1.125rem;
+            color: #fff;
+        }
+
+        .legend-text {
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        .booking-cta {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+        }
+
+        .booking-cta p {
+            color: #aaa;
+            margin-bottom: 1rem;
+        }
+
+        .selected-date-info {
+            background-color: #1a1a1a;
+            border: 1px solid #fff;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            display: none;
+        }
+
+        .selected-date-info.show {
+            display: block;
+        }
+
+        .selected-date-info h3 {
+            color: #fff;
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+
+        .selected-date-info p {
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .calendar-container {
+                padding: 1rem;
+            }
+
+            .calendar-header {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .current-month {
+                font-size: 1.5rem;
+            }
+
+            .calendar-grid {
+                gap: 0.25rem;
+            }
+
+            .calendar-day {
+                padding: 0.25rem;
+            }
+
+            .day-number {
+                font-size: 1rem;
+            }
+
+            .day-status {
+                font-size: 1.2rem;
+            }
+
+            .legend {
+                gap: 1rem;
+            }
+
+            .legend-text {
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="header-content">
+            <img src="images/logos/AP2lab-white.png" alt="ap2lab" class="site-logo">
+            <nav class="nav" id="nav">
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Home</a></li>
+                    <li><a href="about.html" class="nav-link">About</a></li>
+                    <li class="nav-item-dropdown">
+                        <a href="#" class="nav-link">Technique</a>
+                        <ul class="dropdown-menu">
+                            <li><a href="technique-albumen.html" class="dropdown-link">Albumen Print</a></li>
+                            <li><a href="technique-cyanotype.html" class="dropdown-link">Cyanotype</a></li>
+                            <li><a href="technique-daguerreotype.html" class="dropdown-link">Daguerreotype</a></li>
+                            <li><a href="technique-digitalnegative.html" class="dropdown-link">Digital Negative</a></li>
+                            <li><a href="technique-dryplate.html" class="dropdown-link">Dry Plate</a></li>
+                            <li><a href="technique-gum.html" class="dropdown-link">Gum Print</a></li>
+                            <li><a href="technique-kallitype.html" class="dropdown-link">Kallitype</a></li>
+                            <li><a href="technique-platinum.html" class="dropdown-link">Platinum Print</a></li>
+                            <li><a href="technique-silver.html" class="dropdown-link">Silver Gelatin Print</a></li>
+                            <li><a href="technique-wetplate.html" class="dropdown-link">Wet Plate</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="rental.html" class="nav-link active">Rental</a></li>
+                    <li><a href="event.html" class="nav-link">Event</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                    <li><a href="access.html" class="nav-link">Access</a></li>
+                </ul>
+            </nav>
+            <div class="hamburger" id="hamburger">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h2 class="page-title">Reservation Calendar</h2>
+        </section>
+
+        <!-- Calendar Section -->
+        <section class="intro-section">
+            <div class="container">
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button class="nav-btn" id="prev-month">← 前月</button>
+                        <h3 class="current-month" id="current-month">2026年5月</h3>
+                        <button class="nav-btn" id="next-month">次月 →</button>
+                    </div>
+
+                    <div class="calendar-grid" id="calendar-grid">
+                        <div class="calendar-day-header">日</div>
+                        <div class="calendar-day-header">月</div>
+                        <div class="calendar-day-header">火</div>
+                        <div class="calendar-day-header">水</div>
+                        <div class="calendar-day-header">木</div>
+                        <div class="calendar-day-header">金</div>
+                        <div class="calendar-day-header">土</div>
+                        <!-- Calendar days will be generated by JavaScript -->
+                    </div>
+
+                    <div class="legend">
+                        <div class="legend-item">
+                            <span class="legend-symbol">○</span>
+                            <span class="legend-text">予約可能</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-symbol">△</span>
+                            <span class="legend-text">仮予約（キャンセル待ち）</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-symbol">×</span>
+                            <span class="legend-text">予約不可</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="legend-symbol">―</span>
+                            <span class="legend-text">休業日</span>
+                        </div>
+                    </div>
+
+                    <div class="selected-date-info" id="selected-date-info">
+                        <h3 id="selected-date-title"></h3>
+                        <p id="selected-date-message"></p>
+                        <div class="booking-cta">
+                            <a href="rental-booking.html" class="btn btn-primary" id="booking-btn">この日を予約する</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="booking-cta">
+                    <p>予約可能な日（○）をクリックすると、予約申込フォームへ進めます</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <span>&copy; 2026 ap2lab. All rights reserved.</span>
+            </div>
+            <div class="footer-links">
+                <a href="https://www.instagram.com/ap2_lab/?hl=ja" target="_blank">Instagram</a>
+                <a href="https://x.com/ap2_lab" target="_blank">X</a>
+                <a href="https://www.facebook.com/profile.php?id=61589184392449" target="_blank">Facebook</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Hamburger Menu -->
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav');
+
+        hamburger.addEventListener('click', () => {
+            nav.classList.toggle('active');
+        });
+
+        const navLinks = document.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const parent = link.parentElement;
+                if (parent.classList.contains('nav-item-dropdown')) {
+                    if (window.innerWidth <= 768) {
+                        e.preventDefault();
+                        parent.classList.toggle('active');
+                    }
+                } else {
+                    nav.classList.remove('active');
+                }
+            });
+        });
+
+        const dropdownLinks = document.querySelectorAll('.dropdown-link');
+        dropdownLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!nav.contains(e.target) && !hamburger.contains(e.target)) {
+                nav.classList.remove('active');
+            }
+        });
+    </script>
+
+    <!-- Calendar JavaScript -->
+    <script src="rental-calendar.js"></script>
+</body>
+</html>

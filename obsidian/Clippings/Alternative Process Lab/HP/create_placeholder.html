@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<body>
+<canvas id="canvas" width="300" height="400"></canvas>
+<script>
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+ctx.fillStyle = '#e0e0e0';
+ctx.fillRect(0, 0, 300, 400);
+ctx.fillStyle = '#999';
+ctx.font = '20px Arial';
+ctx.textAlign = 'center';
+ctx.fillText('Profile Photo', 150, 200);
+const dataURL = canvas.toDataURL('image/jpeg');
+console.log(dataURL);
+</script>
+</body>
+</html>

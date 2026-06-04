@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Precision EDN - Densitometer Edition</title>
+
+  <!-- External Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.1/chartjs-plugin-zoom.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- ヘッダー -->
+  <header class="header">
+    <h1>📊 Precision EDN <span class="version">Densitometer Edition v1.0</span></h1>
+    <div class="header-controls">
+      <button id="darkModeToggle">🌙 ダークモード</button>
+    </div>
+  </header>
+
+  <!-- ステータスメッセージ -->
+  <div id="status" class="status"></div>
+
+  <!-- データ入力セクション -->
+  <div class="card">
+    <h2>📝 濃度データ入力</h2>
+
+    <div class="settings-row">
+      <div class="setting-group">
+        <label for="dataInput">測定データを入力してください</label>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
+          <strong>推奨:</strong> 濃度値を1行に1つずつ入力（ステップ番号は自動割り当て）<br>
+          その他の形式: "step 番号 濃度値" または "番号,濃度値"
+        </p>
+        <textarea
+          id="dataInput"
+          rows="15"
+          placeholder="0.05&#10;0.10&#10;0.17&#10;0.25&#10;0.33&#10;0.42&#10;0.51&#10;...&#10;&#10;または詳細形式:&#10;step 1  0.05&#10;step 2  0.10&#10;...&#10;&#10;CSV形式:&#10;1,0.05&#10;2,0.10&#10;..."
+          style="width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 4px; background-color: var(--bg-secondary); color: var(--text-primary); font-family: monospace; font-size: 13px;"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="settings-row" style="margin-top: 15px;">
+      <div class="setting-group">
+        <label>またはファイルを読み込み</label>
+        <input type="file" id="fileInput" accept=".csv,.txt" style="margin-top: 5px;">
+      </div>
+    </div>
+
+    <div class="settings-row" style="margin-top: 15px;">
+      <div class="setting-group">
+        <label for="chartType">チャートタイプ</label>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">
+          <strong>EDN RGB256の場合:</strong> 各行が右→左の配置なので「右→左（EDN RGB256）」を選択
+        </p>
+        <select id="chartType" style="width: 100%; padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; background-color: var(--bg-secondary); color: var(--text-primary);">
+          <option value="sequential">連番順（デフォルト）</option>
+          <option value="edn-rgb256">右→左（EDN RGB256）</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="margin-top: 20px;">
+      <button id="analyzeBtn" class="button">📈 特性曲線を生成</button>
+      <button id="clearBtn" class="button secondary" style="margin-left: 10px;">🗑️ クリア</button>
+    </div>
+  </div>
+
+  <!-- サンプルデータボタン -->
+  <div class="card">
+    <h3>📋 サンプルデータを試す</h3>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+      <button id="sampleIdeal" class="button secondary">理想的な直線</button>
+      <button id="sampleWeak" class="button secondary">弱いS字カーブ</button>
+      <button id="sampleStrong" class="button secondary">強いS字カーブ</button>
+    </div>
+  </div>
+
+  <!-- 特性曲線グラフ -->
+  <div id="chartSection" class="card hidden">
+    <h2>📊 プリント特性曲線</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 15px;">
+      横軸: 入力階調（Step）/ 縦軸: プリント濃度（Density）
+    </p>
+
+    <div class="chart-container active">
+      <div class="chart-wrapper">
+        <canvas id="characteristicChart"></canvas>
+      </div>
+    </div>
+
+    <div style="margin-top: 15px; padding: 10px; background-color: var(--bg-secondary); border-radius: 4px;">
+      <p style="font-size: 13px; color: var(--text-secondary);">
+        <strong>操作方法:</strong><br>
+        • <strong>マウスホイール</strong>: 拡大/縮小<br>
+        • <strong>ドラッグ</strong>: パン移動<br>
+        • <strong>ダブルクリック</strong>: ズームをリセット
+      </p>
+    </div>
+  </div>
+
+  <!-- 分析結果 -->
+  <div id="analysisSection" class="card hidden">
+    <h2>📐 分析結果</h2>
+
+    <div class="analysis-grid">
+      <div class="metric">
+        <div class="metric-label">測定ポイント数</div>
+        <div class="metric-value" id="pointCount">-</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">最大濃度 (Dmax)</div>
+        <div class="metric-value" id="dmaxValue">-</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">線形性スコア</div>
+        <div class="metric-value" id="linearityScore">-</div>
+      </div>
+      <div class="metric">
+        <div class="metric-label">補正必要性</div>
+        <div class="metric-value" id="correctionNeed">-</div>
+      </div>
+    </div>
+
+    <div id="recommendations"></div>
+  </div>
+
+  <!-- 補正カーブグラフ -->
+  <div id="correctionSection" class="card hidden">
+    <h2>🔧 逆補正カーブ</h2>
+    <p style="color: var(--text-secondary); margin-bottom: 15px;">
+      プリントを線形化するための補正カーブ
+    </p>
+
+    <div class="chart-container active">
+      <div class="chart-wrapper">
+        <canvas id="correctionChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ダウンロードセクション -->
+  <div id="downloadSection" class="card hidden">
+    <h2>💾 ファイル出力</h2>
+
+    <div class="download-buttons">
+      <button id="downloadCube256" class="button primary">📦 .cube LUT をダウンロード (256点)</button>
+      <button id="downloadCube1024" class="button">📦 .cube LUT (1024点・高精度)</button>
+      <button id="downloadCSV" class="button secondary">📊 CSV データ</button>
+      <button id="downloadNote" class="button secondary">📝 測定メモ</button>
+    </div>
+  </div>
+
+  <!-- フッター -->
+  <footer style="text-align: center; padding: 20px; color: var(--text-muted); font-size: 12px;">
+    <p>Precision EDN - Densitometer Edition v1.0</p>
+    <p>16bit デジタルネガティブ補正ツール（濃度計測定版）</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/export.js"></script>
+  <script src="js/densitometer.js"></script>
+</body>
+</html>

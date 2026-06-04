@@ -1,0 +1,77 @@
+# Precision EDN v2 - Git除外設定
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 仮想環境
+venv/
+env/
+ENV/
+test_env/
+
+# 出力ファイル（生成物）
+output/graphs/*.pdf
+output/luts/*.cube
+output/reports/*.txt
+output/reports/*.json
+
+# データファイル（サンプル以外）
+data/*.csv
+!data/measurement_template.csv
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+
+# ログ・一時ファイル
+*.log
+*.tmp
+*.bak
+current_packages.txt
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Streamlit
+.streamlit/secrets.toml
+
+# テスト
+.pytest_cache/
+.coverage
+htmlcov/
+
+# 個人設定
+config_local.py

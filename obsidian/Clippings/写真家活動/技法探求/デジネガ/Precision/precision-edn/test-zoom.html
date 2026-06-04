@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>グラフ操作テスト</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .instructions {
+      background: #e3f2fd;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      border-left: 4px solid #2196F3;
+    }
+    #chartContainer {
+      position: relative;
+      height: 600px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow: auto;
+    }
+    canvas {
+      cursor: grab;
+    }
+    canvas:active {
+      cursor: grabbing;
+    }
+  </style>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.6/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-plugin-zoom/2.0.1/chartjs-plugin-zoom.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h1>📊 グラフ操作テスト</h1>
+
+    <div class="instructions">
+      <strong>操作方法:</strong><br>
+      • <strong>マウスホイール</strong>: 拡大/縮小<br>
+      • <strong>ドラッグ</strong>: パン移動（グラフを掴んで移動）<br>
+      • <strong>ダブルクリック</strong>: ズームをリセット
+    </div>
+
+    <div id="chartContainer">
+      <canvas id="testChart"></canvas>
+    </div>
+  </div>
+
+  <script>
+    // Chart.js Zoom プラグインを登録
+    if (typeof Chart !== 'undefined') {
+      // chartjs-plugin-zoomの登録を試みる
+      let zoomPlugin = null;
+      if (typeof window.zoomPlugin !== 'undefined') {
+        zoomPlugin = window.zoomPlugin;
+      } else if (typeof window.ChartZoom !== 'undefined') {
+        zoomPlugin = window.ChartZoom;
+      } else if (typeof ChartJSZoom !== 'undefined') {
+        zoomPlugin = ChartJSZoom;
+      } else if (typeof Chart.Zoom !== 'undefined') {
+        zoomPlugin = Chart.Zoom;
+      }
+
+      if (zoomPlugin) {
+        Chart.register(zoomPlugin);
+        console.log('Chart.js Zoom plugin registered');
+      }
+    }
+
+    // テストデータ生成
+    const generateTestData = () => {
+      const data = [];
+      for (let i = 0; i <= 255; i++) {
+        data.push({
+          x: i,
+          y: i + Math.sin(i / 10) * 20  // 少し波打つ線
+        });
+      }
+      return data;
+    };
+
+    const idealData = [];
+    for (let i = 0; i <= 255; i++) {
+      idealData.push({ x: i, y: i });
+    }
+
+    // Chart.js設定
+    const ctx = document.getElementById('testChart');
+    const chart = new Chart(ctx, {
+      type: 'line',
+      data: {
+        datasets: [
+          {
+            label: '理想線（y=x）',
+            data: idealData,
+            borderColor: 'rgba(0, 0, 0, 0.7)',
+            backgroundColor: 'transparent',
+            borderWidth: 1.5,
+            pointRadius: 0
+          },
+          {
+            label: 'テストデータ',
+            data: generateTestData(),
+            borderColor: 'rgba(255, 99, 132, 0.8)',
+            backgroundColor: 'transparent',
+            borderWidth: 2,
+            pointRadius: 0
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+          x: {
+            type: 'linear',
+            title: {
+              display: true,
+              text: '入力（0-255）'
+            },
+            min: 0,
+            max: 255
+          },
+          y: {
+            type: 'linear',
+            title: {
+              display: true,
+              text: '出力（0-255）'
+            },
+            min: 0,
+            max: 255
+          }
+        },
+        plugins: {
+          zoom: {
+            limits: {
+              x: {min: 0, max: 255, minRange: 10},
+              y: {min: 0, max: 255, minRange: 10}
+            },
+            zoom: {
+              wheel: {
+                enabled: true,
+                speed: 0.1
+              },
+              pinch: {
+                enabled: true
+              },
+              drag: {
+                enabled: false
+              },
+              mode: 'xy'
+            },
+            pan: {
+              enabled: true,
+              mode: 'xy'
+            }
+          },
+          legend: {
+            display: true,
+            position: 'top'
+          }
+        },
+        onClick: (event, elements, chart) => {
+          // ダブルクリック検出
+          const now = Date.now();
+          const lastClick = chart._lastClickTime || 0;
+
+          if (now - lastClick < 300) {
+            // ダブルクリック: ズームをリセット
+            chart.resetZoom();
+            console.log('ズームをリセットしました');
+          }
+
+          chart._lastClickTime = now;
+        }
+      }
+    });
+
+    console.log('テストグラフを表示しました');
+    console.log('マウスホイールで拡大/縮小');
+    console.log('ドラッグでパン移動');
+    console.log('ダブルクリックでリセット');
+  </script>
+</body>
+</html>

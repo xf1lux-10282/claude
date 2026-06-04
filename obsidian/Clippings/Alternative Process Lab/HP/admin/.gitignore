@@ -1,0 +1,5 @@
+node_modules/
+ftp-config.json
+events-data.json
+*.log
+.DS_Store

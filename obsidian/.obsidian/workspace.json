@@ -1,0 +1,277 @@
+{
+  "main": {
+    "id": "0814c47c8ab82aa9",
+    "type": "split",
+    "children": [
+      {
+        "id": "1d9dcccc19ffc91f",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c80b11490d39dd97",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Clippings/写真家活動/作家活動/xf1lux情報/思考整理/写真の本質論：時間・不可視性・物質性に関する思考.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "写真の本質論：時間・不可視性・物質性に関する思考"
+            }
+          },
+          {
+            "id": "d358e19ab9294e3a",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Clippings/写真家活動/キュレーター/菊田樹子/菊田 樹子（インディペンデント・キュレーター）  クラシオ -塩釜で暮らすあなたに 良い暮らしを-.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "菊田 樹子（インディペンデント・キュレーター）  クラシオ -塩釜で暮らすあなたに 良い暮らしを-"
+            }
+          },
+          {
+            "id": "8de6393577422f3b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Clippings/写真家活動/作家活動/xf1lux情報/思考整理/木下大輔_写真理論統合まとめ.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "木下大輔_写真理論統合まとめ"
+            }
+          },
+          {
+            "id": "a0fe75bda1ddee62",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Clippings/写真家活動/作家活動/シリーズ制作/月雪花/月雪花シリーズ全体/月雪花シリーズアーティストステートメント.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "月雪花シリーズアーティストステートメント"
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "0a11439ea732a86a",
+    "type": "split",
+    "children": [
+      {
+        "id": "05b95ee2395776fb",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "10e9225706a02b67",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "ファイルエクスプローラ"
+            }
+          },
+          {
+            "id": "af941b25d0eb96ba",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "検索"
+            }
+          },
+          {
+            "id": "1e14afb5879b59f8",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "ブックマーク"
+            }
+          },
+          {
+            "id": "143091cb99933e33",
+            "type": "leaf",
+            "state": {
+              "type": "recent-files",
+              "state": {},
+              "icon": "lucide-ghost",
+              "title": "recent-files"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 778.5
+  },
+  "right": {
+    "id": "82a627c4966aed84",
+    "type": "split",
+    "children": [
+      {
+        "id": "3763fbc70c937681",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c94a22959450b2b0",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "バックリンク"
+            }
+          },
+          {
+            "id": "afaae351cb42da84",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "アウトゴーイングリンク"
+            }
+          },
+          {
+            "id": "31e7485e51ce80dc",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "タグ"
+            }
+          },
+          {
+            "id": "d6903f382f479022",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "アウトライン"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:クイックスイッチャーを開く": false,
+      "graph:グラフビューを開く": false,
+      "canvas:新規キャンバスを作成": false,
+      "daily-notes:今日のデイリーノートを開く": false,
+      "templates:テンプレートを挿入": false,
+      "command-palette:コマンドパレットを開く": false,
+      "bases:Create new base": false,
+      "remotely-save:Remotely Save": false,
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "omnisearch:Omnisearch": false,
+      "templater-obsidian:Templater": false
+    }
+  },
+  "active": "a0fe75bda1ddee62",
+  "lastOpenFiles": [
+    "Clippings/写真家活動/作家活動/シリーズ制作/月雪花/月雪花三部作アーティストステートメント_20260128.md",
+    "Clippings/写真家活動/作家活動/xf1lux情報/アーティストステートメント/アーティストステートメント_20251216_v4.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/成建オーダーハウスによる注文住宅｜施工事例_20260126.md",
+    "DailyNotes/2026/01/2026-01-28.md",
+    "Clippings/写真家活動/作家活動/応募/HASSELBRAD MSTERS/応募検討記録_2025-12-18.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/インタビュー文字起こし/20260124 新築一戸建ての設計思想と住み心地に関するインタビュー-transcript.txt.sb-6b780b27-ayBKDH",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/インタビュー文字起こし/20260124 新築一戸建ての設計思想と住み心地に関するインタビュー-transcript.txt",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/過去施工例/成建オーダーハウスによる注文住宅｜施工事例.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/過去施工例/成建オーダーハウスによる注文住宅｜施工事例 7.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/過去施工例/成建オーダーハウスによる注文住宅｜施工事例 6.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/過去施工例/成建オーダーハウスによる注文住宅｜施工事例 5.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/過去施工例/成建オーダーハウスによる注文住宅｜施工事例 4.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/過去施工例/成建オーダーハウスによる注文住宅｜施工事例 3.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/過去施工例/成建オーダーハウスによる注文住宅｜施工事例 2.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/過去施工例/成建オーダーハウスによる注文住宅｜施工事例 1.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/インタビュー文字起こし",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/名称未設定フォルダ",
+    "20260124 新築一戸建ての設計思想と住み心地に関するインタビュー-transcript.txt",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/20260124 新築一戸建ての設計思想と住み心地に関するインタビュー-transcript.txt",
+    "Clippings/写真家活動/作家活動/xf1lux情報/思考整理/写真の本質論：時間・不可視性・物質性に関する思考.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/成建オーダーハウスによる注文住宅｜施工事例 7.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/成建オーダーハウスによる注文住宅｜施工事例 6.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/成建オーダーハウスによる注文住宅｜施工事例 5.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/成建オーダーハウスによる注文住宅｜施工事例 4.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/成建オーダーハウスによる注文住宅｜施工事例 3.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/成建オーダーハウスによる注文住宅｜施工事例 2.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/成建オーダーハウスによる注文住宅｜施工事例 1.md",
+    "WORKS/施工例執筆/成建グループ/オーダーハウス（注文住宅）/成建オーダーハウスによる注文住宅｜施工事例.md",
+    "DailyNotes/2026/01/2026-01-19.md",
+    "Clippings/写真家活動/作家活動/xf1lux情報/思考整理/木下大輔_写真理論統合まとめ.md",
+    "Clippings/写真家活動/作家活動/xf1lux情報/思考整理/季節の翳りと大量絶滅.md",
+    "Clippings/写真家活動/作家活動/xf1lux情報/思考整理/2025-12-08_まとめ資料_現代美術作家としての写真.md",
+    "Clippings/Alternative Process Lab/助成金関連/新事業進出補助金/shinjigyou_koubo_3.pdf",
+    "Clippings/Alternative Process Lab/助成金関連/新事業進出補助金/shinjigyou_jigyoukeikaku_3.pdf",
+    "Clippings/Alternative Process Lab/助成金関連/事業環境変化に対応した経営基盤強化/R7jigyokankyo_ippan_shinseisho_251225.pdf",
+    "Clippings/Alternative Process Lab/助成金関連/事業環境変化に対応した経営基盤強化/株式会社プルスウルトラ_申請書_20060114.pdf",
+    "Clippings/写真家活動/作家活動/xf1lux情報/HASSELBRAD MSTERS/候補写真/車窓/L1004251.jpg",
+    "Clippings/写真家活動/作家活動/xf1lux情報/HASSELBRAD MSTERS/候補写真/車窓/M10R3818-DNG_DxO_DeepPRIMEXD.jpg",
+    "Clippings/写真家活動/作家活動/xf1lux情報/HASSELBRAD MSTERS/候補写真/車窓/M10R3881-DNG_DxO_DeepPRIMEXD.jpg",
+    "Clippings/写真家活動/作家活動/xf1lux情報/HASSELBRAD MSTERS/候補写真/airport/M10M3031.jpg",
+    "Clippings/写真家活動/作家活動/xf1lux情報/HASSELBRAD MSTERS/候補写真/airport/M10M3030.jpg",
+    "Clippings/写真家活動/作家活動/xf1lux情報/HASSELBRAD MSTERS/候補写真/airport/M10M3033.jpg",
+    "portfolio 2/BACKUP/xf1lux-20250921/images/series/ruten-cover.jpg",
+    "portfolio 2/BACKUP/xf1lux-20250921/images/series/on-the-water-cover.jpg",
+    "portfolio 2/BACKUP/xf1lux-20250921/images/series/letter-cover.jpg",
+    "portfolio 2/BACKUP/xf1lux-20250921/images/series/blue-mind-cover.jpg",
+    "Untitled.canvas",
+    "無題のファイル.canvas"
+  ]
+}

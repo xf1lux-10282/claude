@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>管理画面 - ap2lab Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Antic+Didone&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-style.css">
+    <style>
+        .admin-main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .welcome-text {
+            color: #ccc;
+            font-size: 1.1rem;
+        }
+
+        .admin-menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .admin-card {
+            background-color: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 2rem;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: block;
+        }
+
+        .admin-card:hover {
+            border-color: #555;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .card-description {
+            color: #ccc;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .card-features {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #333;
+        }
+
+        .card-features ul {
+            list-style: none;
+            padding: 0;
+            color: #aaa;
+        }
+
+        .card-features li {
+            padding: 0.5rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .card-features li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #fff;
+        }
+
+        .system-info {
+            margin-top: 4rem;
+            padding: 2rem;
+            background-color: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+        }
+
+        .system-info h3 {
+            color: #fff;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .system-info ul {
+            list-style: none;
+            padding: 0;
+            color: #ccc;
+        }
+
+        .system-info li {
+            padding: 0.5rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .admin-menu {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <header class="admin-header">
+            <h1>ap2lab 管理画面</h1>
+            <p class="admin-subtitle">Admin Dashboard</p>
+        </header>
+
+        <main class="admin-main">
+            <section class="welcome-section">
+                <h2 class="welcome-title">管理メニュー</h2>
+                <p class="welcome-text">管理したい項目を選択してください</p>
+            </section>
+
+            <div class="admin-menu">
+                <!-- Event Management Card -->
+                <a href="event-manager-auto.html" class="admin-card">
+                    <div class="card-icon">📅</div>
+                    <h3 class="card-title">イベント管理</h3>
+                    <p class="card-description">ワークショップ・セミナーの管理とWebサイトへの自動公開</p>
+                    <div class="card-features">
+                        <ul>
+                            <li>イベントの新規作成・編集・削除</li>
+                            <li>画像アップロード機能</li>
+                            <li>event.htmlの自動生成</li>
+                            <li>FTP自動アップロード</li>
+                        </ul>
+                    </div>
+                </a>
+
+                <!-- Rental Management Card -->
+                <a href="rental-manager.html" class="admin-card">
+                    <div class="card-icon">🏢</div>
+                    <h3 class="card-title">レンタル管理</h3>
+                    <p class="card-description">暗室レンタルの予約カレンダー管理とステータス更新</p>
+                    <div class="card-features">
+                        <ul>
+                            <li>予約カレンダー表示・編集</li>
+                            <li>予約申込の確認・承認</li>
+                            <li>ステータス管理（予約可能・仮予約・確定・休業）</li>
+                            <li>Excelエクスポート機能</li>
+                        </ul>
+                    </div>
+                </a>
+            </div>
+
+            <section class="system-info">
+                <h3>システム情報</h3>
+                <ul>
+                    <li>👤 ログイン中: <span id="current-user" style="color: #fff;">確認中...</span></li>
+                    <li>📍 サーバーステータス: <span id="server-status">確認中...</span></li>
+                    <li>🌐 本番サイト: <a href="https://altphotolab.com/" target="_blank" style="color: #fff;">https://altphotolab.com/</a></li>
+                    <li>📝 管理者向けガイド: サイドメニューより各機能にアクセスできます</li>
+                    <li style="margin-top: 1rem;"><button class="btn btn-secondary btn-small" id="logout-btn" style="background-color: #3d1a1a; color: #fff; border: 1px solid #7d2a2a;">ログアウト</button></li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        // Check authentication on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const token = sessionStorage.getItem('adminToken');
+            const username = sessionStorage.getItem('adminUsername');
+
+            if (!token) {
+                // Redirect to login if not authenticated
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Verify token with server
+            fetch('http://localhost:3000/api/admin/verify', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    // Token invalid, redirect to login
+                    sessionStorage.removeItem('adminToken');
+                    sessionStorage.removeItem('adminUsername');
+                    window.location.href = 'login.html';
+                } else {
+                    // Token valid, show username
+                    document.getElementById('current-user').textContent = username || 'admin';
+                    checkServerStatus();
+                }
+            })
+            .catch(error => {
+                console.error('Verification error:', error);
+                // Allow offline access if server is down
+                document.getElementById('current-user').textContent = username || 'admin (オフライン)';
+                checkServerStatus();
+            });
+        });
+
+        // Check server status
+        async function checkServerStatus() {
+            const statusElement = document.getElementById('server-status');
+            try {
+                const response = await fetch('http://localhost:3000/api/rentals');
+                if (response.ok) {
+                    statusElement.textContent = '✓ 接続済み';
+                    statusElement.style.color = '#4CAF50';
+                } else {
+                    statusElement.textContent = '⚠ 応答なし';
+                    statusElement.style.color = '#FFC107';
+                }
+            } catch (error) {
+                statusElement.textContent = '✗ オフライン';
+                statusElement.style.color = '#F44336';
+            }
+        }
+
+        // Logout handler
+        document.getElementById('logout-btn').addEventListener('click', () => {
+            if (confirm('ログアウトしますか？')) {
+                sessionStorage.removeItem('adminToken');
+                sessionStorage.removeItem('adminUsername');
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
+</body>
+</html>

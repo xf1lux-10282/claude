@@ -1,0 +1,135 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    overflow: hidden;
+    background: #000;
+}
+
+.video-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.video-container video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+}
+
+/* デスクトップ用動画を表示 */
+.video-desktop {
+    display: block;
+}
+
+/* モバイル用動画を非表示 */
+.video-mobile {
+    display: none;
+}
+
+/* モバイルデバイス（768px以下）でのスタイル */
+@media screen and (max-width: 768px) {
+    .video-desktop {
+        display: none;
+    }
+
+    .video-mobile {
+        display: block;
+    }
+}
+
+/* Footer Styles */
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 1.5rem 3rem;
+    z-index: 10;
+}
+
+.footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footer-left span {
+    font-family: 'Antic Didone', serif;
+    font-size: 0.9em;
+    color: #333;
+}
+
+.footer-links {
+    display: flex;
+    gap: 2rem;
+}
+
+.footer-links a {
+    color: rgba(7, 0, 0, 1);
+    text-decoration: none;
+    font-family: 'Antic Didone', serif;
+    font-size: 1em;
+    transition: opacity 0.3s ease;
+}
+
+.footer-links a:hover {
+    opacity: 0.6;
+}
+
+/* モバイル向けフッター調整 */
+@media screen and (max-width: 768px) {
+    .footer {
+        padding: 1rem 1.5rem;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .footer-links {
+        gap: 1rem;
+        font-size: 0.9em;
+    }
+
+    .footer-left span {
+        font-size: 0.8em;
+    }
+}
+
+/* 小型モバイル向けフッター調整 */
+@media screen and (max-width: 480px) {
+    .footer {
+        padding: 0.75rem 1rem;
+    }
+
+    .footer-links {
+        gap: 0.75rem;
+        font-size: 0.85em;
+    }
+
+    .footer-left span {
+        font-size: 0.75em;
+    }
+}

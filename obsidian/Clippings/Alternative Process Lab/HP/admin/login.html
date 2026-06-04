@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ログイン - ap2lab Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Antic+Didone&family=Noto+Serif+JP:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Serif JP', serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            background-color: #111;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 3rem 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-title {
+            font-family: 'Antic Didone', serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: #fff;
+        }
+
+        .login-subtitle {
+            color: #888;
+            font-size: 0.9rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            background-color: #222;
+            border: 1px solid #444;
+            border-radius: 4px;
+            color: #fff;
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #fff;
+            background-color: #2a2a2a;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 0.875rem 1.5rem;
+            background-color: #fff;
+            color: #000;
+            border: none;
+            border-radius: 4px;
+            font-family: 'Noto Serif JP', serif;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #ddd;
+        }
+
+        .btn:disabled {
+            background-color: #444;
+            color: #888;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            background-color: #3d1a1a;
+            border: 1px solid #7d2a2a;
+            color: #ff6b6b;
+            padding: 0.75rem 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .info-text {
+            text-align: center;
+            color: #666;
+            font-size: 0.85rem;
+            margin-top: 1.5rem;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 2rem 1.5rem;
+            }
+
+            .login-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1 class="login-title">ap2lab Admin</h1>
+            <p class="login-subtitle">管理画面ログイン</p>
+        </div>
+
+        <div id="error-message" class="error-message"></div>
+
+        <form id="login-form">
+            <div class="form-group">
+                <label for="username" class="form-label">ユーザー名</label>
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    class="form-input"
+                    required
+                    autocomplete="username"
+                    autofocus
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">パスワード</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    class="form-input"
+                    required
+                    autocomplete="current-password"
+                >
+            </div>
+
+            <button type="submit" class="btn" id="login-btn">ログイン</button>
+        </form>
+
+        <p class="info-text">
+            管理者アカウントでログインしてください<br>
+            ※アカウントが必要な場合は、システム管理者にお問い合わせください
+        </p>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('login-form');
+        const loginBtn = document.getElementById('login-btn');
+        const errorMessage = document.getElementById('error-message');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Hide previous error
+            errorMessage.classList.remove('show');
+
+            // Disable button
+            loginBtn.disabled = true;
+            loginBtn.textContent = 'ログイン中...';
+
+            try {
+                const response = await fetch('http://localhost:3000/api/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Store session token
+                    sessionStorage.setItem('adminToken', data.token);
+                    sessionStorage.setItem('adminUsername', username);
+
+                    // Redirect to admin index
+                    window.location.href = 'index.html';
+                } else {
+                    showError(data.error || 'ログインに失敗しました');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                showError('サーバーに接続できません。ローカルサーバーが起動しているか確認してください。');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.textContent = 'ログイン';
+            }
+        });
+
+        function showError(message) {
+            errorMessage.textContent = message;
+            errorMessage.classList.add('show');
+        }
+
+        // Check if already logged in
+        window.addEventListener('DOMContentLoaded', () => {
+            const token = sessionStorage.getItem('adminToken');
+            if (token) {
+                // Verify token is still valid
+                fetch('http://localhost:3000/api/admin/verify', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.href = 'index.html';
+                    } else {
+                        sessionStorage.removeItem('adminToken');
+                        sessionStorage.removeItem('adminUsername');
+                    }
+                })
+                .catch(error => {
+                    console.error('Verification error:', error);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
