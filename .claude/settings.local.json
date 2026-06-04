@@ -1,7 +1,7 @@
 {
   "env": {
     "AUTO_COMMIT_ON_SESSION_END": "true",
-    "AUTO_PUSH": "false"
+    "AUTO_PUSH": "true"
   },
   "permissions": {
     "allow": [
