@@ -388,7 +388,8 @@
       "Bash(gh auth logout:*)",
       "Bash(gh auth login:*)",
       "Bash(AUTO_PULL_ON_SESSION_START=true bash:*)",
-      "Bash(gh auth refresh:*)"
+      "Bash(gh auth refresh:*)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []
