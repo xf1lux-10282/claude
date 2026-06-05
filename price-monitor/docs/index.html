@@ -107,7 +107,7 @@ async function drawChart(p){
   charts.push(new Chart(ctx, {
     type:"line",
     data:{ datasets:[{ data:pts, borderColor:color, backgroundColor:color+"22",
-      fill:true, tension:.25, pointRadius:pts.length>40?0:2, borderWidth:2 }] },
+      fill:true, stepped:"after", tension:0, pointRadius:pts.length>60?0:2, borderWidth:2 }] },
     options:{
       responsive:true, maintainAspectRatio:false,
       plugins:{ legend:{display:false}, tooltip:{ callbacks:{
