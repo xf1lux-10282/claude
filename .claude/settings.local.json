@@ -2,7 +2,8 @@
   "env": {
     "AUTO_COMMIT_ON_SESSION_END": "true",
     "AUTO_PUSH": "true",
-    "AUTO_PULL_ON_SESSION_START": "true"
+    "AUTO_PULL_ON_SESSION_START": "true",
+    "REMOTE_CONTROL_AT_STARTUP": "true"
   },
   "permissions": {
     "allow": [
