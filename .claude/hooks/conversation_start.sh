@@ -9,6 +9,69 @@ set -e
 WORK_DIR="/Users/daisukekinoshita/Library/Mobile Documents/iCloud~md~obsidian/Documents"
 cd "$WORK_DIR"
 
+# ============================================================
+# Git 自動プル（他デバイスの変更を取得）
+# ============================================================
+echo ""
+echo "=== Git 自動プル ==="
+
+# 環境変数で制御（デフォルト: true）
+if [ "${AUTO_PULL_ON_SESSION_START:-true}" = "true" ]; then
+    if git rev-parse --git-dir > /dev/null 2>&1; then
+        # リモートの最新状態を取得
+        if git fetch origin 2>&1; then
+            # 現在のブランチ名を取得
+            CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+            # ローカルとリモートのコミットを比較
+            LOCAL=$(git rev-parse @)
+            REMOTE=$(git rev-parse @{u} 2>/dev/null || echo "")
+
+            if [ -n "$REMOTE" ]; then
+                if [ "$LOCAL" = "$REMOTE" ]; then
+                    echo "✓ 既に最新です（プルする変更なし）"
+                elif [ "$LOCAL" != "$REMOTE" ]; then
+                    # コミットされていない変更があるかチェック
+                    if ! git diff-index --quiet HEAD -- 2>/dev/null; then
+                        echo "⚠ ローカルに未コミットの変更があります"
+                        echo "   プル前に変更を自動コミットします..."
+
+                        # 自動コミット
+                        git add .
+                        CURRENT_TIME=$(date "+%Y年%m月%d日 %A %H:%M")
+                        git commit -m "Auto-save before pull at ${CURRENT_TIME}
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+                        echo "✓ 自動コミット完了"
+                    fi
+
+                    # プル実行
+                    echo "リモートから変更を取得中..."
+                    if git pull --rebase origin "$CURRENT_BRANCH" 2>&1; then
+                        echo "✓ プル完了（他デバイスの変更を取得しました）"
+                    else
+                        echo "⚠ プルに失敗しました（コンフリクトの可能性）"
+                        echo "   手動で確認してください: git status"
+                    fi
+                fi
+            else
+                echo "✓ リモートブランチが設定されていません（初回プッシュ前）"
+            fi
+        else
+            echo "⚠ リモートとの接続に失敗しました"
+        fi
+    else
+        echo "ℹ️  Gitリポジトリではありません"
+    fi
+else
+    echo "ℹ️  自動プルは無効です（AUTO_PULL_ON_SESSION_START=false）"
+fi
+
+echo "=================================="
+echo ""
+
 # 現在の日付を取得
 CURRENT_DATE=$(date "+%Y-%m-%d")
 CURRENT_YEAR=$(date "+%Y")

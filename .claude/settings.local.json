@@ -1,7 +1,8 @@
 {
   "env": {
     "AUTO_COMMIT_ON_SESSION_END": "true",
-    "AUTO_PUSH": "true"
+    "AUTO_PUSH": "true",
+    "AUTO_PULL_ON_SESSION_START": "true"
   },
   "permissions": {
     "allow": [
@@ -378,7 +379,15 @@
       "Bash(ssh-keyscan:*)",
       "Bash(~/.ssh/known_hosts)",
       "Bash(ssh:*)",
-      "Bash(git branch:*)"
+      "Bash(git branch:*)",
+      "Bash(git fetch:*)",
+      "Bash(git pull:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(git diff-index:*)",
+      "Bash(gh auth status:*)",
+      "Bash(gh auth logout:*)",
+      "Bash(gh auth login:*)",
+      "Bash(AUTO_PULL_ON_SESSION_START=true bash:*)"
     ],
     "deny": [],
     "ask": []
