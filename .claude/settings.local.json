@@ -390,7 +390,12 @@
       "Bash(gh auth login:*)",
       "Bash(AUTO_PULL_ON_SESSION_START=true bash:*)",
       "Bash(gh auth refresh:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "mcp__1dde4928-6ca9-4c09-947c-d725c9404635__notion-search",
+      "mcp__1dde4928-6ca9-4c09-947c-d725c9404635__notion-create-database",
+      "mcp__1dde4928-6ca9-4c09-947c-d725c9404635__notion-create-view",
+      "mcp__1dde4928-6ca9-4c09-947c-d725c9404635__notion-create-pages",
+      "mcp__1dde4928-6ca9-4c09-947c-d725c9404635__notion-update-data-source"
     ],
     "deny": [],
     "ask": []
