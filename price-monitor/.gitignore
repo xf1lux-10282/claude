@@ -1,0 +1,8 @@
+# リポジトリ全体の .gitignore が *.png を除外しているため、
+# ダッシュボードのアイコンだけは追跡対象に戻す。
+!docs/icon-192.png
+!docs/icon-512.png
+
+# Python
+__pycache__/
+*.pyc
