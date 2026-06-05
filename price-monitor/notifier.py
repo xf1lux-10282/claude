@@ -72,15 +72,24 @@ def send_discord(discord: dict, *, title: str, message: str, url: str | None, co
         return False
 
 
-def notify_change(settings: dict, *, product: dict, old, new, currency: str) -> None:
+def _fx_note(currency: str, usdjpy, price_jpy) -> str:
+    if usdjpy is None or price_jpy is None or currency == "JPY":
+        return ""
+    return f"\n参考: 1 USD = {usdjpy:.2f} 円 ≒ ¥{price_jpy:,}"
+
+
+def notify_change(
+    settings: dict, *, product: dict, old, new, currency: str, usdjpy=None, price_jpy=None
+) -> None:
     """価格変動を全チャンネルに通知する。"""
     ntfy, discord = _resolve(settings)
     name = product.get("name") or product.get("id")
     url = product.get("url")
+    fx_note = _fx_note(currency, usdjpy, price_jpy)
 
     if old is None:
         title = f"📈 価格の監視を開始: {name}"
-        body = f"現在価格: {new:,.2f} {currency}"
+        body = f"現在価格: {new:,.2f} {currency}{fx_note}"
         priority, color = "default", 0x3498DB
     else:
         diff = new - old
@@ -90,6 +99,7 @@ def notify_change(settings: dict, *, product: dict, old, new, currency: str) -> 
         body = (
             f"{old:,.2f} → {new:,.2f} {currency}\n"
             f"差額: {diff:+,.2f} {currency} ({pct:+.1f}%)"
+            f"{fx_note}"
         )
         priority = "high" if diff < 0 else "default"
         color = 0x2ECC71 if diff < 0 else 0xE74C3C

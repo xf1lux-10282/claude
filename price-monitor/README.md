@@ -13,13 +13,18 @@
 ## 仕組み
 
 ```
-GitHub Actions（cron: 6時間ごと）
+GitHub Actions（cron: 1日6回）
    ├─ monitor.py: config.json の各商品URLをスクレイピング
+   ├─ USD/JPY 為替を取得し、為替と円換算価格も記録 💴
    ├─ data/history/<id>.json に価格を追記
    ├─ 価格が変わったら ntfy / Discord に通知 📱
    ├─ data/index.json を更新
    └─ docs/（ダッシュボード）+ data/ を GitHub Pages に公開 📊
 ```
+
+あわせて毎回 **USD/JPY 為替レート**を取得・記録し、USD建て商品は**円換算価格**も
+保存します（注文タイミングの判断や、円コストでの振り返りに利用）。為替は記録のみで、
+通知は「商品価格が変わった時」だけ出ます（為替は毎日動くため通知はしません）。
 
 価格の抽出は設定なしでも動くよう、次の順で自動判定します:
 1. **JSON-LD**（schema.org の `offers.price`）← 多くのECサイト（WooCommerce/Shopify等）に有効
@@ -136,13 +141,15 @@ price-monitor/
 ├── config.json            # 監視対象・通知設定（ここを編集 or manage.py で操作）
 ├── monitor.py             # メイン: 取得→記録→通知
 ├── scraper.py             # 価格抽出ロジック（JSON-LD/meta/CSS/regex）
+├── fx.py                  # USD/JPY 為替レート取得（多重フォールバック）
 ├── notifier.py            # ntfy / Discord 通知
 ├── storage.py             # 価格履歴の保存と index.json 生成
 ├── manage.py              # 商品の追加・削除・一覧 CLI
 ├── requirements.txt
 ├── data/
 │   ├── index.json         # ダッシュボード用サマリ（自動生成）
-│   └── history/<id>.json  # 商品ごとの価格履歴（自動生成）
+│   ├── fx_usdjpy.json     # USD/JPY 為替の推移（自動生成）
+│   └── history/<id>.json  # 商品ごとの価格履歴＋円換算（自動生成）
 ├── docs/                  # GitHub Pages で公開するPWAダッシュボード
 │   ├── index.html
 │   ├── manifest.json

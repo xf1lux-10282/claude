@@ -18,6 +18,7 @@ import json
 import sys
 from pathlib import Path
 
+import fx as fx_module
 import notifier
 import storage
 from scraper import fetch_price
@@ -29,7 +30,7 @@ def load_config(path: Path) -> dict:
     return json.loads(path.read_text(encoding="utf-8"))
 
 
-def check_product(product: dict, settings: dict) -> bool:
+def check_product(product: dict, settings: dict, usdjpy: float | None) -> bool:
     name = product.get("name") or product["id"]
     print(f"▶ {name}")
     try:
@@ -47,14 +48,22 @@ def check_product(product: dict, settings: dict) -> bool:
     history = storage.load_history(product["id"])
     previous = storage.last_price(history)
 
-    print(f"  価格: {result.value:,.2f} {currency}  (抽出: {result.method})")
+    price_jpy = storage.to_jpy(result.value, currency, usdjpy)
+    jpy_note = f"  ≒ ¥{price_jpy:,}" if price_jpy is not None else ""
+    print(f"  価格: {result.value:,.2f} {currency}{jpy_note}  (抽出: {result.method})")
 
-    storage.append_point(product, result.value, result.method, currency)
+    storage.append_point(product, result.value, result.method, currency, usdjpy)
 
     changed = previous is None or result.value != previous
     if changed:
         notifier.notify_change(
-            settings, product=product, old=previous, new=result.value, currency=currency
+            settings,
+            product=product,
+            old=previous,
+            new=result.value,
+            currency=currency,
+            usdjpy=usdjpy,
+            price_jpy=price_jpy,
         )
     else:
         print("  変化なし")
@@ -83,10 +92,17 @@ def main(argv: list[str] | None = None) -> int:
         print("チェック対象の商品がありません。config.json を確認してください。")
         return 1
 
+    # 為替は1回の実行につき1度だけ取得し、全商品で共有する
+    fx = fx_module.get_usdjpy(timeout=int(settings.get("request_timeout_sec", 20)))
+    usdjpy = fx.usdjpy if fx else None
+    if fx:
+        print(f"== 為替: 1 USD = {fx.usdjpy:.4f} JPY ({fx.source}) ==")
+        storage.record_fx(fx.usdjpy, fx.source)
+
     print(f"== {len(products)} 件の商品をチェックします ==")
     ok = 0
     for product in products:
-        if check_product(product, settings):
+        if check_product(product, settings, usdjpy):
             ok += 1
 
     # ダッシュボード用インデックスは全商品分を出力（無効商品も履歴は残す）
