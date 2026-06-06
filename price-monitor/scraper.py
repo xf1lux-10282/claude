@@ -17,6 +17,7 @@ from __future__ import annotations
 import json
 import re
 from dataclasses import dataclass
+from html import unescape as _html_unescape
 
 import requests
 from bs4 import BeautifulSoup
@@ -146,6 +147,39 @@ def _in_excluded_section(el) -> bool:
     return False
 
 
+def _normalize_size(text) -> str:
+    """サイズ表記を比較用に正規化する（'25ml' / '25 ml' / '25 mL' を同一視）。"""
+    return re.sub(r"\s+", "", str(text)).lower()
+
+
+def _from_variation(soup: BeautifulSoup, variant: str) -> PriceResult | None:
+    """WooCommerce 変動商品から、指定サイズ(variant)の価格を取る。
+
+    変動商品は <form class="variations_form" data-product_variations="[...]">
+    に各バリアント(サイズ)の属性と display_price が JSON で埋め込まれている。
+    商品名どおりのサイズ（例: 25ml）を確実に取得するために使う。
+    """
+    if not variant:
+        return None
+    target = _normalize_size(variant)
+    for form in soup.select("form.variations_form"):
+        raw = form.get("data-product_variations")
+        if not raw or raw == "false":
+            continue
+        try:
+            variations = json.loads(_html_unescape(raw))
+        except (json.JSONDecodeError, TypeError):
+            continue
+        for v in variations:
+            attrs = v.get("attributes", {}) or {}
+            if any(_normalize_size(val) == target for val in attrs.values()):
+                price = v.get("display_price", v.get("display_regular_price"))
+                value = _to_float(str(price))
+                if value is not None:
+                    return PriceResult(value=value, raw=str(price), method=f"variation:{variant}")
+    return None
+
+
 def _from_main_price(soup: BeautifulSoup) -> PriceResult | None:
     """メイン商品の価格を取る（関連商品カルーセルを除外）。
 
@@ -211,7 +245,10 @@ def fetch_price(url: str, extract: dict, *, user_agent: str, timeout: int) -> Pr
 
     extract = extract or {}
     strategies = []
-    # メイン価格抽出（関連商品カルーセルを除外）。WooCommerce系で有効。
+    # サイズ指定（変動商品で「25ml」など特定サイズの価格を確実に取る）を最優先。
+    if extract.get("variant"):
+        strategies.append(lambda: _from_variation(soup, extract["variant"]))
+    # メイン価格抽出（関連商品カルーセルを除外）。variant が取れない時のフォールバック。
     if extract.get("main_price"):
         strategies.append(lambda: _from_main_price(soup))
     # ユーザー指定があればそれを最優先する

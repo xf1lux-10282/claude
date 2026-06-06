@@ -22,6 +22,7 @@
       "currency": "USD",
       "enabled": true,
       "extract": {
+        "variant": "10ml",
         "main_price": true,
         "css_selector": null,
         "regex": null,
@@ -37,6 +38,7 @@
       "currency": "USD",
       "enabled": true,
       "extract": {
+        "variant": "25ml",
         "main_price": true,
         "css_selector": null,
         "regex": null,
@@ -52,6 +54,7 @@
       "currency": "USD",
       "enabled": true,
       "extract": {
+        "variant": "25ml",
         "main_price": true,
         "css_selector": null,
         "regex": null,
