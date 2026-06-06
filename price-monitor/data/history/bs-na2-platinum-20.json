@@ -1,6 +1,14 @@
 {
   "id": "bs-na2-platinum-20",
-  "points": [],
+  "points": [
+    {
+      "t": "2026-06-06T12:27:25Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.163,
+      "price_jpy": 27276
+    }
+  ],
   "name": "Bostick & Sullivan: Sodium Platinum (Na2) 20% Solution 10ml",
   "url": "https://www.bostick-sullivan.com/product/sodium-platinum-na2-standard-20-solution-10-ml/",
   "currency": "USD"

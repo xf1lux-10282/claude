@@ -1,6 +1,14 @@
 {
   "id": "bs-palladium-3-25",
-  "points": [],
+  "points": [
+    {
+      "t": "2026-06-06T12:27:26Z",
+      "price": 200.77,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.163,
+      "price_jpy": 32156
+    }
+  ],
   "name": "Bostick & Sullivan: Palladium Solution #3 25ml",
   "url": "https://www.bostick-sullivan.com/product/palladium-solution-3-standard-25ml/",
   "currency": "USD"
