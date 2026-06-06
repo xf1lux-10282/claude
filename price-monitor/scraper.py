@@ -118,6 +118,59 @@ def _from_meta(soup: BeautifulSoup) -> PriceResult | None:
     return None
 
 
+# メイン商品ではない「関連商品 / おすすめ / カルーセル」を判定するためのクラス断片。
+# これらの内側にある価格は別商品のものなので除外する。
+_EXCLUDE_ANCESTOR_CLASSES = frozenset(
+    {
+        "owl-carousel",
+        "w-grid-list",
+        "w-grid-item",
+        "related",
+        "up-sells",
+        "upsells",
+        "cross-sells",
+        "crosssells",
+        "products",  # WooCommerce 標準の関連商品グリッド <ul class="products">
+    }
+)
+
+
+def _in_excluded_section(el) -> bool:
+    """要素が関連商品/カルーセル等のセクション内にあれば True。"""
+    node = el.parent
+    while node is not None and getattr(node, "name", None):
+        classes = node.get("class") or []
+        if any(c in _EXCLUDE_ANCESTOR_CLASSES for c in classes):
+            return True
+        node = node.parent
+    return False
+
+
+def _from_main_price(soup: BeautifulSoup) -> PriceResult | None:
+    """メイン商品の価格を取る（関連商品カルーセルを除外）。
+
+    WooCommerce 系ページで、メイン価格は <p class="price"> 等に入る一方、
+    「おすすめ/関連商品」のカードにも同じ価格クラスが付くことがある。
+    カルーセル/グリッド内の要素を除外し、最初に残ったメイン価格ブロックを採用する。
+    変動商品（サイズ違い）の "$170.30–$1,703.00" は最小値（=最小サイズ）を取る。
+    セール中は ins（現在価格）を優先する。
+    """
+    blocks = soup.select("p.price, .summary .price, .entry-summary .price")
+    main = next((b for b in blocks if not _in_excluded_section(b)), None)
+    if main is None:
+        return None
+    amount = main.select_one("ins .woocommerce-Price-amount, ins .amount") or main.select_one(
+        ".woocommerce-Price-amount, .amount"
+    )
+    if amount is None:
+        return None
+    raw = amount.get("content") or amount.get_text(strip=True)
+    value = _to_float(raw)
+    if value is None:
+        return None
+    return PriceResult(value=value, raw=raw, method="main-price")
+
+
 def _from_css(soup: BeautifulSoup, selector: str) -> PriceResult | None:
     if not selector:
         return None
@@ -158,6 +211,9 @@ def fetch_price(url: str, extract: dict, *, user_agent: str, timeout: int) -> Pr
 
     extract = extract or {}
     strategies = []
+    # メイン価格抽出（関連商品カルーセルを除外）。WooCommerce系で有効。
+    if extract.get("main_price"):
+        strategies.append(lambda: _from_main_price(soup))
     # ユーザー指定があればそれを最優先する
     if extract.get("css_selector"):
         strategies.append(lambda: _from_css(soup, extract["css_selector"]))
