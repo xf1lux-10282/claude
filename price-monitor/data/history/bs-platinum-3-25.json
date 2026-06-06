@@ -1,14 +1,6 @@
 {
   "id": "bs-platinum-3-25",
-  "points": [
-    {
-      "t": "2026-06-06T12:20:54Z",
-      "price": 170.3,
-      "method": "main-price",
-      "fx_usdjpy": 160.163,
-      "price_jpy": 27276
-    }
-  ],
+  "points": [],
   "name": "Bostick & Sullivan: Platinum Solution #3 25ml",
   "url": "https://www.bostick-sullivan.com/product/platinum-solution-3-25-ml/",
   "currency": "USD"
