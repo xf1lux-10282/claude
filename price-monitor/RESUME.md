@@ -4,7 +4,7 @@
 > このリポジトリは毎回クローンし直す使い捨て環境で動くため、再開に必要な情報は
 > すべてここ（とコミット履歴）に集約しています。
 
-最終更新: 2026-06-06 / 作業ブランチ: `claude/product-price-monitoring-rmZQy`
+最終更新: 2026-06-06（第3セッション） / 作業ブランチ: `claude/product-price-monitoring-rmZQy`
 
 ---
 
@@ -16,33 +16,44 @@
 
 ---
 
-## 2. 現在のステータス（2026-06-06 第2セッション終了時点）
+## 2. 現在のステータス（2026-06-06 第3セッション終了時点）
 
-**🟢 本番稼働中。** Secrets/Pages 設定済み、実サイトから価格取得に成功している。
+**🟢 本番稼働中。** 定期実行は外部トリガーで確実化、価格取得バグも修正・検証済み。
 
-- ✅ PR #1〜#4 を master へマージ・Pages デプロイ済み
+- ✅ PR #1〜#11 を master へマージ・Pages デプロイ済み
   - #1 本体 / #2 グラフ改善 / #3 cron:17 / #4 PWAキャッシュ修正
-- ✅ **実価格を取得できている**（手動Runで3点記録、append+commit 正常）
-  | id | 商品 | 直近価格 |
-  |---|---|---|
-  | `bs-na2-platinum-20` | Sodium Platinum (Na2) 20% 10ml | $87.29 |
-  | `bs-platinum-3-25` | Platinum Solution #3 25ml | $170.30 |
-  | `bs-palladium-3-25` | Palladium Solution #3 25ml | $211.25 |
-  - 抽出方式は `css:.usg_product_field_3`（このサイトは JSON-LD 非搭載のため CSS セレクタ指定）
+  - #7 外部トリガー手順 / #9 関連商品の誤取得修正 / #11 サイズ指定取得（最終）
+- ✅ **定期実行を外部トリガーで確実化**（GitHubのcronは初日全スキップ＝既知のベストエフォート問題）
+  - cron-job.org → GitHub workflow_dispatch API を叩いて起動。**設定済み・204成功・実行確認済み**。
+  - 手順: [EXTERNAL_TRIGGER.md](EXTERNAL_TRIGGER.md)。トークンは Fine-grained（Actions:RW / 対象リポのみ / 期限2026-09-04）。
+  - GitHub の cron（`17 21,0,3,6,9,12 * * *`）は予備として残置。
+- ✅ **価格取得バグを修正（重要）**。正しい価格を実機検証済み:
+  | id | 商品 | 追跡サイズ | 価格 | 取得方式 |
+  |---|---|---|---|---|
+  | `bs-na2-platinum-20` | Sodium Platinum (Na2) 20% | 10ml | **$170.30** | `variation:10ml` |
+  | `bs-platinum-3-25` | Platinum Solution #3 | 25ml | **$375.00** | `variation:25ml` |
+  | `bs-palladium-3-25` | Palladium Solution #3 | 25ml | **$200.77** | `variation:25ml` |
   - 為替も記録中（例: 1$=160.163、open.er-api.com）
-- ✅ cron は `17 21,0,3,6,9,12 * * *`（JST 6:17/9:17/12:17/15:17/18:17/21:17）
-- ✅ ダッシュボードのグラフ改善（日付軸・期間切替 1ヶ月/3ヶ月/1年/全期間・左右スクロール）公開済み
-- ✅ PWA は network-first＋キャッシュ v2（更新が確実に反映される。シェル更新時は CACHE 版を上げる）
+- ✅ ダッシュボードのグラフ改善（日付軸・期間切替・左右スクロール）公開済み
+- ✅ PWA は network-first＋キャッシュ v2（シェル更新時は CACHE 版を上げる）
 
-### ⏳ 唯一の未確認事項（最優先で確認）
-- **GitHub の定期実行(schedule)が初日は一度も発火しなかった**（cron :00 era も :17 era も全枠スキップ）。
-  GitHub Actions の schedule はベストエフォートで、スロットがまるごと落ちることがある既知の挙動。
-- **対策（採用方針）: 外部トリガーで確実化** → 手順は [EXTERNAL_TRIGGER.md](EXTERNAL_TRIGGER.md)。
-  外部の無料 cron サービス（cron-job.org 等）から GitHub の workflow_dispatch API を叩いて起動する。
-  ワークフロー側は変更不要。GitHub の cron は予備として残す。
-  - **未完了のユーザー操作**: ①Fine-grained トークン作成（Actions: Read/Write、対象リポジトリのみ）
-    ②cron-job.org にジョブ登録（手順書の通り）③テスト実行
-- （任意）値動き発生時に ntfy/Discord 通知が実際に届くか。
+### 🐞 第3セッションで直したバグ（経緯：再発時の参考に）
+対象サイト（bostick-sullivan.com＝WooCommerce + UpSolution"US"テーマ）特有の罠だった。
+1. **当初** `css:.usg_product_field_3` は、商品ページ下部の**関連商品カルーセル(owl-carousel)**の
+   カードにのみ付くクラスで、メインではなく**別商品の価格**を拾っていた（並びが変わり値がブレた）。
+2. **中間修正**（`_from_main_price`：カルーセル除外でメイン価格を取得）は、変動商品の
+   **最小サイズ＝最安値(from価格)**を拾うため、25ml商品が10ml価格になった。
+3. **最終修正**（`_from_variation`）：`form.variations_form` の `data-product_variations` JSON から
+   **指定サイズ(`extract.variant`)の `display_price`** を取得。これが正解。
+   - サイズ別価格（参考・2026-06-06時点）:
+     Pt#3 = 10ml$170.30/15ml$255.45/**25ml$375.00**/50ml$851.50/100ml$1703
+     Pd#3 = 10ml$87.29/15ml$130.94/**25ml$200.77**/100ml$803.07/250ml$2007.67/500ml$4364.50
+   - 旧履歴は全リセット済み（不正値が混在していたため）。
+
+### ⏳ 残り（任意）
+- 値動き発生時に ntfy/Discord 通知が実際に届くか（Secrets設定済みなら次の変動時に確認）。
+- **追跡サイズを変えたい場合**は `config.json` の該当商品 `extract.variant` を変更するだけ
+  （例: Pd#3 を 25ml→100ml）。表記ゆれ（`25ml`/`25 mL`）は正規化で吸収する。
 
 > 💡 開発サンドボックスは外部サイト/為替API/CDN へ到達できない（許可リスト制）。
 > 実取得の確認は GitHub Actions ランナー側で行うこと（ローカルの monitor.py 実行で
@@ -105,7 +116,7 @@
 |---|---|
 | `config.json` | 監視対象・通知設定（ここを編集 or `manage.py`） |
 | `monitor.py` | メイン: 取得→為替→記録→通知 |
-| `scraper.py` | 価格自動抽出（JSON-LD/meta/CSS/regex） |
+| `scraper.py` | 価格抽出。優先順: `variation`(サイズ指定) → `main_price`(カルーセル除外) → css → regex → JSON-LD → meta |
 | `fx.py` | USD/JPY 為替取得（多重フォールバック） |
 | `notifier.py` | ntfy / Discord 通知 |
 | `storage.py` | 履歴・円換算・index.json 生成 |
