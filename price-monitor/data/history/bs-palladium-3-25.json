@@ -2,32 +2,18 @@
   "id": "bs-palladium-3-25",
   "points": [
     {
-      "t": "2026-06-06T02:44:03Z",
-      "price": 211.25,
-      "method": "css:.usg_product_field_3",
+      "t": "2026-06-06T12:27:26Z",
+      "price": 200.77,
+      "method": "variation:25ml",
       "fx_usdjpy": 160.163,
-      "price_jpy": 33834
+      "price_jpy": 32156
     },
     {
-      "t": "2026-06-06T07:47:23Z",
-      "price": 211.25,
-      "method": "css:.usg_product_field_3",
+      "t": "2026-06-06T12:30:36Z",
+      "price": 200.77,
+      "method": "variation:25ml",
       "fx_usdjpy": 160.163,
-      "price_jpy": 33834
-    },
-    {
-      "t": "2026-06-06T08:49:22Z",
-      "price": 211.25,
-      "method": "css:.usg_product_field_3",
-      "fx_usdjpy": 160.163,
-      "price_jpy": 33834
-    },
-    {
-      "t": "2026-06-06T09:05:22Z",
-      "price": 211.25,
-      "method": "css:.usg_product_field_3",
-      "fx_usdjpy": 160.163,
-      "price_jpy": 33834
+      "price_jpy": 32156
     }
   ],
   "name": "Bostick & Sullivan: Palladium Solution #3 25ml",

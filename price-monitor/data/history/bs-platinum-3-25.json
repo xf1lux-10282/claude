@@ -2,32 +2,18 @@
   "id": "bs-platinum-3-25",
   "points": [
     {
-      "t": "2026-06-06T02:44:03Z",
-      "price": 170.3,
-      "method": "css:.usg_product_field_3",
+      "t": "2026-06-06T12:27:26Z",
+      "price": 375.0,
+      "method": "variation:25ml",
       "fx_usdjpy": 160.163,
-      "price_jpy": 27276
+      "price_jpy": 60061
     },
     {
-      "t": "2026-06-06T07:47:22Z",
-      "price": 170.3,
-      "method": "css:.usg_product_field_3",
+      "t": "2026-06-06T12:30:35Z",
+      "price": 375.0,
+      "method": "variation:25ml",
       "fx_usdjpy": 160.163,
-      "price_jpy": 27276
-    },
-    {
-      "t": "2026-06-06T08:49:21Z",
-      "price": 170.3,
-      "method": "css:.usg_product_field_3",
-      "fx_usdjpy": 160.163,
-      "price_jpy": 27276
-    },
-    {
-      "t": "2026-06-06T09:05:22Z",
-      "price": 170.3,
-      "method": "css:.usg_product_field_3",
-      "fx_usdjpy": 160.163,
-      "price_jpy": 27276
+      "price_jpy": 60061
     }
   ],
   "name": "Bostick & Sullivan: Platinum Solution #3 25ml",

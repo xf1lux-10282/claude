@@ -22,7 +22,9 @@
       "currency": "USD",
       "enabled": true,
       "extract": {
-        "css_selector": ".usg_product_field_3",
+        "variant": "10ml",
+        "main_price": true,
+        "css_selector": null,
         "regex": null,
         "use_json_ld": true,
         "use_meta": true
@@ -36,7 +38,9 @@
       "currency": "USD",
       "enabled": true,
       "extract": {
-        "css_selector": ".usg_product_field_3",
+        "variant": "25ml",
+        "main_price": true,
+        "css_selector": null,
         "regex": null,
         "use_json_ld": true,
         "use_meta": true
@@ -50,7 +54,9 @@
       "currency": "USD",
       "enabled": true,
       "extract": {
-        "css_selector": ".usg_product_field_3",
+        "variant": "25ml",
+        "main_price": true,
+        "css_selector": null,
         "regex": null,
         "use_json_ld": true,
         "use_meta": true
