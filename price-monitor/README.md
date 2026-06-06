@@ -29,13 +29,18 @@ GitHub Actions（cron: 1日6回）
 保存します（注文タイミングの判断や、円コストでの振り返りに利用）。為替は記録のみで、
 通知は「商品価格が変わった時」だけ出ます（為替は毎日動くため通知はしません）。
 
-価格の抽出は設定なしでも動くよう、次の順で自動判定します:
-1. **JSON-LD**（schema.org の `offers.price`）← 多くのECサイト（WooCommerce/Shopify等）に有効
-2. **meta タグ**（`product:price:amount` 等）
-3. ユーザー指定の **CSSセレクタ**
-4. ユーザー指定の **正規表現**
+価格の抽出は次の優先順で判定します（最初に取れたものを採用）:
+1. **サイズ指定**（`extract.variant`）… 変動商品（サイズ違い）で「25ml」など特定サイズの価格を
+   WooCommerce の `form.variations_form` から確実に取得。**サイズが複数ある商品はこれを推奨**。
+2. **メイン価格**（`extract.main_price`）… 関連商品カルーセル等を除外し、メイン商品の価格を取得。
+3. ユーザー指定の **CSSセレクタ**（`extract.css_selector`）
+4. ユーザー指定の **正規表現**（`extract.regex`）
+5. **JSON-LD**（schema.org の `offers.price`）← 多くのECサイト（WooCommerce/Shopify等）に有効
+6. **meta タグ**（`product:price:amount` 等）
 
-自動で取れない場合だけ、`--selector` か `--regex` を指定します。
+> このリポジトリで監視中の Bostick & Sullivan は、サイズ違いの変動商品かつ JSON-LD 非搭載で、
+> 関連商品カルーセルに同じ価格クラスが現れる作りのため、**①サイズ指定方式**を使っている
+> （`config.json` の各商品 `extract.variant` に追跡サイズを指定）。経緯は変更履歴 #9/#11 を参照。
 
 ---
 
@@ -195,5 +200,8 @@ price-monitor/
 | #4 | 2026-06-06 | PWAキャッシュ修正（HTML/データを network-first 化・キャッシュ v2）。更新が確実に反映されるように |
 | #5 | 2026-06-06 | 開発履歴・RESUME の整備 |
 | — | 2026-06-06 | **第3セッション**: 本番初回実行（ntfy/Discord Secrets設定・GitHub Pages有効化）、期間切替ボタンの動作修正（Chart.jsズームプラグインとの競合を `chart.resetZoom()` + `chart.zoomScale()` で解消）、アプリケーション資料整備 |
+| #7 | 2026-06-06 | **定期実行を外部トリガーで確実化**。GitHub の schedule が全枠スキップされる問題に対し、外部cron（cron-job.org）から workflow_dispatch API を叩く方式を導入（手順: `EXTERNAL_TRIGGER.md`）。GitHub cron は予備として残置 |
+| #9 | 2026-06-06 | **価格誤取得の修正(1)**。`.usg_product_field_3` が関連商品カルーセルの別商品を拾っていた問題に対し、カルーセルを除外してメイン価格を取る `_from_main_price` を追加 |
+| #11 | 2026-06-06 | **価格誤取得の修正(2・最終)**。変動商品で最小サイズの最安値を拾う問題を解消。`form.variations_form` から**指定サイズ(`extract.variant`)の価格**を取得する `_from_variation` を追加。正しい価格を実機検証（Na2 10ml=$170.30 / Pt#3 25ml=$375.00 / Pd#3 25ml=$200.77）。旧履歴はリセット |
 
-> 本番稼働中（3商品の実価格・為替を取得済み）。定期実行(schedule)の初回発火は様子見中。
+> 本番稼働中。定期実行は外部トリガー（cron-job.org）で確実化済み。価格は商品ごとに指定サイズを正確に取得（実機検証済み）。
