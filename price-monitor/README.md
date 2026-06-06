@@ -179,10 +179,89 @@ price-monitor/
 
 ---
 
+## トラブルシューティング
+
+### GitHub Actions の定期実行(schedule)が動かない場合
+
+GitHub Actions の schedule イベントは、以下の制約により意図通りに動作しないことがあります：
+
+**既知の制約:**
+- schedule は**デフォルトブランチ（通常 main または master）のワークフローファイルだけ**を対象とします
+  - 他のブランチに `.github/workflows/price-monitor.yml` があっても無視されます
+- リポジトリが**非公開（private）**の場合、無料プランでは schedule は動作しません
+- 初回の schedule 実行には**最大1時間程度の遅延**があることがあります
+- GitHub Actions の schedule は**ベストエフォート**で、混雑時は遅延・スキップされることがあります
+  - 毎時 `:00` は最も混雑しやすい時刻です（このワークフローは `:17` にずらしてあります）
+
+**対処法:**
+1. リポジトリを**公開（public）**にする（Settings → General → Danger Zone → Change visibility）
+2. ワークフローファイルが**デフォルトブランチ**にマージされていることを確認
+3. 初回実行は手動で「Actions → 価格モニター → Run workflow」を実行して待つ
+4. 数日待っても schedule が動かない場合は、外部トリガーの利用を検討：
+
+**外部トリガーで確実に定期実行する方法:**
+
+GitHub Actions の schedule が不安定な場合、以下の外部サービスから repository_dispatch イベントをトリガーして定期実行を確保できます：
+
+1. **GitHub Workflow を repository_dispatch に対応させる**（既に対応済み）
+   - `price-monitor.yml` は `repository_dispatch` イベントで起動できるようになっています
+
+2. **外部トリガーサービスを選ぶ**
+
+   **オプションA: GitHub Actions の別リポジトリから呼ぶ**（無料・最も確実）
+   ```yaml
+   # 別の public リポジトリの .github/workflows/trigger.yml
+   name: Trigger Price Monitor
+   on:
+     schedule:
+       - cron: '17 21,0,3,6,9,12 * * *'
+   jobs:
+     trigger:
+       runs-on: ubuntu-latest
+       steps:
+         - uses: peter-evans/repository-dispatch@v3
+           with:
+             token: ${{ secrets.PAT_TOKEN }}
+             repository: xf1lux-10282/claude
+             event-type: check-prices
+   ```
+   - Personal Access Token (PAT) を作成し、別リポジトリの Secrets に登録する必要があります
+
+   **オプションB: cron-job.org（無料・簡単）**
+   1. https://cron-job.org でアカウント作成
+   2. 新規ジョブ作成で以下を設定：
+      - URL: `https://api.github.com/repos/xf1lux-10282/claude/dispatches`
+      - HTTP Method: `POST`
+      - Headers:
+        ```
+        Accept: application/vnd.github.v3+json
+        Authorization: Bearer YOUR_GITHUB_TOKEN
+        ```
+      - Body:
+        ```json
+        {"event_type": "check-prices"}
+        ```
+      - Schedule: `17 */3 * * *`（3時間ごと、17分に実行）
+
+   **オプションC: EasyCron（無料枠あり）**
+   - https://www.easycron.com で同様の設定
+
+3. **GitHub Personal Access Token (PAT) を作成**
+   1. GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic) → Generate new token
+   2. Scopes: `repo`（full control）にチェック
+   3. 生成されたトークンを外部サービスに登録
+
+4. **動作確認**
+   - 外部サービスのジョブを手動実行してテスト
+   - GitHub Actions タブで `repository_dispatch` イベントの実行が表示されることを確認
+
+> 💡 外部トリガーを使うことで、GitHub Actions の schedule の制約を回避し、確実に定期実行できます。
+
+---
+
 ## 変更履歴（開発記録）
 
-詳細な経緯・意思決定は `obsidian/DailyNotes/2026/06/2026-06-06.md`、現在の状況と次の作業は
-[RESUME.md](RESUME.md) を参照。
+詳細な経緯・意思決定は `obsidian/DailyNotes/2026/06/2026-06-06.md` を参照。
 
 | PR | 日付 | 内容 |
 |---|---|---|
@@ -194,6 +273,8 @@ price-monitor/
 | #3 | 2026-06-06 | 定期実行の信頼性向上のため cron を `:00` → `:17` にずらす |
 | #4 | 2026-06-06 | PWAキャッシュ修正（HTML/データを network-first 化・キャッシュ v2）。更新が確実に反映されるように |
 | #5 | 2026-06-06 | 開発履歴・RESUME の整備 |
-| — | 2026-06-06 | **第3セッション**: 本番初回実行（ntfy/Discord Secrets設定・GitHub Pages有効化）、期間切替ボタンの動作修正（Chart.jsズームプラグインとの競合を `chart.resetZoom()` + `chart.zoomScale()` で解消）、アプリケーション資料整備 |
+| — | 2026-06-06 | 本番初回実行（ntfy/Discord Secrets設定・GitHub Pages有効化） |
+| #6 | 2026-06-06 | 期間切替ボタンの動作修正（Chart.jsズームプラグインとの競合を `chart.resetZoom()` + `chart.zoomScale()` で解消） |
+| #7 | 2026-06-06 | 外部トリガー（repository_dispatch）対応。schedule が不安定な場合の代替手段を追加 |
 
-> 本番稼働中（3商品の実価格・為替を取得済み）。定期実行(schedule)の初回発火は様子見中。
+> 本番稼働中（3商品の実価格・為替を取得済み）。
