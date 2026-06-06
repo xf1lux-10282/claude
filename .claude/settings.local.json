@@ -395,7 +395,8 @@
       "mcp__1dde4928-6ca9-4c09-947c-d725c9404635__notion-create-database",
       "mcp__1dde4928-6ca9-4c09-947c-d725c9404635__notion-create-view",
       "mcp__1dde4928-6ca9-4c09-947c-d725c9404635__notion-create-pages",
-      "mcp__1dde4928-6ca9-4c09-947c-d725c9404635__notion-update-data-source"
+      "mcp__1dde4928-6ca9-4c09-947c-d725c9404635__notion-update-data-source",
+      "Bash(echo \"=== rules.md 2.4フォーマット ===\"; sed -n '/2.4/,/^## 3/p' /home/user/claude/.claude/rules.md 2>/dev/null | head -60)"
     ],
     "deny": [],
     "ask": []
