@@ -100,6 +100,11 @@
       "t": "2026-06-06T14:45:27Z",
       "usdjpy": 160.163,
       "source": "open.er-api.com"
+    },
+    {
+      "t": "2026-06-06T14:55:45Z",
+      "usdjpy": 160.163,
+      "source": "open.er-api.com"
     }
   ]
 }
