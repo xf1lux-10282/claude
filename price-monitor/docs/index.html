@@ -10,6 +10,9 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8/hammer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.0.1/dist/chartjs-plugin-zoom.min.js"></script>
 <style>
   :root { --bg:#0f172a; --card:#1e293b; --fg:#e2e8f0; --muted:#94a3b8;
           --up:#ef4444; --down:#22c55e; --accent:#38bdf8; }
@@ -34,7 +37,14 @@
   .jpy { display:block; font-size:.82rem; color:#fbbf24; margin-top:.1rem; }
   .stats { display:flex; gap:1.2rem; margin:.6rem 0 .2rem; color:var(--muted); font-size:.78rem; flex-wrap:wrap; }
   .stats b { color:var(--fg); font-weight:600; }
-  .chart-box { position:relative; height:180px; margin-top:.4rem; }
+  .chart-box { position:relative; height:200px; margin-top:.4rem; touch-action:pan-y; }
+  .toolbar { display:flex; gap:.4rem; align-items:center; flex-wrap:wrap; padding:.2rem 1.2rem .6rem; }
+  .toolbar .label { color:var(--muted); font-size:.78rem; margin-right:.2rem; }
+  .range-btn { background:#334155; color:var(--fg); border:none; border-radius:999px;
+               padding:.3rem .8rem; font-size:.8rem; cursor:pointer; }
+  .range-btn.active { background:var(--accent); color:#0f172a; font-weight:700; }
+  .range-btn:hover { filter:brightness(1.1); }
+  .hint { color:var(--muted); font-size:.7rem; margin-left:auto; }
   .badge { display:inline-block; font-size:.7rem; padding:.1rem .5rem; border-radius:999px;
            background:#334155; color:var(--muted); margin-left:.4rem; }
   .badge.paused { background:#451a1a; color:#fca5a5; }
@@ -48,6 +58,14 @@
   <h1>📈 価格モニター</h1>
   <span class="meta" id="updated"></span>
 </header>
+<div class="toolbar" id="toolbar" style="display:none">
+  <span class="label">表示期間</span>
+  <button class="range-btn" data-range="1M">1ヶ月</button>
+  <button class="range-btn" data-range="3M">3ヶ月</button>
+  <button class="range-btn" data-range="1Y">1年</button>
+  <button class="range-btn active" data-range="all">全期間</button>
+  <span class="hint">← ドラッグで左右スクロール / ホイール・ピンチで拡大</span>
+</div>
 <div class="wrap" id="app">
   <div class="empty">読み込み中…</div>
 </div>
@@ -103,13 +121,51 @@ function renderCard(p){
   </div>`;
 }
 
+const DAY = 86400000;
+const RANGES = { "1M": 30*DAY, "3M": 90*DAY, "1Y": 365*DAY, "all": null };
+let currentRange = "all";
+
+// 期間に応じた x 軸の表示単位（ラベルの粒度）を決める
+function unitFor(spanMs){
+  if(spanMs == null || spanMs > 200*DAY) return "month";
+  if(spanMs > 60*DAY) return "week";
+  if(spanMs > 2*DAY) return "day";
+  return "hour";   // データが少ない初期は時刻まで表示
+}
+
+// 1つのチャートに、選択中の期間ウィンドウを適用する（データ範囲外へはパンさせない）
+function applyRangeToChart(entry){
+  const { chart, dataMin, dataMax } = entry;
+  const span = RANGES[currentRange];
+  let min, max = dataMax;
+  if(span == null){ min = dataMin; }            // 全期間
+  else { min = Math.max(dataMin, dataMax - span); }
+  const visibleSpan = max - min;
+  chart.options.scales.x.min = min;
+  chart.options.scales.x.max = max;
+  chart.options.scales.x.time.unit = unitFor(visibleSpan || RANGES["all"]);
+  // パン/ズームの限界をデータ範囲に固定
+  const zoom = chart.options.plugins.zoom;
+  zoom.limits.x.min = dataMin;
+  zoom.limits.x.max = dataMax;
+  chart.update("none");
+}
+
+function applyRange(range){
+  currentRange = range;
+  document.querySelectorAll(".range-btn").forEach(b =>
+    b.classList.toggle("active", b.dataset.range === range));
+  charts.forEach(applyRangeToChart);
+}
+
 async function drawChart(p){
   let hist;
   try { hist = await getJSON(`data/history/${p.id}.json`); } catch(e){ return; }
   const points = hist.points || [];
-  const pts = points.map(x => ({x:x.t, y:x.price}));
+  const pts = points.map(x => ({x: new Date(x.t).getTime(), y:x.price}));
   if(!pts.length) return;
-  const jpyPts = points.filter(x => x.price_jpy != null).map(x => ({x:x.t, y:x.price_jpy}));
+  const jpyPts = points.filter(x => x.price_jpy != null)
+                       .map(x => ({x: new Date(x.t).getTime(), y:x.price_jpy}));
   const down = p.latest_price <= p.first_price;
   const color = down ? "#22c55e" : "#ef4444";
   const ctx = document.getElementById("c-"+p.id);
@@ -117,7 +173,7 @@ async function drawChart(p){
   const datasets = [{
     label: p.currency || "価格", yAxisID: "y",
     data: pts, borderColor: color, backgroundColor: color+"22",
-    fill:true, stepped:"after", tension:0, pointRadius:pts.length>60?0:2, borderWidth:2
+    fill:true, stepped:"after", tension:0, pointRadius:2, pointHoverRadius:4, borderWidth:2
   }];
   // 円換算ライン（為替×価格）。凡例クリックで表示/非表示を切替できる
   if(jpyPts.length){
@@ -128,28 +184,39 @@ async function drawChart(p){
     });
   }
 
-  charts.push(new Chart(ctx, {
+  const dataMin = pts[0].x, dataMax = pts[pts.length-1].x;
+  const chart = new Chart(ctx, {
     type:"line",
     data:{ datasets },
     options:{
-      responsive:true, maintainAspectRatio:false,
+      responsive:true, maintainAspectRatio:false, animation:false,
       interaction:{ mode:"index", intersect:false },
       plugins:{
         legend:{ display: jpyPts.length>0, labels:{color:"#94a3b8",boxWidth:12,font:{size:10}} },
         tooltip:{ callbacks:{
-          title:(it)=> new Date(it[0].parsed.x).toLocaleString(),
+          title:(it)=> new Date(it[0].parsed.x).toLocaleString("ja-JP",
+                  {year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}),
           label:(it)=> it.dataset.label==="円換算"
             ? "円換算: ¥" + Number(it.parsed.y).toLocaleString()
-            : fmt(it.parsed.y, p.currency) } } },
+            : fmt(it.parsed.y, p.currency) } },
+        zoom:{
+          pan:{ enabled:true, mode:"x", modifierKey:null },
+          zoom:{ wheel:{enabled:true}, pinch:{enabled:true}, mode:"x" },
+          limits:{ x:{ min:dataMin, max:dataMax } }
+        }
+      },
       scales:{
-        x:{ type:"time", time:{unit: pts.length>60?"week":"day"},
-            ticks:{color:"#64748b",maxRotation:0,autoSkip:true,maxTicksLimit:5}, grid:{display:false} },
-        y:{ position:"left", ticks:{color:"#64748b"}, grid:{color:"#33415555"} },
+        x:{ type:"time",
+            time:{ unit:"day", displayFormats:{ hour:"M/d HH:mm", day:"M/d", week:"M/d", month:"yyyy/M" } },
+            ticks:{ color:"#94a3b8", maxRotation:0, autoSkip:true, maxTicksLimit:6 },
+            grid:{ color:"#33415533" } },
+        y:{ position:"left", ticks:{color:"#94a3b8"}, grid:{color:"#33415555"} },
         yJpy:{ position:"right", display: jpyPts.length>0,
             ticks:{color:"#f59e0b",callback:(v)=>"¥"+Number(v).toLocaleString()}, grid:{display:false} }
       }
     }
-  }));
+  });
+  charts.push({ chart, dataMin, dataMax });
 }
 
 async function main(){
@@ -167,14 +234,16 @@ async function main(){
 
   document.getElementById("app").innerHTML = products.map(renderCard).join("");
   for(const p of products){ await drawChart(p); }
+
+  if(charts.length){
+    document.getElementById("toolbar").style.display = "flex";
+    document.querySelectorAll(".range-btn").forEach(b =>
+      b.addEventListener("click", () => applyRange(b.dataset.range)));
+    applyRange(currentRange);
+  }
 }
 
-// Chart.js の time 軸に必要な date adapter（軽量な date-fns adapter）
-const adapter = document.createElement("script");
-adapter.src = "https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js";
-adapter.onload = main;
-adapter.onerror = main;
-document.head.appendChild(adapter);
+main();
 
 if("serviceWorker" in navigator){
   navigator.serviceWorker.register("sw.js").catch(()=>{});
