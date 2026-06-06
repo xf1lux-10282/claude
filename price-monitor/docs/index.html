@@ -148,7 +148,10 @@ function applyRangeToChart(entry){
   const zoom = chart.options.plugins.zoom;
   zoom.limits.x.min = dataMin;
   zoom.limits.x.max = dataMax;
-  chart.update("none");
+  // ズームプラグインをリセットしてから新しい範囲を適用
+  chart.resetZoom();
+  chart.zoomScale('x', {min: min, max: max}, 'default');
+  chart.update();
 }
 
 function applyRange(range){
