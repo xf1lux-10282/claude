@@ -16,29 +16,34 @@
 
 ---
 
-## 2. 現在のステータス（2026-06-06 時点）
+## 2. 現在のステータス（2026-06-06 第2セッション終了時点）
 
-- ✅ ツール一式を実装し、**PR #1 を master へマージ済み**
-  （`feat(price-monitor): 商品価格の定期ウォッチ機能を追加` ほか）
-- ✅ cron 設定済み（日本時間 6/9/12/15/18/21時台 = UTC `17 21,0,3,6,9,12 * * *`）
-  ※ 分を :17 にしているのは GitHub の :00 混雑によるスキップ対策（公式推奨）
-- ✅ 監視対象 3商品を登録（すべて Bostick & Sullivan、USD建て、自動抽出）
-  | id | 商品 |
-  |---|---|
-  | `bs-na2-platinum-20` | Sodium Platinum (Na2) 20% Solution 10ml |
-  | `bs-platinum-3-25` | Platinum Solution #3 25ml |
-  | `bs-palladium-3-25` | Palladium Solution #3 25ml |
+**🟢 本番稼働中。** Secrets/Pages 設定済み、実サイトから価格取得に成功している。
 
-### ⏳ まだ動き出していない理由（＝ユーザー側の未完了アクション）
-1. **Secrets 未登録** … `NTFY_TOPIC` または `DISCORD_WEBHOOK_URL`
-   （未登録でも価格・為替の記録は動くが通知は飛ばない）
-2. **GitHub Pages 未有効化** … `Settings → Pages → Source = GitHub Actions`
-3. **初回の手動実行が未実施** … `Actions → 価格モニター → Run workflow`
+- ✅ PR #1〜#4 を master へマージ・Pages デプロイ済み
+  - #1 本体 / #2 グラフ改善 / #3 cron:17 / #4 PWAキャッシュ修正
+- ✅ **実価格を取得できている**（手動Runで3点記録、append+commit 正常）
+  | id | 商品 | 直近価格 |
+  |---|---|---|
+  | `bs-na2-platinum-20` | Sodium Platinum (Na2) 20% 10ml | $87.29 |
+  | `bs-platinum-3-25` | Platinum Solution #3 25ml | $170.30 |
+  | `bs-palladium-3-25` | Palladium Solution #3 25ml | $211.25 |
+  - 抽出方式は `css:.usg_product_field_3`（このサイトは JSON-LD 非搭載のため CSS セレクタ指定）
+  - 為替も記録中（例: 1$=160.163、open.er-api.com）
+- ✅ cron は `17 21,0,3,6,9,12 * * *`（JST 6:17/9:17/12:17/15:17/18:17/21:17）
+- ✅ ダッシュボードのグラフ改善（日付軸・期間切替 1ヶ月/3ヶ月/1年/全期間・左右スクロール）公開済み
+- ✅ PWA は network-first＋キャッシュ v2（更新が確実に反映される。シェル更新時は CACHE 版を上げる）
 
-> ⚠️ **重要な未検証点**: 開発サンドボックスはネットワーク許可リスト制で、実サイト
-> （bostick-sullivan.com）・為替API・CDN に到達できない。よって **実サイトからの
-> 価格取得は一度も成功確認できていない**。ロジックは WooCommerce 型のローカルHTMLと
-> 為替スタブで検証済み。**本当に取れるかは「初回の Run workflow」で初めて分かる。**
+### ⏳ 唯一の未確認事項（最優先で確認）
+- **定期実行(schedule)の初回発火がまだ未確認**。これまでの実行は手動(workflow_dispatch)のみ。
+  - 確認方法: GitHub → Actions → 「価格モニター」で **event=schedule** の実行が出ているか。
+  - 出ていなければ次枠（UTC 12:17 = JST 21:17 など）を待つか、手動 Run。
+  - 数回続けてスキップされるなら cron の分をさらに別の値へ（:00 と混雑帯を避ける）。
+- （任意）値動き発生時に ntfy/Discord 通知が実際に届くか。
+
+> 💡 開発サンドボックスは外部サイト/為替API/CDN へ到達できない（許可リスト制）。
+> 実取得の確認は GitHub Actions ランナー側で行うこと（ローカルの monitor.py 実行で
+> 失敗しても、それは環境制約であってコードの問題ではない場合がある）。
 
 ---
 
