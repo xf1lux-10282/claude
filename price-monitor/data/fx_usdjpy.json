@@ -1,0 +1,10 @@
+{
+  "pair": "USD/JPY",
+  "points": [
+    {
+      "t": "2026-06-06T02:44:01Z",
+      "usdjpy": 160.163,
+      "source": "open.er-api.com"
+    }
+  ]
+}
