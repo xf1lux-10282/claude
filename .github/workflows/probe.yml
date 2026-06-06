@@ -1,0 +1,26 @@
+name: probe (一時診断)
+
+# 価格抽出の調査用・使い捨てワークフロー。
+# ランナー（サイトに到達できる環境）でページ構造を調べてログに出す。調査後は削除する。
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: "調べる商品ページURL"
+        required: true
+        default: "https://www.bostick-sullivan.com/product/sodium-platinum-na2-standard-20-solution-10-ml/"
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: price-monitor
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: probe
+        run: python probe.py "${{ github.event.inputs.url }}"
