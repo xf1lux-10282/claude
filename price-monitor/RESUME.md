@@ -35,10 +35,13 @@
 - ✅ PWA は network-first＋キャッシュ v2（更新が確実に反映される。シェル更新時は CACHE 版を上げる）
 
 ### ⏳ 唯一の未確認事項（最優先で確認）
-- **定期実行(schedule)の初回発火がまだ未確認**。これまでの実行は手動(workflow_dispatch)のみ。
-  - 確認方法: GitHub → Actions → 「価格モニター」で **event=schedule** の実行が出ているか。
-  - 出ていなければ次枠（UTC 12:17 = JST 21:17 など）を待つか、手動 Run。
-  - 数回続けてスキップされるなら cron の分をさらに別の値へ（:00 と混雑帯を避ける）。
+- **GitHub の定期実行(schedule)が初日は一度も発火しなかった**（cron :00 era も :17 era も全枠スキップ）。
+  GitHub Actions の schedule はベストエフォートで、スロットがまるごと落ちることがある既知の挙動。
+- **対策（採用方針）: 外部トリガーで確実化** → 手順は [EXTERNAL_TRIGGER.md](EXTERNAL_TRIGGER.md)。
+  外部の無料 cron サービス（cron-job.org 等）から GitHub の workflow_dispatch API を叩いて起動する。
+  ワークフロー側は変更不要。GitHub の cron は予備として残す。
+  - **未完了のユーザー操作**: ①Fine-grained トークン作成（Actions: Read/Write、対象リポジトリのみ）
+    ②cron-job.org にジョブ登録（手順書の通り）③テスト実行
 - （任意）値動き発生時に ntfy/Discord 通知が実際に届くか。
 
 > 💡 開発サンドボックスは外部サイト/為替API/CDN へ到達できない（許可リスト制）。
