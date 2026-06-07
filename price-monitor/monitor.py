@@ -20,6 +20,7 @@ import time
 from pathlib import Path
 
 import fx as fx_module
+import metals as metals_module
 import notifier
 import storage
 from scraper import fetch_price
@@ -99,6 +100,14 @@ def main(argv: list[str] | None = None) -> int:
     if fx:
         print(f"== 為替: 1 USD = {fx.usdjpy:.4f} JPY ({fx.source}) ==")
         storage.record_fx(fx.usdjpy, fx.source)
+
+    # 参考指標: 地金（プラチナ・パラジウム）のスポット価格も記録する（購入商品ではない）
+    metal_results = metals_module.get_metals(timeout=int(settings.get("request_timeout_sec", 20)))
+    for m in metal_results:
+        jpy_g = storage.usd_oz_to_jpy_g(m.usd, usdjpy)
+        note = f" ≒ ¥{jpy_g:,}/g" if jpy_g is not None else ""
+        print(f"== 地金 {m.label}: ${m.usd:,.2f}/oz{note} ({m.source}) ==")
+    storage.record_metals(metal_results, usdjpy)
 
     print(f"== {len(products)} 件の商品をチェックします ==")
     ok = 0

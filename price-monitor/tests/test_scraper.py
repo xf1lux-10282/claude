@@ -114,11 +114,50 @@ def test_strategy_order():
     _check("設定ゼロでも JSON-LD で抽出できる", result is not None and result.value == 78.5)
 
 
+def test_metals_parsing():
+    print("test_metals（Yahoo JSON / stooq CSV のパース・円/g換算）")
+    import metals as metals_mod
+    import storage
+
+    # Yahoo chart API 形式のレスポンスをスタブ
+    class _Resp:
+        def __init__(self, payload=None, text=None):
+            self._p, self.text = payload, text
+        def raise_for_status(self):
+            pass
+        def json(self):
+            return self._p
+
+    yahoo_payload = {"chart": {"result": [{"meta": {"regularMarketPrice": 1234.5}}], "error": None}}
+    orig = metals_mod.requests.get
+    metals_mod.requests.get = lambda *a, **k: _Resp(payload=yahoo_payload)
+    try:
+        v = metals_mod._from_yahoo("PL=F", 5)
+        _check("Yahoo から 1234.5 を抽出", v == 1234.5)
+    finally:
+        metals_mod.requests.get = orig
+
+    # stooq CSV 形式
+    csv = "Symbol,Date,Time,Open,High,Low,Close,Volume\nXPTUSD,2026-06-07,21:00:00,1230,1240,1228,1236.7,0"
+    metals_mod.requests.get = lambda *a, **k: _Resp(text=csv)
+    try:
+        v = metals_mod._from_stooq("xptusd", 5)
+        _check("stooq Close=1236.7 を抽出", v == 1236.7)
+    finally:
+        metals_mod.requests.get = orig
+
+    # USD/oz → 円/g 換算（例: $1000/oz, 150円 → 1000*150/31.1034768 ≒ 4823円/g）
+    g = storage.usd_oz_to_jpy_g(1000.0, 150.0)
+    _check("円/g 換算 ≒ 4823", g == round(1000.0 * 150.0 / 31.1034768))
+    _check("為替なしは None", storage.usd_oz_to_jpy_g(1000.0, None) is None)
+
+
 if __name__ == "__main__":
     test_to_float()
     test_json_ld()
     test_css()
     test_main_price_excludes_carousel()
     test_variation_picks_requested_size()
+    test_metals_parsing()
     test_strategy_order()
     print("\nすべてのテストに合格しました ✅")
