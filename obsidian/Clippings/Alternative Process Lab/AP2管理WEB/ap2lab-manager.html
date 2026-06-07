@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>Ap2lab 社内管理（叩き台）</title>
+<style>
+  :root{
+    --bg:#0e1116; --card:#171c24; --card2:#1f2630; --line:#2a3340;
+    --text:#e7edf5; --sub:#9aa7b8; --accent:#3b82f6; --accent2:#22c55e;
+    --warn:#f59e0b; --danger:#ef4444; --paid:#22c55e; --unpaid:#f59e0b;
+    --radius:16px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0;background:#000;color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;}
+  /* phone frame */
+  .phone{max-width:430px;margin:0 auto;min-height:100vh;background:var(--bg);
+    position:relative;display:flex;flex-direction:column;overflow:hidden}
+  /* top bar */
+  .topbar{padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
+    background:linear-gradient(180deg,#141a22,#0e1116);border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:20}
+  .brand{font-weight:800;letter-spacing:.5px;font-size:17px}
+  .brand small{color:var(--sub);font-weight:600;font-size:11px;display:block;letter-spacing:1px}
+  .who{display:flex;align-items:center;gap:8px;font-size:12px}
+  .avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
+    font-weight:700;font-size:13px;color:#fff;background:var(--accent)}
+  .role-pill{font-size:10px;color:var(--sub)}
+  /* content */
+  .content{flex:1;overflow-y:auto;padding:16px 16px 96px}
+  .screen{display:none;animation:fade .25s ease}
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  h2.sec{font-size:13px;color:var(--sub);margin:18px 4px 10px;letter-spacing:.5px;text-transform:uppercase}
+  /* cards */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    padding:16px;margin-bottom:12px}
+  .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .kpi{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);
+    border-radius:var(--radius);padding:16px}
+  .kpi .label{font-size:11px;color:var(--sub)}
+  .kpi .val{font-size:24px;font-weight:800;margin-top:6px}
+  .kpi .delta{font-size:11px;margin-top:4px}
+  .up{color:var(--accent2)} .down{color:var(--danger)}
+  .badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px}
+  .b-paid{background:rgba(34,197,94,.15);color:#4ade80}
+  .b-unpaid{background:rgba(245,158,11,.15);color:#fbbf24}
+  .b-web{background:rgba(59,130,246,.15);color:#60a5fa}
+  .b-store{background:rgba(148,163,184,.15);color:#cbd5e1}
+  .b-done{background:rgba(34,197,94,.15);color:#4ade80}
+  .b-doing{background:rgba(59,130,246,.15);color:#60a5fa}
+  .b-todo{background:rgba(148,163,184,.15);color:#cbd5e1}
+  .item{padding:13px 0;border-bottom:1px solid var(--line)}
+  .item:last-child{border-bottom:none}
+  .item .t{font-weight:700;font-size:15px}
+  .item .m{color:var(--sub);font-size:12px;margin-top:3px}
+  .pbar{height:7px;border-radius:999px;background:#26303c;overflow:hidden;margin-top:9px}
+  .pbar > i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#3b82f6,#22c55e)}
+  .tag{display:inline-block;font-size:11px;color:var(--sub);background:#222b36;
+    padding:3px 9px;border-radius:8px;margin:2px 4px 2px 0}
+  .lock{margin-top:8px;padding:14px;border:1px dashed var(--line);border-radius:12px;
+    color:var(--sub);font-size:12px;text-align:center;background:#12161d}
+  .avatar-sm{width:24px;height:24px;border-radius:50%;display:inline-grid;place-items:center;
+    font-size:10px;font-weight:700;color:#fff;background:#475569}
+  /* calendar */
+  .cal{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:6px}
+  .cal .d{aspect-ratio:1;border-radius:9px;background:var(--card2);display:flex;flex-direction:column;
+    align-items:center;justify-content:center;font-size:12px;position:relative;border:1px solid transparent}
+  .cal .hd{background:transparent;color:var(--sub);font-size:10px;aspect-ratio:auto;padding:2px 0}
+  .cal .d.has{border-color:var(--accent)}
+  .cal .dot{width:5px;height:5px;border-radius:50%;background:var(--accent2);margin-top:3px}
+  .cal .d.today{background:var(--accent);color:#fff;font-weight:800}
+  /* bottom nav */
+  .nav{position:fixed;left:0;right:0;bottom:0;max-width:430px;margin:0 auto;
+    background:rgba(20,26,34,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);
+    display:flex;justify-content:space-around;padding:8px 4px 14px;z-index:30}
+  .nav button{background:none;border:none;color:var(--sub);font-size:10px;display:flex;
+    flex-direction:column;align-items:center;gap:3px;flex:1;padding:4px;cursor:pointer}
+  .nav button .ic{font-size:20px;line-height:1}
+  .nav button.active{color:var(--accent)}
+  /* login / role switch */
+  .overlay{position:fixed;inset:0;background:rgba(5,8,12,.86);backdrop-filter:blur(6px);
+    z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
+  .overlay .box{max-width:380px;width:100%;background:var(--card);border:1px solid var(--line);
+    border-radius:20px;padding:24px}
+  .overlay h3{margin:0 0 4px;font-size:18px}
+  .overlay p{color:var(--sub);font-size:12px;margin:0 0 18px}
+  .role-btn{width:100%;text-align:left;background:var(--card2);border:1px solid var(--line);
+    color:var(--text);border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer;
+    display:flex;align-items:center;gap:12px;transition:.15s}
+  .role-btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .role-btn .d{font-size:11px;color:var(--sub);margin-top:2px}
+  .switch-btn{font-size:11px;color:var(--accent);background:none;border:1px solid var(--line);
+    padding:5px 10px;border-radius:999px;cursor:pointer}
+  .btn{display:block;width:100%;text-align:center;background:var(--accent);color:#fff;border:none;
+    padding:13px;border-radius:12px;font-weight:700;font-size:14px;cursor:pointer;margin-top:6px}
+  .btn.ghost{background:var(--card2);border:1px solid var(--line);color:var(--text)}
+  .note{font-size:11px;color:var(--sub);line-height:1.6;background:#10151c;border:1px solid var(--line);
+    border-radius:12px;padding:12px;margin-top:14px}
+  .sq{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#cbd5e1;
+    background:#11161d;border:1px solid var(--line);border-radius:8px;padding:5px 9px;margin-top:8px}
+  .sq b{color:#fff}
+  .hint{font-size:10px;color:#5b6573}
+</style>
+</head>
+<body>
+<div class="phone">
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <div class="brand">Ap2lab<small>暗室ルーム 社内管理</small></div>
+    <div class="who">
+      <div style="text-align:right">
+        <div id="whoName" style="font-weight:700">—</div>
+        <div class="role-pill" id="whoRole">—</div>
+      </div>
+      <div class="avatar" id="whoAv">A</div>
+      <button class="switch-btn" onclick="openLogin()">切替</button>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- HOME -->
+    <section class="screen active" id="s-home">
+      <h2 class="sec">今日の状況</h2>
+      <div class="kpi-grid" id="homeKpi"></div>
+      <h2 class="sec">本日の予約</h2>
+      <div class="card" id="homeBookings"></div>
+      <h2 class="sec">あなたのタスク</h2>
+      <div class="card" id="homeTasks"></div>
+    </section>
+
+    <!-- 予約 -->
+    <section class="screen" id="s-book">
+      <h2 class="sec">予約管理</h2>
+      <div class="sq">🟦 <span><b>Square予約</b> と連携：部屋料金は予約時に事前決済／店頭受付分は当日精算</span></div>
+      <div class="card" id="bookList" style="margin-top:12px"></div>
+    </section>
+
+    <!-- 作業 -->
+    <section class="screen" id="s-task">
+      <h2 class="sec">作業・進捗</h2>
+      <div class="card" id="taskList"></div>
+    </section>
+
+    <!-- 顧客 -->
+    <section class="screen" id="s-cust">
+      <h2 class="sec">顧客リスト</h2>
+      <div class="card" id="custList"></div>
+    </section>
+
+    <!-- 経営 -->
+    <section class="screen" id="s-biz">
+      <h2 class="sec">経営ダッシュボード</h2>
+      <div id="bizBody"></div>
+    </section>
+
+  </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="nav" id="nav">
+    <button data-screen="s-home" class="active" onclick="go('s-home',this)"><span class="ic">🏠</span>ホーム</button>
+    <button data-screen="s-book" onclick="go('s-book',this)"><span class="ic">📅</span>予約</button>
+    <button data-screen="s-task" onclick="go('s-task',this)"><span class="ic">✅</span>作業</button>
+    <button data-screen="s-cust" onclick="go('s-cust',this)"><span class="ic">👥</span>顧客</button>
+    <button data-screen="s-biz" onclick="go('s-biz',this)"><span class="ic">📊</span>経営</button>
+  </div>
+</div>
+
+<!-- LOGIN / ROLE SWITCH -->
+<div class="overlay" id="login">
+  <div class="box">
+    <h3>ログイン</h3>
+    <p>※叩き台では「誰としてログインするか」を選ぶと、その人に見える画面だけが表示されます（＝権限分けの体感）。</p>
+    <button class="role-btn" onclick="login('owner')">
+      <span class="avatar" style="background:#8b5cf6">大</span>
+      <div><div style="font-weight:700">あなた（オーナー）</div><div class="d">全権限・経営数値まで全部</div></div>
+    </button>
+    <button class="role-btn" onclick="login('admin')">
+      <span class="avatar" style="background:#3b82f6">経</span>
+      <div><div style="font-weight:700">経営パートナー（管理者）</div><div class="d">全権限・経営も把握</div></div>
+    </button>
+    <button class="role-btn" onclick="login('reception')">
+      <span class="avatar" style="background:#22c55e">予</span>
+      <div><div style="font-weight:700">予約・顧客担当</div><div class="d">予約／顧客対応／予約状況（経営数値は非表示）</div></div>
+    </button>
+    <button class="role-btn" onclick="login('worker')">
+      <span class="avatar" style="background:#f59e0b">作</span>
+      <div><div style="font-weight:700">作業担当</div><div class="d">割当作業と進捗のみ（顧客連絡先・売上は非表示）</div></div>
+    </button>
+    <div class="note">これはGlideで作った場合の<b>完成イメージの再現</b>です。本番のGlideでは、メール＋パスワードの本物のログインと、ここで見た権限分けがそのまま使えます。</div>
+  </div>
+</div>
+
+<script>
+/* ---------- サンプルデータ ---------- */
+const USERS={
+  owner:{name:"あなた",role:"オーナー",av:"大",col:"#8b5cf6"},
+  admin:{name:"経営パートナー",role:"管理者",av:"経",col:"#3b82f6"},
+  reception:{name:"予約担当",role:"予約・顧客担当",av:"予",col:"#22c55e"},
+  worker:{name:"作業担当",role:"作業担当",av:"作",col:"#f59e0b"},
+};
+/* どのロールがどのタブを見られるか */
+const PERMS={
+  owner:    ["s-home","s-book","s-task","s-cust","s-biz"],
+  admin:    ["s-home","s-book","s-task","s-cust","s-biz"],
+  reception:["s-home","s-book","s-task","s-cust"],
+  worker:   ["s-home","s-task"],
+};
+
+const BOOKINGS=[
+  {time:"10:00–12:00",room:"暗室A",cust:"田中 様",amount:3000,pay:"paid",ch:"web"},
+  {time:"13:00–15:00",room:"暗室B",cust:"佐藤 様",amount:3000,pay:"paid",ch:"web"},
+  {time:"15:30–17:30",room:"スタジオ",cust:"鈴木 様",amount:5000,pay:"unpaid",ch:"store"},
+  {time:"18:00–20:00",room:"暗室A",cust:"山本 様",amount:3000,pay:"paid",ch:"web"},
+];
+const TASKS=[
+  {t:"暗室Aの薬品補充・廃液処理",who:"作",prog:100,st:"done",room:"暗室A"},
+  {t:"引き伸ばし機の点検（暗室B）",who:"作",prog:60,st:"doing",room:"暗室B"},
+  {t:"スタジオ照明の電球交換",who:"作",prog:0,st:"todo",room:"スタジオ"},
+  {t:"備品（印画紙）発注",who:"予",prog:30,st:"doing",room:"—"},
+];
+const CUSTOMERS=[
+  {n:"田中 様",tel:"090-xxxx-1234",visits:12,note:"モノクロ中心・常連"},
+  {n:"佐藤 様",tel:"090-xxxx-5678",visits:5,note:"大判プリント希望"},
+  {n:"鈴木 様",tel:"080-xxxx-9012",visits:1,note:"初回・店頭予約"},
+  {n:"山本 様",tel:"070-xxxx-3456",visits:8,note:"夜間利用が多い"},
+];
+
+let current="owner";
+
+/* ---------- 描画 ---------- */
+function yen(n){return "¥"+n.toLocaleString()}
+
+function render(){
+  const u=USERS[current];
+  whoName.textContent=u.name; whoRole.textContent=u.role;
+  whoAv.textContent=u.av; whoAv.style.background=u.col;
+
+  /* nav の出し分け */
+  document.querySelectorAll('#nav button').forEach(b=>{
+    b.style.display = PERMS[current].includes(b.dataset.screen)?'flex':'none';
+  });
+
+  /* HOME KPI（ロールで内容が変わる） */
+  const paidToday=BOOKINGS.filter(b=>b.pay==="paid").reduce((s,b)=>s+b.amount,0);
+  let kpi="";
+  if(current==="owner"||current==="admin"){
+    kpi=`
+     <div class="kpi"><div class="label">本日売上(事前決済)</div><div class="val">${yen(paidToday)}</div><div class="delta up">▲ 前週比 +12%</div></div>
+     <div class="kpi"><div class="label">本日予約</div><div class="val">${BOOKINGS.length}件</div><div class="delta">部屋稼働 72%</div></div>`;
+  }else if(current==="reception"){
+    kpi=`
+     <div class="kpi"><div class="label">本日予約</div><div class="val">${BOOKINGS.length}件</div><div class="delta">店頭精算 ${BOOKINGS.filter(b=>b.pay==='unpaid').length}件</div></div>
+     <div class="kpi"><div class="label">未精算</div><div class="val">${BOOKINGS.filter(b=>b.pay==='unpaid').length}件</div><div class="delta down">当日要確認</div></div>`;
+  }else{
+    const mine=TASKS.filter(t=>t.who==="作");
+    kpi=`
+     <div class="kpi"><div class="label">あなたの作業</div><div class="val">${mine.length}件</div><div class="delta">未完 ${mine.filter(t=>t.st!=='done').length}件</div></div>
+     <div class="kpi"><div class="label">本日完了</div><div class="val">${mine.filter(t=>t.st==='done').length}件</div><div class="delta up">お疲れさまです</div></div>`;
+  }
+  homeKpi.innerHTML=kpi;
+
+  /* HOME 本日の予約 */
+  if(current==="worker"){
+    homeBookings.innerHTML=`<div class="lock">🔒 予約・顧客情報は作業担当には表示されません</div>`;
+  }else{
+    homeBookings.innerHTML=BOOKINGS.map(b=>bookingRow(b,current)).join("");
+  }
+
+  /* HOME タスク */
+  const myTasks = current==="worker"?TASKS.filter(t=>t.who==="作"):TASKS;
+  homeTasks.innerHTML=myTasks.slice(0,3).map(taskRow).join("");
+
+  /* 予約画面 */
+  bookList.innerHTML=BOOKINGS.map(b=>bookingRow(b,current)).join("");
+
+  /* 作業画面 */
+  taskList.innerHTML=myTasks.map(taskRow).join("");
+
+  /* 顧客画面 */
+  if(current==="reception"||current==="owner"||current==="admin"){
+    custList.innerHTML=CUSTOMERS.map(c=>`
+      <div class="item">
+        <div class="row"><div class="t">${c.n}</div><span class="tag">来店 ${c.visits}回</span></div>
+        <div class="m">📞 ${c.tel}</div>
+        <div class="m">📝 ${c.note}</div>
+      </div>`).join("");
+  }
+
+  /* 経営画面 */
+  renderBiz();
+}
+
+function bookingRow(b,role){
+  const payBadge = b.pay==="paid"
+    ? `<span class="badge b-paid">決済済</span>`
+    : `<span class="badge b-unpaid">店頭精算</span>`;
+  const chBadge = b.ch==="web"
+    ? `<span class="badge b-web">Web予約</span>`
+    : `<span class="badge b-store">店頭受付</span>`;
+  // 予約担当・管理者・オーナーは金額OK。それ以外は出さない（ここではworkerは別表示なので関係なし）
+  const showMoney = role!=="worker";
+  return `<div class="item">
+    <div class="row"><div class="t">${b.time}　${b.room}</div>${payBadge}</div>
+    <div class="row" style="margin-top:6px">
+      <div class="m">👤 ${b.cust}　${chBadge}</div>
+      ${showMoney?`<div style="font-weight:700">${yen(b.amount)}</div>`:""}
+    </div>
+  </div>`;
+}
+
+function taskRow(t){
+  const st = t.st==="done"?`<span class="badge b-done">完了</span>`
+    : t.st==="doing"?`<span class="badge b-doing">進行中</span>`
+    : `<span class="badge b-todo">未着手</span>`;
+  return `<div class="item">
+    <div class="row"><div class="t">${t.t}</div>${st}</div>
+    <div class="m"><span class="avatar-sm">${t.who}</span> 担当　／　対象：${t.room}</div>
+    <div class="pbar"><i style="width:${t.prog}%"></i></div>
+  </div>`;
+}
+
+function renderBiz(){
+  if(!(current==="owner"||current==="admin")){
+    bizBody.innerHTML=`<div class="lock">🔒 経営ダッシュボードはオーナー・管理者のみ閲覧できます</div>`;
+    return;
+  }
+  const monthSales=486000, lastMonth=434000;
+  const roomShare=[["暗室A",42],["暗室B",33],["スタジオ",25]];
+  bizBody.innerHTML=`
+   <div class="kpi-grid">
+     <div class="kpi"><div class="label">今月売上</div><div class="val">${yen(monthSales)}</div><div class="delta up">▲ 前月比 +12%</div></div>
+     <div class="kpi"><div class="label">今月予約数</div><div class="val">128件</div><div class="delta up">▲ +9件</div></div>
+     <div class="kpi"><div class="label">客単価</div><div class="val">${yen(Math.round(monthSales/128))}</div><div class="delta">—</div></div>
+     <div class="kpi"><div class="label">リピート率</div><div class="val">64%</div><div class="delta up">▲ +5pt</div></div>
+   </div>
+   <h2 class="sec">部屋別 稼働シェア</h2>
+   <div class="card">
+     ${roomShare.map(r=>`
+       <div class="item">
+         <div class="row"><div class="t">${r[0]}</div><div style="font-weight:700">${r[1]}%</div></div>
+         <div class="pbar"><i style="width:${r[1]}%"></i></div>
+       </div>`).join("")}
+   </div>
+   <h2 class="sec">入金ステータス（Square）</h2>
+   <div class="card">
+     <div class="item"><div class="row"><div class="t">事前決済（Web）</div><span class="badge b-paid">${yen(366000)}</span></div></div>
+     <div class="item"><div class="row"><div class="t">店頭精算 予定</div><span class="badge b-unpaid">${yen(120000)}</span></div></div>
+   </div>`;
+}
+
+/* ---------- 操作 ---------- */
+function go(id,btn){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelector('.content').scrollTop=0;
+}
+function login(role){
+  current=role;
+  document.getElementById('login').style.display='none';
+  render();
+  // 最初のタブをホームに
+  go('s-home',document.querySelector('#nav button[data-screen="s-home"]'));
+}
+function openLogin(){document.getElementById('login').style.display='flex';}
+</script>
+</body>
+</html>
