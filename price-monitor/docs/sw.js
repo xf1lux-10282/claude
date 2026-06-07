@@ -1,7 +1,7 @@
 // サービスワーカー。HTML とデータは network-first（更新を取りこぼさない）、
 // それ以外の静的アセットは cache-first。
 // シェルを更新したら CACHE のバージョンを必ず上げること（古いキャッシュを破棄するため）。
-const CACHE = "price-monitor-v3";
+const CACHE = "price-monitor-v4";
 const SHELL = ["./", "index.html", "manifest.json", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", (e) => {

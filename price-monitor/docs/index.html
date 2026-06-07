@@ -256,21 +256,17 @@ function makeTimeChart(ctx, datasets, dataMin, dataMax, opt){
 }
 
 function drawMetalChart(canvasId, points){
-  const usd = points.map(x => ({x:new Date(x.t).getTime(), y:x.usd}));
+  // 円/g のみ表示（日本の地金表示単位）
   const jpy = points.filter(x => x.jpy_g != null).map(x => ({x:new Date(x.t).getTime(), y:x.jpy_g}));
-  if(!usd.length) return;
+  if(!jpy.length) return;
   const color = "#a78bfa";
-  const ds = [{ label:"USD/oz", yAxisID:"y", data:usd, borderColor:color, backgroundColor:color+"22",
-                fill:true, tension:0, pointRadius:0, pointHoverRadius:3, borderWidth:2 }];
-  if(jpy.length) ds.push({ label:"円/g", yAxisID:"yR", data:jpy, borderColor:"#f59e0b",
-                backgroundColor:"transparent", fill:false, tension:0, pointRadius:0, borderWidth:1.5, borderDash:[4,3] });
-  makeTimeChart(document.getElementById(canvasId), ds, usd[0].x, usd[usd.length-1].x, {
-    legend: jpy.length>0, rightOn: jpy.length>0,
-    leftTick:(v)=>"$"+Number(v).toLocaleString(),
-    rightTick:(v)=>"¥"+Number(v).toLocaleString(),
-    tip:(it)=> it.dataset.label==="円/g"
-      ? "円/g: ¥"+Number(it.parsed.y).toLocaleString()
-      : "USD/oz: $"+Number(it.parsed.y).toLocaleString() });
+  makeTimeChart(document.getElementById(canvasId),
+    [{ label:"円/g", yAxisID:"y", data:jpy, borderColor:color, backgroundColor:color+"22",
+       fill:true, tension:0, pointRadius:0, pointHoverRadius:3, borderWidth:2 }],
+    jpy[0].x, jpy[jpy.length-1].x, {
+      legend:false, rightOn:false,
+      leftTick:(v)=>"¥"+Number(v).toLocaleString(),
+      tip:(it)=>"円/g: ¥"+Number(it.parsed.y).toLocaleString() });
 }
 
 function drawFxChart(canvasId, points){
@@ -287,19 +283,22 @@ function drawFxChart(canvasId, points){
 }
 
 function refMetalCard(key, m){
-  const pts=m.points, last=pts[pts.length-1], first=pts[0];
-  const ci=changeInfo(first.usd, last.usd);
-  const jpy = last.jpy_g!=null ? `<span class="jpy">≒ ¥${Number(last.jpy_g).toLocaleString()}/g</span>` : "";
+  const pts=m.points;
+  const withJpy = pts.filter(p => p.jpy_g != null);
+  const last = withJpy[withJpy.length-1];
+  const first = withJpy[0];
+  const ci = (first && last) ? changeInfo(first.jpy_g, last.jpy_g) : {cls:"flat", txt:"履歴待ち"};
+  const nowTxt = last ? "¥" + Number(last.jpy_g).toLocaleString() : "—";
+  const firstStat = first ? `<span>初回 <b>¥${Number(first.jpy_g).toLocaleString()}/g</b></span>` : "";
   return `<div class="card">
     <div class="row">
       <div class="name">${m.label}<span class="unit">地金スポット</span></div>
       <div class="price">
-        <div><span class="now">${Number(last.usd).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</span><span class="cur">USD/oz</span></div>
+        <div><span class="now">${nowTxt}</span><span class="cur">/g</span></div>
         <div class="chg ${ci.cls}">${ci.txt}</div>
-        ${jpy}
       </div>
     </div>
-    <div class="stats"><span>記録 <b>${pts.length}</b> 回</span><span>初回 <b>$${Number(first.usd).toLocaleString()}</b></span></div>
+    <div class="stats"><span>記録 <b>${pts.length}</b> 回</span>${firstStat}</div>
     <div class="chart-box"><canvas id="rc-metal-${key}"></canvas></div>
   </div>`;
 }
