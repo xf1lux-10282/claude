@@ -4,177 +4,172 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="color-scheme" content="light dark">
 <title>Ap2lab 社内管理（叩き台）</title>
 <style>
+  /* ===== Light（Googleカレンダー風）= 既定 ===== */
   :root{
-    --bg:#0e1116; --card:#171c24; --card2:#1f2630; --line:#2a3340;
-    --text:#e7edf5; --sub:#9aa7b8; --accent:#3b82f6; --accent2:#22c55e;
-    --warn:#f59e0b; --danger:#ef4444; --purple:#8b5cf6;
-    --radius:16px; --headerH:58px; --sideW:220px;
+    --bg:#f8f9fa; --card:#ffffff; --card2:#f1f3f4; --line:#dadce0;
+    --text:#202124; --sub:#5f6368; --accent:#1a73e8; --accent2:#188038;
+    --warn:#e8710a; --danger:#d93025; --purple:#8430ce;
+    --holiday-bg:rgba(217,48,37,.07);
+    --ev-blue:#1a73e8; --ev-green:#33a852; --ev-amber:#f9ab00; --ev-purple:#8430ce;
+    --radius:14px; --headerH:58px; --sideW:220px;
+  }
+  /* ===== Dark = 端末がダーク設定のとき自動適用 ===== */
+  @media (prefers-color-scheme: dark){
+    :root{
+      --bg:#0e1116; --card:#171c24; --card2:#1f2630; --line:#2a3340;
+      --text:#e7edf5; --sub:#9aa7b8; --accent:#8ab4f8; --accent2:#81c995;
+      --warn:#fdd663; --danger:#f28b82; --purple:#c58af9;
+      --holiday-bg:rgba(242,139,130,.12);
+    }
+    .badge{background:rgba(255,255,255,.08)}
   }
   *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   html,body{margin:0;padding:0;background:var(--bg);color:var(--text);
-    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;}
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Kaku Gothic ProN","Noto Sans JP","Roboto",sans-serif;}
   .app{min-height:100vh;display:flex;flex-direction:column}
-  /* top bar */
   .topbar{height:var(--headerH);padding:0 18px;display:flex;align-items:center;justify-content:space-between;
-    background:linear-gradient(180deg,#141a22,#0e1116);border-bottom:1px solid var(--line);
-    position:sticky;top:0;z-index:40}
-  .brand{font-weight:800;letter-spacing:.5px;font-size:17px;line-height:1.1}
+    background:var(--card);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
+  .brand{font-weight:800;letter-spacing:.3px;font-size:17px;line-height:1.1}
   .brand small{color:var(--sub);font-weight:600;font-size:11px;display:block;letter-spacing:1px}
   .who{display:flex;align-items:center;gap:8px;font-size:12px}
-  .avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;
-    font-weight:700;font-size:13px;color:#fff;background:var(--accent)}
+  .avatar{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:13px;color:#fff;background:var(--accent)}
   .role-pill{font-size:10px;color:var(--sub)}
-  .switch-btn{font-size:11px;color:var(--accent);background:none;border:1px solid var(--line);
-    padding:5px 10px;border-radius:999px;cursor:pointer}
+  .switch-btn{font-size:11px;color:var(--accent);background:none;border:1px solid var(--line);padding:5px 10px;border-radius:999px;cursor:pointer}
   .body{flex:1;display:flex;min-height:0}
-  /* nav */
   .nav{display:flex}
   .nav button{background:none;border:none;color:var(--sub);cursor:pointer;display:flex;align-items:center}
   .nav button .ic{line-height:1}
   .nav button.active{color:var(--accent)}
-  /* content */
   .content{flex:1;overflow-y:auto;padding:16px}
   .screen{display:none;animation:fade .25s ease}
   .screen.active{display:block}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  h2.sec{font-size:13px;color:var(--sub);margin:18px 4px 10px;letter-spacing:.5px;text-transform:uppercase}
-  /* cards / kpi */
+  h2.sec{font-size:13px;color:var(--sub);margin:18px 4px 10px;letter-spacing:.5px}
   .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:12px}
   .row{display:flex;align-items:center;justify-content:space-between;gap:10px}
   .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
-  .kpi{background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);
-    border-radius:var(--radius);padding:16px}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px}
   .kpi .label{font-size:11px;color:var(--sub)}
   .kpi .val{font-size:24px;font-weight:800;margin-top:6px}
   .kpi .delta{font-size:11px;margin-top:4px}
   .up{color:var(--accent2)} .down{color:var(--danger)}
-  .badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px}
-  .b-paid{background:rgba(34,197,94,.15);color:#4ade80}
-  .b-unpaid{background:rgba(245,158,11,.15);color:#fbbf24}
-  .b-web{background:rgba(59,130,246,.15);color:#60a5fa}
-  .b-store{background:rgba(148,163,184,.15);color:#cbd5e1}
-  .b-done{background:rgba(34,197,94,.15);color:#4ade80}
-  .b-doing{background:rgba(59,130,246,.15);color:#60a5fa}
-  .b-todo{background:rgba(148,163,184,.15);color:#cbd5e1}
+  .badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:999px;background:rgba(60,64,67,.08)}
+  .b-paid,.b-done{color:var(--accent2)}
+  .b-unpaid{color:var(--warn)}
+  .b-web,.b-doing{color:var(--accent)}
+  .b-store,.b-todo{color:var(--sub)}
   .item{padding:13px 0;border-bottom:1px solid var(--line)}
   .item:last-child{border-bottom:none}
   .item .t{font-weight:700;font-size:15px}
   .item .m{color:var(--sub);font-size:12px;margin-top:3px}
-  .pbar{height:7px;border-radius:999px;background:#26303c;overflow:hidden;margin-top:9px}
-  .pbar > i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#3b82f6,#22c55e)}
-  .tag{display:inline-block;font-size:11px;color:var(--sub);background:#222b36;padding:3px 9px;border-radius:8px;margin:2px 4px 2px 0}
-  .lock{margin-top:8px;padding:14px;border:1px dashed var(--line);border-radius:12px;color:var(--sub);font-size:12px;text-align:center;background:#12161d}
-  .avatar-sm{width:24px;height:24px;border-radius:50%;display:inline-grid;place-items:center;font-size:10px;font-weight:700;color:#fff;background:#475569}
-  .sq{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#cbd5e1;background:#11161d;border:1px solid var(--line);border-radius:8px;padding:6px 10px}
-  .sq b{color:#fff}
+  .pbar{height:7px;border-radius:999px;background:var(--card2);overflow:hidden;margin-top:9px}
+  .pbar > i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .tag{display:inline-block;font-size:11px;color:var(--sub);background:var(--card2);padding:3px 9px;border-radius:8px;margin:2px 4px 2px 0}
+  .lock{margin-top:8px;padding:14px;border:1px dashed var(--line);border-radius:12px;color:var(--sub);font-size:12px;text-align:center;background:var(--card2)}
+  .avatar-sm{width:24px;height:24px;border-radius:50%;display:inline-grid;place-items:center;font-size:10px;font-weight:700;color:#fff;background:#9aa0a6}
+  .sq{display:inline-flex;align-items:center;gap:6px;font-size:11px;color:var(--sub);background:var(--card2);border:1px solid var(--line);border-radius:8px;padding:6px 10px}
+  .sq b{color:var(--text)}
+  .link{color:var(--accent);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 
   /* ===== Calendar ===== */
   .cal-bar{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:12px 0}
   .cal-nav{display:flex;align-items:center;gap:6px}
-  .cal-nav button{background:var(--card2);border:1px solid var(--line);color:var(--text);width:34px;height:34px;
-    border-radius:9px;cursor:pointer;font-size:16px;display:grid;place-items:center}
+  .cal-nav button{background:var(--card);border:1px solid var(--line);color:var(--text);width:34px;height:34px;border-radius:9px;cursor:pointer;font-size:16px;display:grid;place-items:center}
   .cal-today{width:auto!important;padding:0 12px;font-size:13px!important;font-weight:700}
   .cal-title{font-size:18px;font-weight:800;min-width:130px}
-  .seg{display:inline-flex;background:var(--card2);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .seg{display:inline-flex;background:var(--card);border:1px solid var(--line);border-radius:10px;overflow:hidden}
   .seg button{background:none;border:none;color:var(--sub);padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer}
   .seg button.active{background:var(--accent);color:#fff}
-  /* month */
-  .mhead{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px}
-  .mhead div{text-align:center;font-size:11px;color:var(--sub);padding:2px 0}
-  .mgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-  .mcell{min-height:92px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:5px;cursor:pointer;overflow:hidden;transition:.12s}
-  .mcell:hover{border-color:var(--accent)}
-  .mcell.out{opacity:.35}
-  .mcell .dn{font-size:12px;font-weight:700;margin-bottom:3px}
-  .mcell.today .dn{background:var(--accent);color:#fff;width:22px;height:22px;border-radius:50%;display:grid;place-items:center}
-  .sun{color:#f87171} .sat{color:#60a5fa}
-  .chip{font-size:10px;padding:2px 5px;border-radius:5px;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-    background:rgba(59,130,246,.18);border-left:3px solid var(--accent);cursor:pointer}
-  .chip.paid{border-left-color:var(--accent2)} .chip.unpaid{border-left-color:var(--warn)}
-  .chip.task{background:rgba(139,92,246,.18);border-left-color:var(--purple)}
+  /* month (Google風 連続グリッド) */
+  .mhead{display:grid;grid-template-columns:repeat(7,1fr)}
+  .mhead div{text-align:center;font-size:11px;color:var(--sub);padding:6px 0 4px}
+  .mgrid{display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line);border-radius:0 0 8px 8px;overflow:hidden}
+  .mcell{min-height:94px;background:var(--card);border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:4px 4px 6px;cursor:pointer;overflow:hidden}
+  .mcell:hover{background:var(--card2)}
+  .mcell.out{background:var(--bg);color:var(--sub)}
+  .mcell.hol{background:var(--holiday-bg)}
+  .mcell .dn{font-size:12px;font-weight:600;width:22px;height:22px;display:flex;align-items:center;justify-content:center;margin-bottom:2px}
+  .mcell.today .dn{background:var(--accent);color:#fff;border-radius:50%}
+  .sun{color:var(--danger)} .sat{color:var(--accent)}
+  .hol{color:var(--danger)}
+  .holname{font-size:9px;color:var(--danger);font-weight:700;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .chip{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text);padding:1px 2px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;border-radius:4px}
+  .chip:hover{background:var(--card2)}
+  .chip .dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--ev-blue)}
+  .chip.paid .dot{background:var(--ev-green)} .chip.unpaid .dot{background:var(--ev-amber)} .chip.task .dot{background:var(--ev-purple)}
   .more{font-size:10px;color:var(--sub);padding-left:3px}
   /* time grid (week / 3day) */
   .tg-wrap{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
   .tg-head{display:grid;border-bottom:1px solid var(--line)}
-  .tg-head .dh{text-align:center;padding:8px 2px;border-left:1px solid var(--line)}
+  .tg-head .dh{text-align:center;padding:6px 2px 8px;border-left:1px solid var(--line)}
   .tg-head .dh .wd{font-size:11px;color:var(--sub)}
-  .tg-head .dh .dd{font-size:16px;font-weight:800}
-  .tg-head .dh.today .dd{color:var(--accent)}
+  .tg-head .dh.hol .wd,.tg-head .dh .wd.sun{color:var(--danger)} .tg-head .dh .wd.sat{color:var(--accent)}
+  .tg-head .dh .dd{font-size:18px;font-weight:700;margin-top:2px}
+  .tg-head .dh.hol .dd{color:var(--danger)}
+  .tg-head .dh.today .dd{background:var(--accent);color:#fff;width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center}
+  .tg-allday{display:grid;border-bottom:1px solid var(--line);min-height:24px;background:var(--card)}
+  .tg-allday .ad-label{font-size:9px;color:var(--sub);display:flex;align-items:center;justify-content:flex-end;padding-right:6px}
+  .tg-allday .ad-cell{border-left:1px solid var(--line);padding:3px}
+  .ad-hol{font-size:10px;color:var(--danger);background:var(--holiday-bg);border-radius:5px;padding:2px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}
   .tg-body{max-height:60vh;overflow-y:auto;position:relative}
   .tg-grid{display:grid;position:relative}
   .tg-gutter{position:relative}
   .tg-gutter .hl{height:46px;font-size:10px;color:var(--sub);text-align:right;padding-right:6px;transform:translateY(-6px)}
   .tg-col{position:relative;border-left:1px solid var(--line);
     background-image:repeating-linear-gradient(to bottom,var(--line) 0,var(--line) 1px,transparent 1px,transparent 46px)}
-  .ev{position:absolute;left:3px;right:3px;border-radius:7px;padding:4px 6px;font-size:11px;overflow:hidden;cursor:pointer;
-    background:rgba(59,130,246,.85);color:#fff;border-left:3px solid #1d4ed8}
-  .ev.paid{background:rgba(34,197,94,.82);border-left-color:#15803d}
-  .ev.unpaid{background:rgba(245,158,11,.85);border-left-color:#b45309}
-  .ev.task{background:rgba(139,92,246,.85);border-left-color:#6d28d9}
-  .ev .et{font-weight:700;line-height:1.2}
-  .ev .es{opacity:.9;font-size:10px}
-
-  /* holidays */
-  .mcell .hol{font-size:9px;color:#d93025;font-weight:700;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .dn.hol-day{color:#d93025!important}
-  .tg-head .dh.hol .dd{color:#d93025}
-  .tg-allday{display:grid;border-bottom:1px solid var(--line);min-height:24px}
-  .tg-allday .ad-label{font-size:9px;color:var(--sub);display:flex;align-items:center;justify-content:flex-end;padding-right:6px}
-  .tg-allday .ad-cell{border-left:1px solid var(--line);padding:3px}
-  .ad-hol{font-size:10px;color:#fff;background:#d93025;border-radius:5px;padding:2px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}
+  .tg-col.holcol{background-color:var(--holiday-bg)}
+  .ev{position:absolute;left:3px;right:3px;border-radius:6px;padding:3px 6px;font-size:11px;overflow:hidden;cursor:pointer;background:var(--ev-blue);color:#fff;line-height:1.25}
+  .ev.paid{background:var(--ev-green)} .ev.unpaid{background:var(--ev-amber);color:#3c4043} .ev.task{background:var(--ev-purple)}
+  .ev .et{font-weight:700} .ev .es{opacity:.9;font-size:10px}
   .nowline{position:absolute;left:0;right:0;height:2px;background:#ea4335;z-index:5}
   .nowline::before{content:"";position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:#ea4335}
 
-  /* ===== Light theme (Googleカレンダー風) ===== */
-  body.light{--bg:#f1f3f4;--card:#ffffff;--card2:#f1f3f4;--line:#dadce0;--text:#202124;--sub:#5f6368;
-    --accent:#1a73e8;--accent2:#188038;--warn:#e8710a;--danger:#d93025;--purple:#8430ce}
-  body.light .topbar{background:#fff;color:#202124}
-  body.light .nav{background:#fff}
-  body.light .b-paid,body.light .b-done{color:#188038}
-  body.light .b-unpaid{color:#b06000}
-  body.light .b-web,body.light .b-doing{color:#1967d2}
-  body.light .b-store,body.light .b-todo{color:#5f6368}
-  body.light .pbar{background:#e6e8eb}
-  body.light .tag{background:#f1f3f4}
-  body.light .avatar-sm{background:#9aa0a6}
+  /* ===== Customers ===== */
+  .cust-bar{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin-bottom:8px}
+  .sortb{background:var(--card);border:1px solid var(--line);color:var(--text);padding:7px 12px;border-radius:9px;font-size:13px;font-weight:700;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+  .cust-sec-h{position:sticky;top:0;background:var(--bg);color:var(--accent);font-weight:800;font-size:13px;padding:7px 4px;border-bottom:1px solid var(--line);z-index:5}
+  .crow{padding:12px 4px;border-bottom:1px solid var(--line);cursor:pointer;display:flex;align-items:center;gap:12px}
+  .crow:hover{background:var(--card2)}
+  .crow .ci{width:34px;height:34px;border-radius:50%;background:var(--card2);display:grid;place-items:center;font-weight:700;font-size:14px;color:var(--sub);flex:none}
+  .crow .cn{font-weight:700;font-size:15px}
+  .crow .cm{font-size:12px;color:var(--sub);margin-top:2px}
+  .cust-index{position:fixed;right:2px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:0;z-index:25}
+  .cust-index button{background:none;border:none;color:var(--accent);font-size:10px;line-height:1.15;padding:1px 4px;cursor:pointer;font-weight:700}
+  .cust-index button:disabled{color:var(--sub);opacity:.3;cursor:default}
 
   /* overlay / modal */
-  .overlay{position:fixed;inset:0;background:rgba(5,8,12,.86);backdrop-filter:blur(6px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
+  .overlay{position:fixed;inset:0;background:rgba(20,22,28,.55);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
   .overlay.show{display:flex}
-  .overlay .box{max-width:420px;width:100%;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;max-height:88vh;overflow-y:auto}
+  .overlay .box{max-width:430px;width:100%;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;max-height:88vh;overflow-y:auto;box-shadow:0 8px 30px rgba(0,0,0,.25)}
   .overlay h3{margin:0 0 4px;font-size:18px}
   .overlay p.lead{color:var(--sub);font-size:12px;margin:0 0 18px}
   .role-btn{width:100%;text-align:left;background:var(--card2);border:1px solid var(--line);color:var(--text);border-radius:14px;padding:14px;margin-bottom:10px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:.15s}
-  .role-btn:hover{border-color:var(--accent);transform:translateY(-1px)}
+  .role-btn:hover{border-color:var(--accent)}
   .role-btn .d{font-size:11px;color:var(--sub);margin-top:2px}
-  .note{font-size:11px;color:var(--sub);line-height:1.6;background:#10151c;border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:14px}
+  .note{font-size:11px;color:var(--sub);line-height:1.6;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:12px;margin-top:14px}
   .dl{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
   .dl:last-child{border-bottom:none}
-  .dl .k{color:var(--sub)}
-  .dl .v{font-weight:700;text-align:right}
+  .dl .k{color:var(--sub)} .dl .v{font-weight:700;text-align:right}
   .closeb{margin-top:16px;width:100%;background:var(--card2);border:1px solid var(--line);color:var(--text);padding:12px;border-radius:12px;font-weight:700;cursor:pointer}
 
   /* ===== Responsive: mobile (default) ===== */
-  .nav{position:fixed;left:0;right:0;bottom:0;background:rgba(20,26,34,.96);backdrop-filter:blur(10px);
-    border-top:1px solid var(--line);justify-content:space-around;padding:8px 4px 14px;z-index:30}
+  .nav{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1px solid var(--line);justify-content:space-around;padding:8px 4px 14px;z-index:30}
   .nav button{flex-direction:column;gap:3px;font-size:10px;flex:1;padding:4px}
   .nav button .ic{font-size:20px}
   .content{padding-bottom:90px}
-
   /* ===== Responsive: desktop ===== */
   @media (min-width:900px){
-    .nav{position:sticky;top:var(--headerH);align-self:flex-start;height:calc(100vh - var(--headerH));
-      width:var(--sideW);flex-direction:column;justify-content:flex-start;gap:4px;padding:16px 10px;
-      border-top:none;border-right:1px solid var(--line);background:#10151c;backdrop-filter:none}
-    .nav button{flex:none;width:100%;flex-direction:row;justify-content:flex-start;gap:12px;font-size:14px;
-      padding:11px 14px;border-radius:10px}
-    .nav button.active{background:rgba(59,130,246,.12)}
+    .nav{position:sticky;top:var(--headerH);align-self:flex-start;height:calc(100vh - var(--headerH));width:var(--sideW);
+      flex-direction:column;justify-content:flex-start;gap:4px;padding:16px 10px;border-top:none;border-right:1px solid var(--line)}
+    .nav button{flex:none;width:100%;flex-direction:row;justify-content:flex-start;gap:12px;font-size:14px;padding:11px 14px;border-radius:10px}
+    .nav button.active{background:rgba(26,115,232,.12)}
     .nav button .ic{font-size:18px;width:22px;text-align:center}
     .content{padding:24px 28px 40px;max-width:1120px;margin:0 auto;width:100%}
-    .mcell{min-height:110px}
+    .mcell{min-height:112px}
     .tg-body{max-height:64vh}
   }
 </style>
@@ -184,12 +179,8 @@
   <header class="topbar">
     <div class="brand">Ap2lab<small>暗室ルーム 社内管理</small></div>
     <div class="who">
-      <div style="text-align:right">
-        <div id="whoName" style="font-weight:700">—</div>
-        <div class="role-pill" id="whoRole">—</div>
-      </div>
+      <div style="text-align:right"><div id="whoName" style="font-weight:700">—</div><div class="role-pill" id="whoRole">—</div></div>
       <div class="avatar" id="whoAv">A</div>
-      <button class="switch-btn" id="themeBtn" onclick="toggleTheme()" title="テーマ切替">🌙</button>
       <button class="switch-btn" onclick="openLogin()">切替</button>
     </div>
   </header>
@@ -204,7 +195,6 @@
     </nav>
 
     <main class="content">
-      <!-- HOME -->
       <section class="screen active" id="s-home">
         <h2 class="sec">今日の状況</h2>
         <div class="kpi-grid" id="homeKpi"></div>
@@ -214,7 +204,6 @@
         <div class="card" id="homeTasks"></div>
       </section>
 
-      <!-- CALENDAR -->
       <section class="screen" id="s-book">
         <div class="sq">🟦 <span><b>Square予約</b> と連携：部屋料金は予約時に事前決済／店頭受付分は当日精算</span></div>
         <div class="cal-bar">
@@ -233,19 +222,19 @@
         <div id="calBody"></div>
       </section>
 
-      <!-- TASK -->
       <section class="screen" id="s-task">
         <h2 class="sec">作業・進捗</h2>
         <div class="card" id="taskList"></div>
       </section>
 
-      <!-- CUSTOMERS -->
       <section class="screen" id="s-cust">
-        <h2 class="sec">顧客リスト</h2>
-        <div class="card" id="custList"></div>
+        <div class="cust-bar">
+          <button class="sortb" id="sortBtn" onclick="toggleSort()">▲ 昇順（あ→わ）</button>
+        </div>
+        <div id="custList"></div>
+        <div class="cust-index" id="custIndex"></div>
       </section>
 
-      <!-- BIZ -->
       <section class="screen" id="s-biz">
         <h2 class="sec">経営ダッシュボード</h2>
         <div id="bizBody"></div>
@@ -288,7 +277,7 @@ const PERMS={
 };
 const WD=["日","月","火","水","木","金","土"];
 
-/* 日本の祝祭日（2025〜2027・振替休日/国民の休日を含む。内蔵のためオフラインでも動作） */
+/* 祝祭日：通信失敗時のフォールバック（通常はオンライン取得で上書き・拡張） */
 const HOLIDAYS={
   "2025-01-01":"元日","2025-01-13":"成人の日","2025-02-11":"建国記念の日","2025-02-23":"天皇誕生日","2025-02-24":"振替休日",
   "2025-03-20":"春分の日","2025-04-29":"昭和の日","2025-05-03":"憲法記念日","2025-05-04":"みどりの日","2025-05-05":"こどもの日","2025-05-06":"振替休日",
@@ -304,8 +293,14 @@ const HOLIDAYS={
   "2027-11-03":"文化の日","2027-11-23":"勤労感謝の日",
 };
 function holidayName(d){const k=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");return HOLIDAYS[k]||null;}
+/* オンライン取得（holidays-jp / 内閣府データ準拠）。失敗時は内蔵データのまま */
+async function loadHolidays(){
+  try{
+    const r=await fetch("https://holidays-jp.github.io/api/v1/date.json",{cache:"no-store"});
+    if(r.ok){Object.assign(HOLIDAYS,await r.json());renderCalendar();}
+  }catch(e){/* オフライン等：内蔵データで継続 */}
+}
 
-/* 予約（day=今日からのオフセット, sh/eh=開始終了の小数時） */
 const BOOKINGS=[
   {day:0,sh:10,eh:12,room:"暗室A",cust:"田中 様",amount:3000,pay:"paid",ch:"web"},
   {day:0,sh:13,eh:15,room:"暗室B",cust:"佐藤 様",amount:3000,pay:"paid",ch:"web"},
@@ -319,42 +314,68 @@ const BOOKINGS=[
   {day:-5,sh:15,eh:17,room:"スタジオ",cust:"加藤 様",amount:5000,pay:"paid",ch:"web"},
   {day:6,sh:10,eh:12,room:"暗室A",cust:"吉田 様",amount:3000,pay:"paid",ch:"web"},
   {day:8,sh:13,eh:15,room:"暗室B",cust:"山田 様",amount:3000,pay:"unpaid",ch:"store"},
-  {day:12,sh:11,eh:13,room:"スタジオ",cust:"佐々木 様",amount:5000,pay:"paid",ch:"web"},
+  {day:12,sh:11,eh:13,room:"スタジオ",cust:"田中 様",amount:5000,pay:"paid",ch:"web"},
 ];
-/* タスク（カレンダーにも表示） */
 const TASKS=[
   {t:"暗室Aの薬品補充・廃液処理",who:"作",prog:100,st:"done",room:"暗室A",day:0,sh:9,eh:10},
   {t:"引き伸ばし機の点検（暗室B）",who:"作",prog:60,st:"doing",room:"暗室B",day:1,sh:9,eh:10.5},
   {t:"スタジオ照明の電球交換",who:"作",prog:0,st:"todo",room:"スタジオ",day:2,sh:17,eh:18},
   {t:"備品（印画紙）発注",who:"予",prog:30,st:"doing",room:"—",day:0,sh:16,eh:16.5},
 ];
+/* 顧客（yomi=読み。インデックス・並び替えに使用） */
 const CUSTOMERS=[
-  {n:"田中 様",tel:"090-xxxx-1234",visits:12,note:"モノクロ中心・常連"},
-  {n:"佐藤 様",tel:"090-xxxx-5678",visits:5,note:"大判プリント希望"},
-  {n:"鈴木 様",tel:"080-xxxx-9012",visits:1,note:"初回・店頭予約"},
-  {n:"山本 様",tel:"070-xxxx-3456",visits:8,note:"夜間利用が多い"},
+  {n:"安藤 様",yomi:"アンドウ",tel:"090-xxxx-0001",visits:2,note:"初回利用・大判希望"},
+  {n:"伊藤 様",yomi:"イトウ",tel:"090-xxxx-0002",visits:6,note:"モノクロ中心"},
+  {n:"加藤 様",yomi:"カトウ",tel:"090-xxxx-0003",visits:9,note:"夜間利用が多い"},
+  {n:"小林 様",yomi:"コバヤシ",tel:"090-xxxx-0004",visits:3,note:"店頭予約が多い"},
+  {n:"佐々木 様",yomi:"ササキ",tel:"090-xxxx-0005",visits:1,note:"初回"},
+  {n:"佐藤 様",yomi:"サトウ",tel:"090-xxxx-0006",visits:5,note:"大判プリント希望"},
+  {n:"鈴木 様",yomi:"スズキ",tel:"080-xxxx-0007",visits:1,note:"初回・店頭予約"},
+  {n:"高橋 様",yomi:"タカハシ",tel:"090-xxxx-0008",visits:4,note:"週末利用"},
+  {n:"田中 様",yomi:"タナカ",tel:"090-xxxx-0009",visits:12,note:"モノクロ中心・常連"},
+  {n:"中村 様",yomi:"ナカムラ",tel:"090-xxxx-0010",visits:7,note:"カラー現像も"},
+  {n:"山田 様",yomi:"ヤマダ",tel:"090-xxxx-0011",visits:2,note:"店頭精算が多い"},
+  {n:"山本 様",yomi:"ヤマモト",tel:"070-xxxx-0012",visits:8,note:"夜間利用が多い"},
+  {n:"吉田 様",yomi:"ヨシダ",tel:"090-xxxx-0013",visits:5,note:"スタジオ常連"},
+  {n:"渡辺 様",yomi:"ワタナベ",tel:"090-xxxx-0014",visits:3,note:"店頭予約"},
+  {n:"Smith 様",yomi:"Smith",tel:"090-xxxx-0015",visits:2,note:"英語対応希望"},
 ];
+
+/* かなインデックス */
+const GYO=[["あ","アイウエオァィゥェォヴ"],["か","カキクケコガギグゲゴヵヶ"],["さ","サシスセソザジズゼゾ"],
+  ["た","タチツテトダヂヅデドッ"],["な","ナニヌネノ"],["は","ハヒフヘホバビブベボパピプペポ"],
+  ["ま","マミムメモ"],["や","ヤユヨャュョ"],["ら","ラリルレロ"],["わ","ワヲンヰヱヮ"]];
+const KANA_ORDER=GYO.map(g=>g[0]);
+const ALPHA="ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+const INDEX_ORDER=[...KANA_ORDER,...ALPHA,"#"];
+function hiraToKata(s){return s.replace(/[ぁ-ゖ]/g,c=>String.fromCharCode(c.charCodeAt(0)+0x60));}
+function kanaIndex(yomi){
+  if(!yomi)return "#";
+  let c=yomi.trim().charAt(0);
+  if(/[A-Za-z]/.test(c))return c.toUpperCase();
+  c=hiraToKata(c);
+  for(const [g,set] of GYO){if(set.indexOf(c)>=0)return g;}
+  return "#";
+}
 
 /* ---------- 状態 ---------- */
 let current="owner";
 let calView="month";
+let custSortAsc=true;
 const today=new Date(); today.setHours(0,0,0,0);
 let calAnchor=new Date(today);
-const SH=8, EH=22, HH=46; // タイムグリッド: 8時〜22時, 1時間=46px
+const SH=8, EH=22, HH=46;
 
-/* イベント正規化（id付与） */
 let EVENTS=[];
 function buildEvents(){
   EVENTS=[];
-  BOOKINGS.forEach((b,i)=>EVENTS.push({id:"b"+i,type:"booking",date:dateOf(b.day),sh:b.sh,eh:b.eh,
-    room:b.room,cust:b.cust,amount:b.amount,pay:b.pay,ch:b.ch}));
-  TASKS.forEach((t,i)=>EVENTS.push({id:"t"+i,type:"task",date:dateOf(t.day),sh:t.sh,eh:t.eh,
-    title:t.t,who:t.who,prog:t.prog,st:t.st,room:t.room}));
+  BOOKINGS.forEach((b,i)=>EVENTS.push({id:"b"+i,type:"booking",date:dateOf(b.day),sh:b.sh,eh:b.eh,room:b.room,cust:b.cust,amount:b.amount,pay:b.pay,ch:b.ch}));
+  TASKS.forEach((t,i)=>EVENTS.push({id:"t"+i,type:"task",date:dateOf(t.day),sh:t.sh,eh:t.eh,title:t.t,who:t.who,prog:t.prog,st:t.st,room:t.room}));
 }
 function eventsForRole(){
-  if(current==="worker") return EVENTS.filter(e=>e.type==="task"&&e.who==="作");
-  if(current==="reception") return EVENTS.filter(e=>e.type==="booking"||e.who==="予");
-  return EVENTS; // owner/admin
+  if(current==="worker")return EVENTS.filter(e=>e.type==="task"&&e.who==="作");
+  if(current==="reception")return EVENTS.filter(e=>e.type==="booking"||e.who==="予");
+  return EVENTS;
 }
 function eventById(id){return EVENTS.find(e=>e.id===id);}
 
@@ -371,7 +392,6 @@ function render(){
   whoName.textContent=u.name; whoRole.textContent=u.role; whoAv.textContent=u.av; whoAv.style.background=u.col;
   document.querySelectorAll('#nav button').forEach(b=>{b.style.display=PERMS[current].includes(b.dataset.screen)?'flex':'none';});
 
-  /* HOME */
   const todays=BOOKINGS.filter(b=>b.day===0);
   const paidToday=todays.filter(b=>b.pay==="paid").reduce((s,b)=>s+b.amount,0);
   let kpi="";
@@ -387,20 +407,12 @@ function render(){
          <div class="kpi"><div class="label">本日完了</div><div class="val">${mine.filter(t=>t.st==='done').length}件</div><div class="delta up">お疲れさまです</div></div>`;
   }
   homeKpi.innerHTML=kpi;
-  homeBookings.innerHTML = current==="worker"
-    ? `<div class="lock">🔒 予約・顧客情報は作業担当には表示されません</div>`
-    : todays.map(bookingRow).join("");
+  homeBookings.innerHTML = current==="worker" ? `<div class="lock">🔒 予約・顧客情報は作業担当には表示されません</div>` : todays.map(bookingRow).join("");
   const myTasks=current==="worker"?TASKS.filter(t=>t.who==="作"):TASKS;
   homeTasks.innerHTML=myTasks.slice(0,3).map(taskRow).join("");
-
-  /* TASK */
   taskList.innerHTML=myTasks.map(taskRow).join("");
 
-  /* CUSTOMERS */
-  if(["owner","admin","reception"].includes(current)){
-    custList.innerHTML=CUSTOMERS.map(c=>`<div class="item"><div class="row"><div class="t">${c.n}</div><span class="tag">来店 ${c.visits}回</span></div><div class="m">📞 ${c.tel}</div><div class="m">📝 ${c.note}</div></div>`).join("");
-  }
-
+  renderCustomers();
   renderBiz();
   renderCalendar();
 }
@@ -409,18 +421,16 @@ function bookingRow(b){
   const payBadge=b.pay==="paid"?`<span class="badge b-paid">決済済</span>`:`<span class="badge b-unpaid">店頭精算</span>`;
   const chBadge=b.ch==="web"?`<span class="badge b-web">Web予約</span>`:`<span class="badge b-store">店頭受付</span>`;
   return `<div class="item"><div class="row"><div class="t">${fmtH(b.sh)}–${fmtH(b.eh)}　${b.room}</div>${payBadge}</div>
-    <div class="row" style="margin-top:6px"><div class="m">👤 ${b.cust}　${chBadge}</div><div style="font-weight:700">${yen(b.amount)}</div></div></div>`;
+    <div class="row" style="margin-top:6px"><div class="m">👤 <span class="link" onclick="openCustomer('${b.cust}')">${b.cust}</span>　${chBadge}</div><div style="font-weight:700">${yen(b.amount)}</div></div></div>`;
 }
 function taskRow(t){
   const st=t.st==="done"?`<span class="badge b-done">完了</span>`:t.st==="doing"?`<span class="badge b-doing">進行中</span>`:`<span class="badge b-todo">未着手</span>`;
   return `<div class="item"><div class="row"><div class="t">${t.t}</div>${st}</div>
-    <div class="m"><span class="avatar-sm">${t.who}</span> 担当　／　対象：${t.room}</div>
-    <div class="pbar"><i style="width:${t.prog}%"></i></div></div>`;
+    <div class="m"><span class="avatar-sm">${t.who}</span> 担当　／　対象：${t.room}</div><div class="pbar"><i style="width:${t.prog}%"></i></div></div>`;
 }
 function renderBiz(){
   if(!["owner","admin"].includes(current)){bizBody.innerHTML=`<div class="lock">🔒 経営ダッシュボードはオーナー・管理者のみ閲覧できます</div>`;return;}
-  const monthSales=486000;
-  const roomShare=[["暗室A",42],["暗室B",33],["スタジオ",25]];
+  const monthSales=486000, roomShare=[["暗室A",42],["暗室B",33],["スタジオ",25]];
   bizBody.innerHTML=`<div class="kpi-grid">
      <div class="kpi"><div class="label">今月売上</div><div class="val">${yen(monthSales)}</div><div class="delta up">▲ 前月比 +12%</div></div>
      <div class="kpi"><div class="label">今月予約数</div><div class="val">128件</div><div class="delta up">▲ +9件</div></div>
@@ -436,20 +446,13 @@ function renderBiz(){
 /* ---------- カレンダー ---------- */
 function setView(v){calView=v;document.querySelectorAll('#calSeg button').forEach(b=>b.classList.toggle('active',b.dataset.v===v));renderCalendar();}
 function calToday(){calAnchor=new Date(today);renderCalendar();}
-function calMove(dir){
-  const x=new Date(calAnchor);
-  if(calView==="month") x.setMonth(x.getMonth()+dir);
-  else if(calView==="week") x.setDate(x.getDate()+7*dir);
-  else x.setDate(x.getDate()+3*dir);
-  calAnchor=x;renderCalendar();
-}
+function calMove(dir){const x=new Date(calAnchor);if(calView==="month")x.setMonth(x.getMonth()+dir);else if(calView==="week")x.setDate(x.getDate()+7*dir);else x.setDate(x.getDate()+3*dir);calAnchor=x;renderCalendar();}
 function evClass(e){return e.type==="task"?"task":(e.pay==="paid"?"paid":"unpaid");}
 function evLabel(e){return e.type==="task"?e.title:`${e.room}・${e.cust}`;}
 
 function renderCalendar(){
   if(!PERMS[current].includes("s-book"))return;
-  if(calView==="month")renderMonth();
-  else renderTimeGrid(calView==="week"?7:3);
+  if(calView==="month")renderMonth(); else renderTimeGrid(calView==="week"?7:3);
 }
 function renderMonth(){
   const y=calAnchor.getFullYear(), m=calAnchor.getMonth();
@@ -459,17 +462,15 @@ function renderMonth(){
   let html=`<div class="mhead">${WD.map((w,i)=>`<div class="${i===0?'sun':i===6?'sat':''}">${w}</div>`).join("")}</div><div class="mgrid">`;
   for(let i=0;i<42;i++){
     const d=new Date(start);d.setDate(start.getDate()+i);
-    const out=d.getMonth()!==m, isToday=sameDay(d,today);
+    const out=d.getMonth()!==m, isToday=sameDay(d,today), hn=holidayName(d);
     const dayEvs=evs.filter(e=>sameDay(e.date,d)).sort((a,b)=>a.sh-b.sh);
-    const hn=holidayName(d);
     const limit=hn?2:3;
-    const chips=dayEvs.slice(0,limit).map(e=>`<div class="chip ${evClass(e)}" onclick="event.stopPropagation();openEvent('${e.id}')">${fmtH(e.sh)} ${evLabel(e)}</div>`).join("");
+    const chips=dayEvs.slice(0,limit).map(e=>`<div class="chip ${evClass(e)}" onclick="event.stopPropagation();openEvent('${e.id}')"><span class="dot"></span>${fmtH(e.sh)} ${evLabel(e)}</div>`).join("");
     const more=dayEvs.length>limit?`<div class="more">＋${dayEvs.length-limit}件</div>`:"";
-    const dnCls=(hn||d.getDay()===0)?'sun hol-day':d.getDay()===6?'sat':'';
-    const holLabel=hn?`<div class="hol">${hn}</div>`:"";
+    const dnCls=(hn||d.getDay()===0)?'sun':d.getDay()===6?'sat':'';
     const off=Math.round((d-today)/86400000);
-    html+=`<div class="mcell ${out?'out':''} ${isToday?'today':''}" onclick="openDay(${off})">
-      <div class="dn ${dnCls}">${d.getDate()}</div>${holLabel}${chips}${more}</div>`;
+    html+=`<div class="mcell ${out?'out':''} ${isToday?'today':''} ${hn?'hol':''}" onclick="openDay(${off})">
+      <div class="dn ${dnCls}">${d.getDate()}</div>${hn?`<div class="holname">${hn}</div>`:""}${chips}${more}</div>`;
   }
   html+="</div>";
   calBody.innerHTML=html;
@@ -480,39 +481,59 @@ function renderTimeGrid(nDays){
   calTitle.textContent=`${days[0].getMonth()+1}/${days[0].getDate()} – ${days[nDays-1].getMonth()+1}/${days[nDays-1].getDate()}`;
   const evs=eventsForRole();
   const cols=`52px repeat(${nDays},1fr)`;
-  // ヘッダー（祝日は赤）
-  let head=`<div class="tg-head" style="grid-template-columns:${cols}"><div class="corner"></div>`;
-  days.forEach(d=>{const t=sameDay(d,today);const wd=d.getDay();const hn=holidayName(d);
-    const wdCls=(hn||wd===0)?'sun':wd===6?'sat':'';
+  let head=`<div class="tg-head" style="grid-template-columns:${cols}"><div></div>`;
+  days.forEach(d=>{const t=sameDay(d,today),wd=d.getDay(),hn=holidayName(d);const wdCls=(hn||wd===0)?'sun':wd===6?'sat':'';
     head+=`<div class="dh ${t?'today':''} ${hn?'hol':''}"><div class="wd ${wdCls}">${WD[wd]}</div><div class="dd">${d.getDate()}</div></div>`;});
   head+="</div>";
-  // 終日（祝日名）行 — Googleカレンダー風
   let allday=`<div class="tg-allday" style="grid-template-columns:${cols}"><div class="ad-label">終日</div>`;
   days.forEach(d=>{const hn=holidayName(d);allday+=`<div class="ad-cell">${hn?`<div class="ad-hol">${hn}</div>`:""}</div>`;});
   allday+="</div>";
-  // 本体
   const colH=(EH-SH)*HH;
   let gutter=`<div class="tg-gutter" style="height:${colH}px">`;
   for(let h=SH;h<EH;h++)gutter+=`<div class="hl">${h}:00</div>`;
   gutter+="</div>";
-  const now=new Date(); const nowH=now.getHours()+now.getMinutes()/60;
+  const now=new Date(), nowH=now.getHours()+now.getMinutes()/60;
   let cells="";
   days.forEach(d=>{
-    const dayEvs=evs.filter(e=>sameDay(e.date,d));
+    const dayEvs=evs.filter(e=>sameDay(e.date,d)), hn=holidayName(d);
     let blocks="";
-    dayEvs.forEach(e=>{
-      const top=(e.sh-SH)*HH, h=Math.max((e.eh-e.sh)*HH,22);
-      blocks+=`<div class="ev ${evClass(e)}" style="top:${top}px;height:${h}px" onclick="openEvent('${e.id}')">
-        <div class="et">${evLabel(e)}</div><div class="es">${fmtH(e.sh)}–${fmtH(e.eh)}</div></div>`;
-    });
-    if(sameDay(d,today)&&nowH>=SH&&nowH<=EH) blocks+=`<div class="nowline" style="top:${(nowH-SH)*HH}px"></div>`;
-    cells+=`<div class="tg-col" style="height:${colH}px">${blocks}</div>`;
+    dayEvs.forEach(e=>{const top=(e.sh-SH)*HH,h=Math.max((e.eh-e.sh)*HH,22);
+      blocks+=`<div class="ev ${evClass(e)}" style="top:${top}px;height:${h}px" onclick="openEvent('${e.id}')"><div class="et">${evLabel(e)}</div><div class="es">${fmtH(e.sh)}–${fmtH(e.eh)}</div></div>`;});
+    if(sameDay(d,today)&&nowH>=SH&&nowH<=EH)blocks+=`<div class="nowline" style="top:${(nowH-SH)*HH}px"></div>`;
+    cells+=`<div class="tg-col ${hn?'holcol':''}" style="height:${colH}px">${blocks}</div>`;
   });
   calBody.innerHTML=`<div class="tg-wrap">${head}${allday}<div class="tg-body"><div class="tg-grid" style="grid-template-columns:${cols}">${gutter}${cells}</div></div></div>`;
-  // 現在時刻（営業時間内）あたりまでスクロール
   const tb=calBody.querySelector('.tg-body');
   if(tb){const f=Math.min(Math.max(isFinite(nowH)?nowH:9,SH),EH);tb.scrollTop=Math.max(0,(f-SH)*HH-60);}
 }
+
+/* ---------- 顧客リスト ---------- */
+function toggleSort(){custSortAsc=!custSortAsc;
+  document.getElementById('sortBtn').textContent=custSortAsc?"▲ 昇順（あ→わ）":"▼ 降順（わ→あ）";
+  renderCustomers();
+}
+function renderCustomers(){
+  if(!["owner","admin","reception"].includes(current)){custList.innerHTML="";custIndex.innerHTML="";return;}
+  const groups={};
+  CUSTOMERS.forEach(c=>{const g=kanaIndex(c.yomi);(groups[g]=groups[g]||[]).push(c);});
+  const dir=custSortAsc?1:-1;
+  let order=INDEX_ORDER.filter(g=>groups[g]);
+  if(!custSortAsc)order=order.slice().reverse();
+  let html="";
+  order.forEach(g=>{
+    const items=groups[g].slice().sort((a,b)=>(a.yomi<b.yomi?-1:a.yomi>b.yomi?1:0)*dir);
+    html+=`<div class="cust-sec-h" id="sec-${g}">${g}</div>`;
+    items.forEach(c=>{html+=`<div class="crow" onclick="openCustomer('${c.n}')">
+      <div class="ci">${c.n.charAt(0)}</div>
+      <div style="flex:1"><div class="cn">${c.n}</div><div class="cm">${c.yomi}・来店 ${c.visits}回</div></div>
+      <div class="m">›</div></div>`;});
+  });
+  custList.innerHTML=html;
+  custIndex.innerHTML=INDEX_ORDER.map(g=>groups[g]
+    ?`<button onclick="jumpTo('${g}')">${g}</button>`
+    :`<button disabled>${g}</button>`).join("");
+}
+function jumpTo(g){const el=document.getElementById('sec-'+g);if(el)el.scrollIntoView({behavior:'smooth',block:'start'});}
 
 /* ---------- 詳細モーダル ---------- */
 function openEvent(id){
@@ -525,7 +546,7 @@ function openEvent(id){
       <div class="dl"><span class="k">日付</span><span class="v">${dstr}</span></div>
       <div class="dl"><span class="k">時間</span><span class="v">${fmtH(e.sh)}–${fmtH(e.eh)}</span></div>
       <div class="dl"><span class="k">部屋</span><span class="v">${e.room}</span></div>
-      <div class="dl"><span class="k">顧客</span><span class="v">${e.cust}</span></div>
+      <div class="dl"><span class="k">顧客</span><span class="v"><span class="link" onclick="openCustomer('${e.cust}')">${e.cust}</span></span></div>
       <div class="dl"><span class="k">受付</span><span class="v">${e.ch==="web"?"Web予約":"店頭受付"}</span></div>
       ${showMoney?`<div class="dl"><span class="k">料金</span><span class="v">${yen(e.amount)}</span></div>
       <div class="dl"><span class="k">決済(Square)</span><span class="v">${e.pay==="paid"?"✅ 事前決済済":"🟠 店頭精算 予定"}</span></div>`:""}`;
@@ -542,20 +563,29 @@ function openEvent(id){
   showDetail(body);
 }
 function openDay(off){
-  const d=dateOf(off);
-  const dstr=`${d.getMonth()+1}月${d.getDate()}日（${WD[d.getDay()]}）`;
+  const d=dateOf(off), dstr=`${d.getMonth()+1}月${d.getDate()}日（${WD[d.getDay()]}）`, hn=holidayName(d);
   const evs=eventsForRole().filter(e=>sameDay(e.date,d)).sort((a,b)=>a.sh-b.sh);
   const list=evs.length?evs.map(e=>{
     const label=e.type==="booking"?`${e.room}・${e.cust}`:e.title;
     const badge=e.type==="booking"?(e.pay==="paid"?`<span class="badge b-paid">決済済</span>`:`<span class="badge b-unpaid">店頭精算</span>`):`<span class="badge ${e.st==='done'?'b-done':e.st==='doing'?'b-doing':'b-todo'}">${e.st==='done'?'完了':e.st==='doing'?'進行中':'未着手'}</span>`;
     return `<div class="item" style="cursor:pointer" onclick="openEvent('${e.id}')"><div class="row"><div class="t">${fmtH(e.sh)}–${fmtH(e.eh)}　${label}</div>${badge}</div></div>`;
   }).join(""):`<p class="lead">この日の予定はありません。</p>`;
-  showDetail(`<h3>${dstr}</h3><p class="lead">${evs.length}件の予定</p>${list}`);
+  showDetail(`<h3>${dstr}</h3>${hn?`<p class="lead" style="color:var(--danger)">🎌 ${hn}</p>`:`<p class="lead">${evs.length}件の予定</p>`}${list}`);
 }
-function showDetail(inner){
-  document.getElementById('detailBox').innerHTML=inner+`<button class="closeb" onclick="closeDetail()">閉じる</button>`;
-  document.getElementById('detail').classList.add('show');
+function openCustomer(n){
+  const c=CUSTOMERS.find(x=>x.n===n);
+  if(!c){showDetail(`<h3>${n}</h3><p class="lead">顧客情報が未登録です。</p>`);return;}
+  const list=BOOKINGS.map((b,i)=>({b,i})).filter(o=>o.b.cust===n).sort((a,b)=>a.b.day-b.b.day);
+  const bRows=list.length?list.map(o=>{const b=o.b,d=dateOf(b.day);
+    const badge=b.pay==="paid"?`<span class="badge b-paid">決済済</span>`:`<span class="badge b-unpaid">店頭精算</span>`;
+    return `<div class="item" style="cursor:pointer" onclick="openEvent('b${o.i}')"><div class="row"><div class="t">${d.getMonth()+1}/${d.getDate()} ${fmtH(b.sh)}–${fmtH(b.eh)}　${b.room}</div>${badge}</div></div>`;
+  }).join(""):`<p class="lead">予約履歴はありません。</p>`;
+  showDetail(`<h3>${c.n}</h3><p class="lead">${c.yomi}・来店 ${c.visits}回</p>
+    <div class="dl"><span class="k">電話</span><span class="v">${c.tel}</span></div>
+    <div class="dl"><span class="k">メモ</span><span class="v">${c.note}</span></div>
+    <h2 class="sec" style="margin:16px 0 6px">予約履歴（${list.length}件）</h2>${bRows}`);
 }
+function showDetail(inner){document.getElementById('detailBox').innerHTML=inner+`<button class="closeb" onclick="closeDetail()">閉じる</button>`;document.getElementById('detail').classList.add('show');}
 function closeDetail(){document.getElementById('detail').classList.remove('show');}
 
 /* ---------- 操作 ---------- */
@@ -566,31 +596,13 @@ function go(id,btn){
   btn.classList.add('active');
   document.querySelector('.content').scrollTop=0;
 }
-function login(role){
-  current=role;
-  document.getElementById('login').classList.remove('show');
-  render();
-  go('s-home',document.querySelector('#nav button[data-screen="s-home"]'));
-}
+function login(role){current=role;document.getElementById('login').classList.remove('show');render();go('s-home',document.querySelector('#nav button[data-screen="s-home"]'));}
 function openLogin(){document.getElementById('login').classList.add('show');}
 
-/* テーマ切替（ライト=Googleカレンダー風 / ダーク） */
-function toggleTheme(){
-  const isLight=document.body.classList.toggle('light');
-  document.getElementById('themeBtn').textContent=isLight?'🌙':'☀️';
-  try{localStorage.setItem('ap2theme',isLight?'light':'dark');}catch(e){}
-}
-function initTheme(){
-  let pref='light';
-  try{pref=localStorage.getItem('ap2theme')||'light';}catch(e){}
-  document.body.classList.toggle('light',pref==='light');
-  document.getElementById('themeBtn').textContent=pref==='light'?'🌙':'☀️';
-}
-
 /* init */
-initTheme();
 buildEvents();
 setView('month');
+loadHolidays();
 </script>
 </body>
 </html>
