@@ -143,6 +143,43 @@
   .cust-index button{background:none;border:none;color:var(--accent);font-size:10px;line-height:1.15;padding:1px 4px;cursor:pointer;font-weight:700}
   .cust-index button:disabled{color:var(--sub);opacity:.3;cursor:default}
 
+  /* ===== 経営ダッシュボード ===== */
+  .fy-bar{display:flex;align-items:center;gap:10px;margin:4px 0 14px}
+  .fy-bar .cal-nav button{width:32px;height:32px}
+  .fy-title{font-weight:800;font-size:16px}
+  .btab{width:100%;border-collapse:collapse;font-size:13px}
+  .btab th,.btab td{padding:7px 6px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+  .btab th{color:var(--sub);font-weight:600;font-size:11px}
+  .btab td:first-child,.btab th:first-child{text-align:left}
+  .btab tr.total td{font-weight:800;border-top:2px solid var(--line);border-bottom:none}
+  .btab tr.mrow{cursor:pointer} .btab tr.mrow:hover td{background:var(--card2)}
+  .pos{color:var(--accent2)} .neg{color:var(--danger)}
+  .barchart{display:flex;align-items:flex-end;gap:4px;height:130px;padding-top:6px}
+  .bc{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;justify-content:flex-end;cursor:pointer}
+  .bc .bwrap{width:100%;max-width:24px;height:100%;display:flex;align-items:flex-end}
+  .bc .bar{width:100%;border-radius:4px 4px 0 0;background:var(--accent);min-height:2px}
+  .bc:hover .bar{filter:brightness(1.1)}
+  .bc .lb{font-size:9px;color:var(--sub)}
+  .comp{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .comp:last-child{border-bottom:none}
+  .comp .cdot{width:11px;height:11px;border-radius:3px;flex:none}
+  .comp .clab{flex:1;font-weight:600}
+  .comp .cval{font-weight:700;text-align:right;min-width:78px}
+  .comp .cpct{color:var(--sub);font-size:11px;min-width:38px;text-align:right}
+  .compbar{height:8px;border-radius:999px;background:var(--card2);overflow:hidden;margin-top:7px}
+  .compbar>i{display:block;height:100%}
+  .inp{background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 9px;font-size:13px}
+  .inp.num{text-align:right;width:120px}
+  .frow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line)}
+  .frow:last-child{border-bottom:none}
+  .vform{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}
+  .vform .inp{flex:1;min-width:90px}
+  .addbtn{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:8px 14px;font-weight:700;cursor:pointer}
+  .vrow{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .vrow:last-child{border-bottom:none}
+  .vrow .vx{margin-left:auto;color:var(--danger);cursor:pointer;border:none;background:none;font-size:16px;line-height:1}
+  .vrow .vym{color:var(--sub);font-size:11px;min-width:42px}
+
   /* overlay / modal */
   .overlay{position:fixed;inset:0;background:rgba(20,22,28,.55);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
   .overlay.show{display:flex}
@@ -379,6 +416,27 @@ const today=new Date(); today.setHours(0,0,0,0);
 let calAnchor=new Date(today);
 const SH=8, EH=22, HH=46;
 
+/* ===== 経営（会計年度 10月開始〜翌9月） ===== */
+const SALES_CATS=[["ws","ワークショップ","#8430ce"],["seminar","セミナー","#1a73e8"],["event","イベント","#0b8aa0"],["rental","暗室レンタル","#33a852"],["goods","物販","#f9ab00"]];
+const RESV_CATS=[["ws","ワークショップ","#8430ce"],["seminar","セミナー","#1a73e8"],["event","イベント","#0b8aa0"],["rental","暗室レンタル","#33a852"]];
+function loadJSON(k,def){try{const s=localStorage.getItem(k);return s?JSON.parse(s):def;}catch(e){return def;}}
+function saveJSON(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function monthsOfFY(fy){const out=[];for(let i=0;i<12;i++){const m=((9+i)%12)+1;const y=fy+(i<3?0:1);out.push({y,m,ym:y+"-"+String(m).padStart(2,"0"),label:m+"月"});}return out;}
+function rng(seed){let s=seed%2147483647;if(s<=0)s+=2147483646;return ()=>(s=s*16807%2147483647)/2147483647;}
+function genSales(fy){return monthsOfFY(fy).map((mo,i)=>{const rnd=rng(fy*100+i+1);
+  const rental=90000+Math.round(rnd()*70/1)*1000;
+  const goods=15000+Math.round(rnd()*45/1)*1000;
+  const ws=[0,24000,48000,72000,96000][Math.floor(rnd()*5)];
+  const seminar=[0,0,15000,30000][Math.floor(rnd()*4)];
+  const event=[0,0,20000,40000][Math.floor(rnd()*4)];
+  return {ws,seminar,event,rental,goods};});}
+function genResv(fy){return monthsOfFY(fy).map((mo,i)=>{const rnd=rng(fy*100+i+50);
+  return {rental:22+Math.floor(rnd()*20),ws:Math.floor(rnd()*4),seminar:Math.floor(rnd()*2),event:Math.floor(rnd()*2)};});}
+let fyStart=(today.getMonth()+1>=10)?today.getFullYear():today.getFullYear()-1;
+let FIXED=loadJSON('ap2_fixed',{rent:120000,net:6000});
+function defaultVarCosts(){const out=[];monthsOfFY(fyStart).forEach((mo,i)=>{out.push({ym:mo.ym,label:"光熱費",amount:12000+(i%3)*1500});if(i%2===0)out.push({ym:mo.ym,label:"発注費(薬品/印画紙)",amount:18000+(i%4)*2000});});return out;}
+let VARCOSTS=loadJSON('ap2_var',null)||defaultVarCosts();
+
 let EVENTS=[];
 function buildEvents(){
   EVENTS=[];
@@ -442,19 +500,113 @@ function taskRow(t){
   return `<div class="item"><div class="row"><div class="t">${t.t}</div>${st}</div>
     <div class="m"><span class="avatar-sm">${t.who}</span> 担当　／　対象：${t.room}</div><div class="pbar"><i style="width:${t.prog}%"></i></div></div>`;
 }
+function fyMove(d){fyStart+=d;renderBiz();}
+function setFixed(k,v){FIXED[k]=Math.max(0,parseInt(v)||0);saveJSON('ap2_fixed',FIXED);renderBiz();}
+function addVar(){const ym=document.getElementById('varMonth').value;
+  const label=(document.getElementById('varLabel').value||'').trim()||'変動費';
+  const amt=parseInt(document.getElementById('varAmt').value)||0;
+  if(amt<=0)return; VARCOSTS.push({ym,label,amount:amt}); saveJSON('ap2_var',VARCOSTS); renderBiz();}
+function delVar(i){VARCOSTS.splice(i,1);saveJSON('ap2_var',VARCOSTS);renderBiz();}
+function bizCompute(fy){
+  const months=monthsOfFY(fy), sales=genSales(fy), resv=genResv(fy);
+  const monSales=sales.map(s=>s.ws+s.seminar+s.event+s.rental+s.goods);
+  const monVar=months.map(mo=>VARCOSTS.filter(v=>v.ym===mo.ym).reduce((a,v)=>a+(+v.amount||0),0));
+  const fixedMon=(+FIXED.rent||0)+(+FIXED.net||0);
+  const monExp=months.map((mo,i)=>fixedMon+monVar[i]);
+  const monGross=months.map((mo,i)=>monSales[i]-monExp[i]);
+  return {months,sales,resv,monSales,monVar,fixedMon,monExp,monGross};
+}
 function renderBiz(){
   if(!["owner","admin"].includes(current)){bizBody.innerHTML=`<div class="lock">🔒 経営ダッシュボードはオーナー・管理者のみ閲覧できます</div>`;return;}
-  const monthSales=486000, roomShare=[["暗室A",42],["暗室B",33],["スタジオ",25]];
-  bizBody.innerHTML=`<div class="kpi-grid">
-     <div class="kpi"><div class="label">今月売上</div><div class="val">${yen(monthSales)}</div><div class="delta up">▲ 前月比 +12%</div></div>
-     <div class="kpi"><div class="label">今月予約数</div><div class="val">128件</div><div class="delta up">▲ +9件</div></div>
-     <div class="kpi"><div class="label">客単価</div><div class="val">${yen(Math.round(monthSales/128))}</div><div class="delta">—</div></div>
-     <div class="kpi"><div class="label">リピート率</div><div class="val">64%</div><div class="delta up">▲ +5pt</div></div></div>
-   <h2 class="sec">部屋別 稼働シェア</h2><div class="card">
-     ${roomShare.map(r=>`<div class="item"><div class="row"><div class="t">${r[0]}</div><div style="font-weight:700">${r[1]}%</div></div><div class="pbar"><i style="width:${r[1]}%"></i></div></div>`).join("")}</div>
-   <h2 class="sec">入金ステータス（Square）</h2><div class="card">
-     <div class="item"><div class="row"><div class="t">事前決済（Web）</div><span class="badge b-paid">${yen(366000)}</span></div></div>
-     <div class="item"><div class="row"><div class="t">店頭精算 予定</div><span class="badge b-unpaid">${yen(120000)}</span></div></div></div>`;
+  const C=bizCompute(fyStart);
+  const annSales=C.monSales.reduce((a,b)=>a+b,0);
+  const annExp=C.monExp.reduce((a,b)=>a+b,0);
+  const annGross=annSales-annExp;
+  const grossRate=annSales?Math.round(annGross/annSales*100):0;
+  const annFixed=C.fixedMon*12, annVar=C.monVar.reduce((a,b)=>a+b,0);
+  const catAnn={}; SALES_CATS.forEach(c=>catAnn[c[0]]=C.sales.reduce((a,s)=>a+s[c[0]],0));
+  const resvAnn={}; RESV_CATS.forEach(c=>resvAnn[c[0]]=C.resv.reduce((a,s)=>a+s[c[0]],0));
+  const resvTotal=Object.values(resvAnn).reduce((a,b)=>a+b,0)||1;
+  const maxSales=Math.max(...C.monSales,1);
+
+  // FY セレクタ＋年間KPI
+  let h=`<div class="fy-bar"><div class="cal-nav"><button onclick="fyMove(-1)">‹</button><button onclick="fyMove(1)">›</button></div>
+    <span class="fy-title">${fyStart}年10月 〜 ${fyStart+1}年9月</span></div>
+    <div class="kpi-grid">
+      <div class="kpi"><div class="label">年間売上</div><div class="val">${yen(annSales)}</div></div>
+      <div class="kpi"><div class="label">年間経費</div><div class="val">${yen(annExp)}</div></div>
+      <div class="kpi"><div class="label">年間粗利益</div><div class="val ${annGross>=0?'pos':'neg'}">${yen(annGross)}</div></div>
+      <div class="kpi"><div class="label">粗利率</div><div class="val ${annGross>=0?'pos':'neg'}">${grossRate}%</div></div>
+    </div>`;
+
+  // 月別売上 棒グラフ
+  h+=`<h2 class="sec">月別売上の推移（タップで内訳）</h2><div class="card"><div class="barchart">`;
+  C.months.forEach((mo,i)=>{const hpct=Math.round(C.monSales[i]/maxSales*100);
+    h+=`<div class="bc" onclick="openMonth(${i})"><div class="bwrap"><div class="bar" style="height:${hpct}%"></div></div><div class="lb">${mo.m}</div></div>`;});
+  h+=`</div></div>`;
+
+  // 月別損益テーブル
+  h+=`<h2 class="sec">月別 損益</h2><div class="card" style="overflow-x:auto"><table class="btab">
+    <tr><th>月</th><th>売上</th><th>経費</th><th>粗利</th></tr>`;
+  C.months.forEach((mo,i)=>{h+=`<tr class="mrow" onclick="openMonth(${i})"><td>${mo.y}/${String(mo.m).padStart(2,'0')}</td>
+    <td>${yen(C.monSales[i])}</td><td>${yen(C.monExp[i])}</td><td class="${C.monGross[i]>=0?'pos':'neg'}">${yen(C.monGross[i])}</td></tr>`;});
+  h+=`<tr class="total"><td>年間計</td><td>${yen(annSales)}</td><td>${yen(annExp)}</td><td class="${annGross>=0?'pos':'neg'}">${yen(annGross)}</td></tr></table></div>`;
+
+  // 売上構成比
+  h+=`<h2 class="sec">売上構成比（年間）</h2><div class="card">`;
+  SALES_CATS.forEach(c=>{const v=catAnn[c[0]], pct=annSales?Math.round(v/annSales*100):0;
+    h+=`<div><div class="comp"><span class="cdot" style="background:${c[2]}"></span><span class="clab">${c[1]}</span><span class="cval">${yen(v)}</span><span class="cpct">${pct}%</span></div>
+    <div class="compbar"><i style="width:${pct}%;background:${c[2]}"></i></div></div>`;});
+  h+=`</div>`;
+
+  // 予約数構成
+  h+=`<h2 class="sec">予約数の構成（年間 計${resvTotal}件）</h2><div class="card">`;
+  RESV_CATS.forEach(c=>{const v=resvAnn[c[0]], pct=Math.round(v/resvTotal*100);
+    h+=`<div><div class="comp"><span class="cdot" style="background:${c[2]}"></span><span class="clab">${c[1]}</span><span class="cval">${v}件</span><span class="cpct">${pct}%</span></div>
+    <div class="compbar"><i style="width:${pct}%;background:${c[2]}"></i></div></div>`;});
+  h+=`</div>`;
+
+  // 固定費
+  h+=`<h2 class="sec">固定費（毎月）</h2><div class="card">
+    <div class="frow"><div>家賃</div><div><input class="inp num" type="number" value="${FIXED.rent}" onchange="setFixed('rent',this.value)"> 円/月</div></div>
+    <div class="frow"><div>ネット回線</div><div><input class="inp num" type="number" value="${FIXED.net}" onchange="setFixed('net',this.value)"> 円/月</div></div>
+    <div class="frow"><div style="font-weight:800">固定費 月合計</div><div style="font-weight:800">${yen(C.fixedMon)}／月　（年間 ${yen(annFixed)}）</div></div></div>`;
+
+  // 変動費（手動入力）
+  const monthOpts=C.months.map(mo=>`<option value="${mo.ym}">${mo.y}/${String(mo.m).padStart(2,'0')}</option>`).join("");
+  let vlist=""; let anyVar=false;
+  VARCOSTS.forEach((v,idx)=>{ if(C.months.some(mo=>mo.ym===v.ym)){ anyVar=true;
+    vlist+=`<div class="vrow"><span class="vym">${v.ym.slice(5)}月</span><span style="flex:1">${v.label}</span><span style="font-weight:700">${yen(+v.amount||0)}</span><button class="vx" onclick="delVar(${idx})">✕</button></div>`;}});
+  if(!anyVar)vlist=`<p class="lead" style="margin:6px 0 0">この年度の変動費はまだありません。上で追加してください。</p>`;
+  h+=`<h2 class="sec">変動費（手動入力）</h2><div class="card">
+    <div class="vform">
+      <select class="inp" id="varMonth">${monthOpts}</select>
+      <input class="inp" id="varLabel" placeholder="費目（例：光熱費・発注費）">
+      <input class="inp num" id="varAmt" type="number" placeholder="金額">
+      <button class="addbtn" onclick="addVar()">追加</button>
+    </div>${vlist}
+    <div class="frow" style="margin-top:6px"><div style="font-weight:800">変動費 年間合計</div><div style="font-weight:800">${yen(annVar)}</div></div></div>`;
+
+  // 粗利まとめ
+  h+=`<h2 class="sec">粗利益（年間）</h2><div class="card">
+    <div class="frow"><div>売上</div><div style="font-weight:700">${yen(annSales)}</div></div>
+    <div class="frow"><div>経費（固定 ${yen(annFixed)} ＋ 変動 ${yen(annVar)}）</div><div style="font-weight:700">− ${yen(annExp)}</div></div>
+    <div class="frow"><div style="font-weight:800">粗利益</div><div style="font-weight:800" class="${annGross>=0?'pos':'neg'}">${yen(annGross)}（粗利率 ${grossRate}%）</div></div></div>
+    <p class="note">※ 売上・予約数はサンプル値（本番ではSquare／予約データから自動集計）。固定費・変動費の入力はこの端末に保存されます。決算用ではなく、利益感を把握するための簡易表示です。</p>`;
+
+  bizBody.innerHTML=h;
+}
+function openMonth(i){
+  const C=bizCompute(fyStart), mo=C.months[i], s=C.sales[i], r=C.resv[i];
+  const salesRows=SALES_CATS.map(c=>`<div class="dl"><span class="k"><span class="cdot" style="background:${c[2]};display:inline-block;margin-right:6px"></span>${c[1]}</span><span class="v">${yen(s[c[0]])}</span></div>`).join("");
+  const resvRows=RESV_CATS.map(c=>`<div class="dl"><span class="k">${c[1]}</span><span class="v">${r[c[0]]}件</span></div>`).join("");
+  showDetail(`<h3>${mo.y}年${mo.m}月</h3><p class="lead">月次サマリー</p>
+    <h2 class="sec" style="margin:6px 0">売上内訳</h2>${salesRows}
+    <div class="dl"><span class="k" style="font-weight:800">売上 計</span><span class="v" style="font-weight:800">${yen(C.monSales[i])}</span></div>
+    <h2 class="sec" style="margin:14px 0 6px">予約数</h2>${resvRows}
+    <h2 class="sec" style="margin:14px 0 6px">損益</h2>
+    <div class="dl"><span class="k">経費（固定${yen(C.fixedMon)}＋変動${yen(C.monVar[i])}）</span><span class="v">${yen(C.monExp[i])}</span></div>
+    <div class="dl"><span class="k" style="font-weight:800">粗利益</span><span class="v ${C.monGross[i]>=0?'pos':'neg'}" style="font-weight:800">${yen(C.monGross[i])}</span></div>`);
 }
 
 /* ---------- カレンダー ---------- */
