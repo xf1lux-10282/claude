@@ -525,6 +525,9 @@ function bizNext(){bizMode==='year'?fyMove(1):monthMove(1);}
 function compHTML(cat,val,total,unit){const pct=total?Math.round(val/total*100):0;return `<div><div class="comp"><span class="cdot" style="background:${cat[2]}"></span><span class="clab">${cat[1]}</span><span class="cval">${unit==='¥'?yen(val):val+'件'}</span><span class="cpct">${pct}%</span></div><div class="compbar"><i style="width:${pct}%;background:${cat[2]}"></i></div></div>`;}
 function fixedBlock(C){const annFixed=C.fixedMon*12;return `<h2 class="sec">固定費（毎月）</h2><div class="card"><div class="frow"><div>家賃</div><div><input class="inp num" type="number" value="${FIXED.rent}" onchange="setFixed('rent',this.value)"> 円/月</div></div><div class="frow"><div>ネット回線</div><div><input class="inp num" type="number" value="${FIXED.net}" onchange="setFixed('net',this.value)"> 円/月</div></div><div class="frow"><div style="font-weight:800">固定費 月合計</div><div style="font-weight:800">${yen(C.fixedMon)}／月　（年間 ${yen(annFixed)}）</div></div></div>`;}
 function varBlock(C,mode,i){const months=mode==='year'?C.months:[C.months[i]];const monthOpts=months.map(mo=>`<option value="${mo.ym}">${mo.y}/${String(mo.m).padStart(2,'0')}</option>`).join("");const ymSet=new Set(months.map(mo=>mo.ym));let vlist="",any=false;VARCOSTS.forEach((v,idx)=>{if(ymSet.has(v.ym)){any=true;vlist+=`<div class="vrow"><span class="vym">${v.ym.slice(5)}月</span><span style="flex:1">${v.label}</span><span style="font-weight:700">${yen(+v.amount||0)}</span><button class="vx" onclick="delVar(${idx})">✕</button></div>`;}});if(!any)vlist=`<p class="lead" style="margin:6px 0 0">変動費はまだありません。上で追加してください。</p>`;const total=mode==='year'?C.monVar.reduce((a,b)=>a+b,0):C.monVar[i];const totalLabel=mode==='year'?'変動費 年間合計':'変動費 当月合計';return `<h2 class="sec">変動費（手動入力）</h2><div class="card"><div class="vform"><select class="inp" id="varMonth">${monthOpts}</select><input class="inp" id="varLabel" placeholder="費目（例：光熱費・発注費）"><input class="inp num" id="varAmt" type="number" placeholder="金額"><button class="addbtn" onclick="addVar()">追加</button></div>${vlist}<div class="frow" style="margin-top:6px"><div style="font-weight:800">${totalLabel}</div><div style="font-weight:800">${yen(total)}</div></div></div>`;}
+function pctChg(cur,prev){if(!prev)return null;return Math.round((cur-prev)/Math.abs(prev)*100);}
+function deltaTag(cur,prev,goodUp){const p=pctChg(cur,prev);if(p===null)return `<div class="delta">前年 —</div>`;const good=(p>=0)===goodUp;return `<div class="delta ${good?'up':'down'}">前年比 ${p>=0?'＋':'−'}${Math.abs(p)}%</div>`;}
+function yoyRow(label,cur,prev,goodUp){const p=pctChg(cur,prev);const cls=p===null?'':((p>=0)===goodUp?'pos':'neg');const chg=p===null?'—':`${p>=0?'＋':'−'}${Math.abs(p)}%`;return `<tr><td>${label}</td><td>${yen(cur)}</td><td>${yen(prev)}</td><td class="${cls}">${chg}</td></tr>`;}
 function renderBiz(){
   if(!["owner","admin"].includes(current)){bizBody.innerHTML=`<div class="lock">🔒 経営ダッシュボードはオーナー・管理者のみ閲覧できます</div>`;return;}
   const C=bizCompute(fyStart);
@@ -537,11 +540,17 @@ function monthHTML(C,i){
   const mSales=C.monSales[i], mExp=C.monExp[i], mGross=C.monGross[i], mVar=C.monVar[i];
   const gRate=mSales?Math.round(mGross/mSales*100):0;
   const resvTot=RESV_CATS.reduce((a,c)=>a+r[c[0]],0)||1;
+  const P=bizCompute(fyStart-1);
+  const pSales=P.monSales[i], pExp=P.monExp[i], pGross=P.monGross[i];
+  const pGRate=pSales?Math.round(pGross/pSales*100):0;
   let h=`<div class="kpi-grid">
-    <div class="kpi"><div class="label">${mo.m}月 売上</div><div class="val">${yen(mSales)}</div></div>
-    <div class="kpi"><div class="label">${mo.m}月 経費</div><div class="val">${yen(mExp)}</div></div>
-    <div class="kpi"><div class="label">${mo.m}月 粗利益</div><div class="val ${mGross>=0?'pos':'neg'}">${yen(mGross)}</div></div>
-    <div class="kpi"><div class="label">粗利率</div><div class="val ${mGross>=0?'pos':'neg'}">${gRate}%</div></div></div>`;
+    <div class="kpi"><div class="label">${mo.m}月 売上</div><div class="val">${yen(mSales)}</div>${deltaTag(mSales,pSales,true)}</div>
+    <div class="kpi"><div class="label">${mo.m}月 経費</div><div class="val">${yen(mExp)}</div>${deltaTag(mExp,pExp,false)}</div>
+    <div class="kpi"><div class="label">${mo.m}月 粗利益</div><div class="val ${mGross>=0?'pos':'neg'}">${yen(mGross)}</div>${deltaTag(mGross,pGross,true)}</div>
+    <div class="kpi"><div class="label">粗利率</div><div class="val ${mGross>=0?'pos':'neg'}">${gRate}%</div><div class="delta">前年 ${pSales?pGRate+'%':'—'}</div></div></div>`;
+  h+=`<h2 class="sec">前年同月比（${mo.y-1}年${mo.m}月 比）</h2><div class="card" style="overflow-x:auto"><table class="btab">
+    <tr><th>項目</th><th>当月</th><th>前年同月</th><th>増減</th></tr>
+    ${yoyRow('売上',mSales,pSales,true)}${yoyRow('経費',mExp,pExp,false)}${yoyRow('粗利益',mGross,pGross,true)}</table></div>`;
   h+=`<h2 class="sec">売上内訳（${mo.m}月）</h2><div class="card">${SALES_CATS.map(c=>compHTML(c,s[c[0]],mSales,'¥')).join("")}<div class="frow" style="margin-top:4px"><div style="font-weight:800">売上 計</div><div style="font-weight:800">${yen(mSales)}</div></div></div>`;
   h+=`<h2 class="sec">予約数（${mo.m}月 計${resvTot}件）</h2><div class="card">${RESV_CATS.map(c=>compHTML(c,r[c[0]],resvTot,'件')).join("")}</div>`;
   h+=fixedBlock(C)+varBlock(C,'month',i);
