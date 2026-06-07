@@ -434,8 +434,10 @@ function genResv(fy){return monthsOfFY(fy).map((mo,i)=>{const rnd=rng(fy*100+i+5
   return {rental:22+Math.floor(rnd()*20),ws:Math.floor(rnd()*4),seminar:Math.floor(rnd()*2),event:Math.floor(rnd()*2)};});}
 let fyStart=(today.getMonth()+1>=10)?today.getFullYear():today.getFullYear()-1;
 let FIXED=loadJSON('ap2_fixed',{rent:120000,net:6000});
-function defaultVarCosts(){const out=[];monthsOfFY(fyStart).forEach((mo,i)=>{out.push({ym:mo.ym,label:"光熱費",amount:12000+(i%3)*1500});if(i%2===0)out.push({ym:mo.ym,label:"発注費(薬品/印画紙)",amount:18000+(i%4)*2000});});return out;}
+function defaultVarCosts(){const out=[];monthsOfFY(fyStart).forEach((mo,i)=>{if(i%2===0)out.push({ym:mo.ym,label:"発注費(薬品/印画紙)",amount:18000+(i%4)*2000});});return out;}
+function defaultUtil(){const o={};monthsOfFY(fyStart).forEach((mo,i)=>{o[mo.ym]=12000+(i%3)*1500;});return o;}
 let VARCOSTS=loadJSON('ap2_var',null)||defaultVarCosts();
+let UTIL=loadJSON('ap2_util',null)||defaultUtil();
 let bizMode='month';
 let bizMonth=(function(){const k=today.getFullYear()+"-"+String(today.getMonth()+1).padStart(2,"0");const idx=monthsOfFY(fyStart).findIndex(mo=>mo.ym===k);return idx>=0?idx:0;})();
 
@@ -504,6 +506,7 @@ function taskRow(t){
 }
 function fyMove(d){fyStart+=d;renderBiz();}
 function setFixed(k,v){FIXED[k]=Math.max(0,parseInt(v)||0);saveJSON('ap2_fixed',FIXED);renderBiz();}
+function setUtil(ym,v){UTIL[ym]=Math.max(0,parseInt(v)||0);saveJSON('ap2_util',UTIL);renderBiz();}
 function addVar(){const ym=document.getElementById('varMonth').value;
   const label=(document.getElementById('varLabel').value||'').trim()||'変動費';
   const amt=parseInt(document.getElementById('varAmt').value)||0;
@@ -513,17 +516,30 @@ function bizCompute(fy){
   const months=monthsOfFY(fy), sales=genSales(fy), resv=genResv(fy);
   const monSales=sales.map(s=>s.ws+s.seminar+s.event+s.rental+s.goods);
   const monVar=months.map(mo=>VARCOSTS.filter(v=>v.ym===mo.ym).reduce((a,v)=>a+(+v.amount||0),0));
-  const fixedMon=(+FIXED.rent||0)+(+FIXED.net||0);
-  const monExp=months.map((mo,i)=>fixedMon+monVar[i]);
+  const fixedFlat=(+FIXED.rent||0)+(+FIXED.net||0);
+  const utilMon=months.map(mo=>+(UTIL[mo.ym]||0));
+  const monFixed=months.map((mo,i)=>fixedFlat+utilMon[i]);
+  const monExp=months.map((mo,i)=>monFixed[i]+monVar[i]);
   const monGross=months.map((mo,i)=>monSales[i]-monExp[i]);
-  return {months,sales,resv,monSales,monVar,fixedMon,monExp,monGross};
+  return {months,sales,resv,monSales,monVar,fixedFlat,utilMon,monFixed,monExp,monGross};
 }
 function setBizMode(m){bizMode=m;renderBiz();}
 function monthMove(d){let i=bizMonth+d;if(i<0){fyStart--;bizMonth=11;}else if(i>11){fyStart++;bizMonth=0;}else{bizMonth=i;}renderBiz();}
 function bizPrev(){bizMode==='year'?fyMove(-1):monthMove(-1);}
 function bizNext(){bizMode==='year'?fyMove(1):monthMove(1);}
 function compHTML(cat,val,total,unit){const pct=total?Math.round(val/total*100):0;return `<div><div class="comp"><span class="cdot" style="background:${cat[2]}"></span><span class="clab">${cat[1]}</span><span class="cval">${unit==='¥'?yen(val):val+'件'}</span><span class="cpct">${pct}%</span></div><div class="compbar"><i style="width:${pct}%;background:${cat[2]}"></i></div></div>`;}
-function fixedBlock(C){const annFixed=C.fixedMon*12;return `<h2 class="sec">固定費（毎月）</h2><div class="card"><div class="frow"><div>家賃</div><div><input class="inp num" type="number" value="${FIXED.rent}" onchange="setFixed('rent',this.value)"> 円/月</div></div><div class="frow"><div>ネット回線</div><div><input class="inp num" type="number" value="${FIXED.net}" onchange="setFixed('net',this.value)"> 円/月</div></div><div class="frow"><div style="font-weight:800">固定費 月合計</div><div style="font-weight:800">${yen(C.fixedMon)}／月　（年間 ${yen(annFixed)}）</div></div></div>`;}
+function fixedBlock(C,mode,i){
+  let utilPart;
+  if(mode==='month'){const ym=C.months[i].ym,uval=+(UTIL[ym]||0);
+    utilPart=`<div class="frow"><div>光熱費（${C.months[i].m}月・手動入力）</div><div><input class="inp num" type="number" value="${uval}" onchange="setUtil('${ym}',this.value)"> 円</div></div>
+      <div class="frow"><div style="font-weight:800">${C.months[i].m}月 固定費計</div><div style="font-weight:800">${yen(C.fixedFlat+uval)}</div></div>`;
+  }else{const annUtil=C.utilMon.reduce((a,b)=>a+b,0);
+    utilPart=`<div class="frow"><div>光熱費（手動入力・各月）</div><div style="text-align:right">年間 ${yen(annUtil)}<div style="font-size:11px;color:var(--sub)">※各月は月次画面で入力</div></div></div>
+      <div class="frow"><div style="font-weight:800">固定費 年間計</div><div style="font-weight:800">${yen(C.fixedFlat*12+annUtil)}</div></div>`;}
+  return `<h2 class="sec">固定費（毎月）</h2><div class="card">
+    <div class="frow"><div>家賃</div><div><input class="inp num" type="number" value="${FIXED.rent}" onchange="setFixed('rent',this.value)"> 円/月</div></div>
+    <div class="frow"><div>ネット回線</div><div><input class="inp num" type="number" value="${FIXED.net}" onchange="setFixed('net',this.value)"> 円/月</div></div>
+    ${utilPart}</div>`;}
 function varBlock(C,mode,i){const months=mode==='year'?C.months:[C.months[i]];const monthOpts=months.map(mo=>`<option value="${mo.ym}">${mo.y}/${String(mo.m).padStart(2,'0')}</option>`).join("");const ymSet=new Set(months.map(mo=>mo.ym));let vlist="",any=false;VARCOSTS.forEach((v,idx)=>{if(ymSet.has(v.ym)){any=true;vlist+=`<div class="vrow"><span class="vym">${v.ym.slice(5)}月</span><span style="flex:1">${v.label}</span><span style="font-weight:700">${yen(+v.amount||0)}</span><button class="vx" onclick="delVar(${idx})">✕</button></div>`;}});if(!any)vlist=`<p class="lead" style="margin:6px 0 0">変動費はまだありません。上で追加してください。</p>`;const total=mode==='year'?C.monVar.reduce((a,b)=>a+b,0):C.monVar[i];const totalLabel=mode==='year'?'変動費 年間合計':'変動費 当月合計';return `<h2 class="sec">変動費（手動入力）</h2><div class="card"><div class="vform"><select class="inp" id="varMonth">${monthOpts}</select><input class="inp" id="varLabel" placeholder="費目（例：光熱費・発注費）"><input class="inp num" id="varAmt" type="number" placeholder="金額"><button class="addbtn" onclick="addVar()">追加</button></div>${vlist}<div class="frow" style="margin-top:6px"><div style="font-weight:800">${totalLabel}</div><div style="font-weight:800">${yen(total)}</div></div></div>`;}
 function pctChg(cur,prev){if(!prev)return null;return Math.round((cur-prev)/Math.abs(prev)*100);}
 function deltaTag(cur,prev,goodUp){const p=pctChg(cur,prev);if(p===null)return `<div class="delta">前年 —</div>`;const good=(p>=0)===goodUp;return `<div class="delta ${good?'up':'down'}">前年比 ${p>=0?'＋':'−'}${Math.abs(p)}%</div>`;}
@@ -553,10 +569,10 @@ function monthHTML(C,i){
     ${yoyRow('売上',mSales,pSales,true)}${yoyRow('経費',mExp,pExp,false)}${yoyRow('粗利益',mGross,pGross,true)}</table></div>`;
   h+=`<h2 class="sec">売上内訳（${mo.m}月）</h2><div class="card">${SALES_CATS.map(c=>compHTML(c,s[c[0]],mSales,'¥')).join("")}<div class="frow" style="margin-top:4px"><div style="font-weight:800">売上 計</div><div style="font-weight:800">${yen(mSales)}</div></div></div>`;
   h+=`<h2 class="sec">予約数（${mo.m}月 計${resvTot}件）</h2><div class="card">${RESV_CATS.map(c=>compHTML(c,r[c[0]],resvTot,'件')).join("")}</div>`;
-  h+=fixedBlock(C)+varBlock(C,'month',i);
+  h+=fixedBlock(C,'month',i)+varBlock(C,'month',i);
   h+=`<h2 class="sec">粗利益（${mo.m}月）</h2><div class="card">
     <div class="frow"><div>売上</div><div style="font-weight:700">${yen(mSales)}</div></div>
-    <div class="frow"><div>経費（固定 ${yen(C.fixedMon)} ＋ 変動 ${yen(mVar)}）</div><div style="font-weight:700">− ${yen(mExp)}</div></div>
+    <div class="frow"><div>経費（固定 ${yen(C.monFixed[i])} ＋ 変動 ${yen(mVar)}）</div><div style="font-weight:700">− ${yen(mExp)}</div></div>
     <div class="frow"><div style="font-weight:800">粗利益</div><div style="font-weight:800" class="${mGross>=0?'pos':'neg'}">${yen(mGross)}（粗利率 ${gRate}%）</div></div></div>
     <p class="note">※ 売上・予約数はサンプル値（本番ではSquare／予約データから自動集計）。固定費・変動費の入力はこの端末に保存されます。</p>`;
   return h;
@@ -566,7 +582,7 @@ function yearHTML(C){
   const annExp=C.monExp.reduce((a,b)=>a+b,0);
   const annGross=annSales-annExp;
   const grossRate=annSales?Math.round(annGross/annSales*100):0;
-  const annFixed=C.fixedMon*12, annVar=C.monVar.reduce((a,b)=>a+b,0);
+  const annFixed=C.monFixed.reduce((a,b)=>a+b,0), annVar=C.monVar.reduce((a,b)=>a+b,0);
   const catAnn={}; SALES_CATS.forEach(c=>catAnn[c[0]]=C.sales.reduce((a,s)=>a+s[c[0]],0));
   const resvAnn={}; RESV_CATS.forEach(c=>resvAnn[c[0]]=C.resv.reduce((a,s)=>a+s[c[0]],0));
   const resvTotal=Object.values(resvAnn).reduce((a,b)=>a+b,0)||1;
@@ -606,7 +622,7 @@ function yearHTML(C){
     <div class="compbar"><i style="width:${pct}%;background:${c[2]}"></i></div></div>`;});
   h+=`</div>`;
 
-  h+=fixedBlock(C)+varBlock(C,'year',0);
+  h+=fixedBlock(C,'year',0)+varBlock(C,'year',0);
 
   // 粗利まとめ
   h+=`<h2 class="sec">粗利益（年間）</h2><div class="card">
@@ -625,7 +641,7 @@ function openMonth(i){
     <div class="dl"><span class="k" style="font-weight:800">売上 計</span><span class="v" style="font-weight:800">${yen(C.monSales[i])}</span></div>
     <h2 class="sec" style="margin:14px 0 6px">予約数</h2>${resvRows}
     <h2 class="sec" style="margin:14px 0 6px">損益</h2>
-    <div class="dl"><span class="k">経費（固定${yen(C.fixedMon)}＋変動${yen(C.monVar[i])}）</span><span class="v">${yen(C.monExp[i])}</span></div>
+    <div class="dl"><span class="k">経費（固定${yen(C.monFixed[i])}＋変動${yen(C.monVar[i])}）</span><span class="v">${yen(C.monExp[i])}</span></div>
     <div class="dl"><span class="k" style="font-weight:800">粗利益</span><span class="v ${C.monGross[i]>=0?'pos':'neg'}" style="font-weight:800">${yen(C.monGross[i])}</span></div>`);
 }
 
