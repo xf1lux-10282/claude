@@ -14,7 +14,7 @@
     --text:#202124; --sub:#5f6368; --accent:#1a73e8; --accent2:#188038;
     --warn:#e8710a; --danger:#d93025; --purple:#8430ce;
     --holiday-bg:rgba(217,48,37,.07);
-    --ev-blue:#1a73e8; --ev-green:#33a852; --ev-amber:#f9ab00; --ev-purple:#8430ce;
+    --ev-blue:#1a73e8; --ev-green:#33a852; --ev-amber:#f9ab00; --ev-purple:#8430ce; --ev-event:#0b8aa0;
     --radius:14px; --headerH:58px; --sideW:220px;
   }
   /* ===== Dark = 端末がダーク設定のとき自動適用 ===== */
@@ -100,7 +100,7 @@
   .chip{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text);padding:1px 2px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;border-radius:4px}
   .chip:hover{background:var(--card2)}
   .chip .dot{width:8px;height:8px;border-radius:50%;flex:none;background:var(--ev-blue)}
-  .chip.paid .dot{background:var(--ev-green)} .chip.unpaid .dot{background:var(--ev-amber)} .chip.task .dot{background:var(--ev-purple)}
+  .chip.paid .dot{background:var(--ev-green)} .chip.unpaid .dot{background:var(--ev-amber)} .chip.task .dot{background:var(--ev-purple)} .chip.event .dot{background:var(--ev-event)}
   .more{font-size:10px;color:var(--sub);padding-left:3px}
   /* time grid (week / 3day) */
   .tg-wrap{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card)}
@@ -123,7 +123,7 @@
     background-image:repeating-linear-gradient(to bottom,var(--line) 0,var(--line) 1px,transparent 1px,transparent 46px)}
   .tg-col.holcol{background-color:var(--holiday-bg)}
   .ev{position:absolute;left:3px;right:3px;border-radius:6px;padding:3px 6px;font-size:11px;overflow:hidden;cursor:pointer;background:var(--ev-blue);color:#fff;line-height:1.25}
-  .ev.paid{background:var(--ev-green)} .ev.unpaid{background:var(--ev-amber);color:#3c4043} .ev.task{background:var(--ev-purple)}
+  .ev.paid{background:var(--ev-green)} .ev.unpaid{background:var(--ev-amber);color:#3c4043} .ev.task{background:var(--ev-purple)} .ev.event{background:var(--ev-event)}
   .ev .et{font-weight:700} .ev .es{opacity:.9;font-size:10px}
   .nowline{position:absolute;left:0;right:0;height:2px;background:#ea4335;z-index:5}
   .nowline::before{content:"";position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:#ea4335}
@@ -137,6 +137,8 @@
   .crow .ci{width:34px;height:34px;border-radius:50%;background:var(--card2);display:grid;place-items:center;font-weight:700;font-size:14px;color:var(--sub);flex:none}
   .crow .cn{font-weight:700;font-size:15px}
   .crow .cm{font-size:12px;color:var(--sub);margin-top:2px}
+  .cbk{font-size:11.5px;color:var(--accent);margin-top:4px;font-weight:600;display:inline-flex;align-items:center;gap:4px}
+  .kind{font-size:10px;font-weight:700;padding:2px 8px;border-radius:999px;background:rgba(11,138,160,.16);color:var(--ev-event)}
   .cust-index{position:fixed;right:2px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:0;z-index:25}
   .cust-index button{background:none;border:none;color:var(--accent);font-size:10px;line-height:1.15;padding:1px 4px;cursor:pointer;font-weight:700}
   .cust-index button:disabled{color:var(--sub);opacity:.3;cursor:default}
@@ -220,6 +222,8 @@
           </div>
         </div>
         <div id="calBody"></div>
+        <h2 class="sec" id="evHead">ワークショップ・セミナー</h2>
+        <div class="card" id="eventList"></div>
       </section>
 
       <section class="screen" id="s-task">
@@ -322,6 +326,15 @@ const TASKS=[
   {t:"スタジオ照明の電球交換",who:"作",prog:0,st:"todo",room:"スタジオ",day:2,sh:17,eh:18},
   {t:"備品（印画紙）発注",who:"予",prog:30,st:"doing",room:"—",day:0,sh:16,eh:16.5},
 ];
+/* ワークショップ・セミナー等のイベント（参加者リスト付き） */
+const EVENTSLIST=[
+  {kind:"ワークショップ",title:"湿板写真ワークショップ",day:2,sh:13,eh:16,room:"スタジオ",fee:8000,cap:6,participants:["田中 様","佐藤 様","山本 様"]},
+  {kind:"セミナー",title:"暗室プリント基礎セミナー",day:5,sh:14,eh:16,room:"暗室B",fee:5000,cap:8,participants:["中村 様","高橋 様","渡辺 様"]},
+  {kind:"ワークショップ",title:"サイアノタイプ体験会",day:9,sh:10,eh:12.5,room:"スタジオ",fee:6000,cap:10,participants:["伊藤 様","加藤 様","山田 様","吉田 様"]},
+  {kind:"イベント",title:"写真家トークイベント",day:14,sh:18,eh:20,room:"スタジオ",fee:2000,cap:20,participants:["小林 様","鈴木 様"]},
+  {kind:"セミナー",title:"フィルム現像 応用セミナー",day:-3,sh:13,eh:15,room:"暗室A",fee:5000,cap:6,participants:["田中 様","中村 様"]},
+];
+
 /* 顧客（yomi=読み。インデックス・並び替えに使用） */
 const CUSTOMERS=[
   {n:"安藤 様",yomi:"アンドウ",tel:"090-xxxx-0001",visits:2,note:"初回利用・大判希望"},
@@ -371,10 +384,11 @@ function buildEvents(){
   EVENTS=[];
   BOOKINGS.forEach((b,i)=>EVENTS.push({id:"b"+i,type:"booking",date:dateOf(b.day),sh:b.sh,eh:b.eh,room:b.room,cust:b.cust,amount:b.amount,pay:b.pay,ch:b.ch}));
   TASKS.forEach((t,i)=>EVENTS.push({id:"t"+i,type:"task",date:dateOf(t.day),sh:t.sh,eh:t.eh,title:t.t,who:t.who,prog:t.prog,st:t.st,room:t.room}));
+  EVENTSLIST.forEach((w,i)=>EVENTS.push({id:"w"+i,type:"event",date:dateOf(w.day),sh:w.sh,eh:w.eh,title:w.title,kind:w.kind,room:w.room,fee:w.fee,cap:w.cap,participants:w.participants}));
 }
 function eventsForRole(){
   if(current==="worker")return EVENTS.filter(e=>e.type==="task"&&e.who==="作");
-  if(current==="reception")return EVENTS.filter(e=>e.type==="booking"||e.who==="予");
+  if(current==="reception")return EVENTS.filter(e=>e.type==="booking"||e.type==="event"||e.who==="予");
   return EVENTS;
 }
 function eventById(id){return EVENTS.find(e=>e.id===id);}
@@ -447,12 +461,28 @@ function renderBiz(){
 function setView(v){calView=v;document.querySelectorAll('#calSeg button').forEach(b=>b.classList.toggle('active',b.dataset.v===v));renderCalendar();}
 function calToday(){calAnchor=new Date(today);renderCalendar();}
 function calMove(dir){const x=new Date(calAnchor);if(calView==="month")x.setMonth(x.getMonth()+dir);else if(calView==="week")x.setDate(x.getDate()+7*dir);else x.setDate(x.getDate()+3*dir);calAnchor=x;renderCalendar();}
-function evClass(e){return e.type==="task"?"task":(e.pay==="paid"?"paid":"unpaid");}
-function evLabel(e){return e.type==="task"?e.title:`${e.room}・${e.cust}`;}
+function evClass(e){return e.type==="event"?"event":e.type==="task"?"task":(e.pay==="paid"?"paid":"unpaid");}
+function evLabel(e){return e.type==="booking"?`${e.room}・${e.cust}`:e.title;}
 
 function renderCalendar(){
   if(!PERMS[current].includes("s-book"))return;
   if(calView==="month")renderMonth(); else renderTimeGrid(calView==="week"?7:3);
+  renderEventList();
+}
+function renderEventList(){
+  const show=["owner","admin","reception"].includes(current);
+  document.getElementById('evHead').style.display=show?'':'none';
+  document.getElementById('eventList').style.display=show?'':'none';
+  if(!show)return;
+  const evs=EVENTS.filter(e=>e.type==="event").sort((a,b)=>a.date-b.date||a.sh-b.sh);
+  eventList.innerHTML=evs.map(e=>{
+    const d=e.date, ds=`${d.getMonth()+1}/${d.getDate()}（${WD[d.getDay()]}）`;
+    const full=e.participants.length>=e.cap;
+    return `<div class="item" style="cursor:pointer" onclick="openEvent('${e.id}')">
+      <div class="row"><div class="t">${e.title}</div><span class="kind">${e.kind}</span></div>
+      <div class="m">📅 ${ds} ${fmtH(e.sh)}–${fmtH(e.eh)}　@${e.room}</div>
+      <div class="m">👥 参加 ${e.participants.length}/${e.cap}名${full?'（満席）':''}　・　${yen(e.fee)}</div></div>`;
+  }).join("");
 }
 function renderMonth(){
   const y=calAnchor.getFullYear(), m=calAnchor.getMonth();
@@ -523,10 +553,17 @@ function renderCustomers(){
   order.forEach(g=>{
     const items=groups[g].slice().sort((a,b)=>(a.yomi<b.yomi?-1:a.yomi>b.yomi?1:0)*dir);
     html+=`<div class="cust-sec-h" id="sec-${g}">${g}</div>`;
-    items.forEach(c=>{html+=`<div class="crow" onclick="openCustomer('${c.n}')">
-      <div class="ci">${c.n.charAt(0)}</div>
-      <div style="flex:1"><div class="cn">${c.n}</div><div class="cm">${c.yomi}・来店 ${c.visits}回</div></div>
-      <div class="m">›</div></div>`;});
+    items.forEach(c=>{
+      const bks=BOOKINGS.map((b,i)=>({b,i})).filter(o=>o.b.cust===c.n);
+      const up=bks.filter(o=>o.b.day>=0).sort((a,b)=>a.b.day-b.b.day);
+      let bline="";
+      if(up.length){const b=up[0].b,d=dateOf(b.day);
+        bline=`<div class="cbk">📅 次回 ${d.getMonth()+1}/${d.getDate()} ${fmtH(b.sh)} ${b.room}${up.length>1?`　＋他${up.length-1}件`:''}</div>`;}
+      else if(bks.length){bline=`<div class="cbk" style="color:var(--sub)">予約 ${bks.length}件（過去）</div>`;}
+      html+=`<div class="crow" onclick="openCustomer('${c.n}')">
+        <div class="ci">${c.n.charAt(0)}</div>
+        <div style="flex:1"><div class="cn">${c.n}</div><div class="cm">${c.yomi}・来店 ${c.visits}回</div>${bline}</div>
+        <div class="m">›</div></div>`;});
   });
   custList.innerHTML=html;
   custIndex.innerHTML=INDEX_ORDER.map(g=>groups[g]
@@ -550,6 +587,17 @@ function openEvent(id){
       <div class="dl"><span class="k">受付</span><span class="v">${e.ch==="web"?"Web予約":"店頭受付"}</span></div>
       ${showMoney?`<div class="dl"><span class="k">料金</span><span class="v">${yen(e.amount)}</span></div>
       <div class="dl"><span class="k">決済(Square)</span><span class="v">${e.pay==="paid"?"✅ 事前決済済":"🟠 店頭精算 予定"}</span></div>`:""}`;
+  }else if(e.type==="event"){
+    const plist=e.participants.length
+      ? e.participants.map(n=>`<div class="item" style="cursor:pointer" onclick="openCustomer('${n}')"><div class="row"><div class="t">${n}</div><span class="m">›</span></div></div>`).join("")
+      : `<p class="lead">参加者はまだいません。</p>`;
+    body=`<h3>${e.title}</h3><p class="lead">${e.kind}</p>
+      <div class="dl"><span class="k">日付</span><span class="v">${dstr}</span></div>
+      <div class="dl"><span class="k">時間</span><span class="v">${fmtH(e.sh)}–${fmtH(e.eh)}</span></div>
+      <div class="dl"><span class="k">会場</span><span class="v">${e.room}</span></div>
+      <div class="dl"><span class="k">参加費</span><span class="v">${yen(e.fee)}</span></div>
+      <div class="dl"><span class="k">参加状況</span><span class="v">${e.participants.length} / ${e.cap}名${e.participants.length>=e.cap?'（満席）':`（残${e.cap-e.participants.length}）`}</span></div>
+      <h2 class="sec" style="margin:16px 0 6px">参加者リスト（${e.participants.length}名）</h2>${plist}`;
   }else{
     const stj=e.st==="done"?"完了":e.st==="doing"?"進行中":"未着手";
     body=`<h3>作業の詳細</h3><p class="lead">${e.title}</p>
@@ -580,10 +628,13 @@ function openCustomer(n){
     const badge=b.pay==="paid"?`<span class="badge b-paid">決済済</span>`:`<span class="badge b-unpaid">店頭精算</span>`;
     return `<div class="item" style="cursor:pointer" onclick="openEvent('b${o.i}')"><div class="row"><div class="t">${d.getMonth()+1}/${d.getDate()} ${fmtH(b.sh)}–${fmtH(b.eh)}　${b.room}</div>${badge}</div></div>`;
   }).join(""):`<p class="lead">予約履歴はありません。</p>`;
+  const myEv=EVENTS.filter(e=>e.type==="event"&&e.participants.includes(n)).sort((a,b)=>a.date-b.date);
+  const evRows=myEv.map(e=>`<div class="item" style="cursor:pointer" onclick="openEvent('${e.id}')"><div class="row"><div class="t">${e.date.getMonth()+1}/${e.date.getDate()}　${e.title}</div><span class="kind">${e.kind}</span></div></div>`).join("");
+  const evSec=myEv.length?`<h2 class="sec" style="margin:16px 0 6px">参加イベント（${myEv.length}件）</h2>${evRows}`:"";
   showDetail(`<h3>${c.n}</h3><p class="lead">${c.yomi}・来店 ${c.visits}回</p>
     <div class="dl"><span class="k">電話</span><span class="v">${c.tel}</span></div>
     <div class="dl"><span class="k">メモ</span><span class="v">${c.note}</span></div>
-    <h2 class="sec" style="margin:16px 0 6px">予約履歴（${list.length}件）</h2>${bRows}`);
+    <h2 class="sec" style="margin:16px 0 6px">予約履歴（${list.length}件）</h2>${bRows}${evSec}`);
 }
 function showDetail(inner){document.getElementById('detailBox').innerHTML=inner+`<button class="closeb" onclick="closeDetail()">閉じる</button>`;document.getElementById('detail').classList.add('show');}
 function closeDetail(){document.getElementById('detail').classList.remove('show');}
