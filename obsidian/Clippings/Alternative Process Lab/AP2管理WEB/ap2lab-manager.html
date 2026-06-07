@@ -440,6 +440,9 @@ function defaultUtil(){const o={};monthsOfFY(fyStart).forEach((mo,i)=>{o[mo.ym]=
 function utilOf(ym){const u=UTIL[ym]||{};return (+u.elec||0)+(+u.gas||0)+(+u.water||0);}
 let VARCOSTS=loadJSON('ap2_var',null)||defaultVarCosts();
 let UTIL=loadJSON('ap2_util2',null)||defaultUtil();
+const DEFAULT_VAR_PRESETS=["薬品","印画紙","消耗品","発注費","広告費","修繕費","通信費(臨時)","雑費"];
+let VAR_PRESETS=loadJSON('ap2_varpresets',null)||DEFAULT_VAR_PRESETS.slice();
+let varSel=VAR_PRESETS[0];
 let bizMode='month';
 let bizMonth=(function(){const k=today.getFullYear()+"-"+String(today.getMonth()+1).padStart(2,"0");const idx=monthsOfFY(fyStart).findIndex(mo=>mo.ym===k);return idx>=0?idx:0;})();
 
@@ -509,8 +512,17 @@ function taskRow(t){
 function fyMove(d){fyStart+=d;renderBiz();}
 function setFixed(k,v){FIXED[k]=Math.max(0,parseInt(v)||0);saveJSON('ap2_fixed',FIXED);renderBiz();}
 function setUtil(ym,cat,v){if(!UTIL[ym])UTIL[ym]={};UTIL[ym][cat]=Math.max(0,parseInt(v)||0);saveJSON('ap2_util2',UTIL);renderBiz();}
+function onVarLabelChange(sel){
+  if(sel.value==='__add__'){
+    const n=(prompt('新しい費目名を入力してください')||'').trim();
+    if(n){if(!VAR_PRESETS.includes(n)){VAR_PRESETS.push(n);saveJSON('ap2_varpresets',VAR_PRESETS);}varSel=n;}
+    else{varSel=VAR_PRESETS[0];}
+    renderBiz();
+  }else{varSel=sel.value;}
+}
 function addVar(){const ym=document.getElementById('varMonth').value;
-  const label=(document.getElementById('varLabel').value||'').trim()||'変動費';
+  let label=document.getElementById('varLabel').value; if(label==='__add__')return;
+  label=(label||'').trim()||'変動費';
   const amt=parseInt(document.getElementById('varAmt').value)||0;
   if(amt<=0)return; VARCOSTS.push({ym,label,amount:amt}); saveJSON('ap2_var',VARCOSTS); renderBiz();}
 function delVar(i){VARCOSTS.splice(i,1);saveJSON('ap2_var',VARCOSTS);renderBiz();}
@@ -547,7 +559,7 @@ function fixedBlock(C,mode,i){
     <div class="frow"><div>家賃</div><div><input class="inp num" type="number" value="${FIXED.rent}" onchange="setFixed('rent',this.value)"> 円/月</div></div>
     <div class="frow"><div>インターネット（電話）</div><div><input class="inp num" type="number" value="${FIXED.net}" onchange="setFixed('net',this.value)"> 円/月</div></div>
     ${utilPart}</div>`;}
-function varBlock(C,mode,i){const months=mode==='year'?C.months:[C.months[i]];const monthOpts=months.map(mo=>`<option value="${mo.ym}">${mo.y}/${String(mo.m).padStart(2,'0')}</option>`).join("");const ymSet=new Set(months.map(mo=>mo.ym));let vlist="",any=false;VARCOSTS.forEach((v,idx)=>{if(ymSet.has(v.ym)){any=true;vlist+=`<div class="vrow"><span class="vym">${v.ym.slice(5)}月</span><span style="flex:1">${v.label}</span><span style="font-weight:700">${yen(+v.amount||0)}</span><button class="vx" onclick="delVar(${idx})">✕</button></div>`;}});if(!any)vlist=`<p class="lead" style="margin:6px 0 0">変動費はまだありません。上で追加してください。</p>`;const total=mode==='year'?C.monVar.reduce((a,b)=>a+b,0):C.monVar[i];const totalLabel=mode==='year'?'変動費 年間合計':'変動費 当月合計';return `<h2 class="sec">変動費（手動入力）</h2><div class="card"><div class="vform"><select class="inp" id="varMonth">${monthOpts}</select><input class="inp" id="varLabel" placeholder="費目（例：光熱費・発注費）"><input class="inp num" id="varAmt" type="number" placeholder="金額"><button class="addbtn" onclick="addVar()">追加</button></div>${vlist}<div class="frow" style="margin-top:6px"><div style="font-weight:800">${totalLabel}</div><div style="font-weight:800">${yen(total)}</div></div></div>`;}
+function varBlock(C,mode,i){const months=mode==='year'?C.months:[C.months[i]];const monthOpts=months.map(mo=>`<option value="${mo.ym}">${mo.y}/${String(mo.m).padStart(2,'0')}</option>`).join("");const labelOpts=VAR_PRESETS.map(p=>`<option value="${p}" ${p===varSel?'selected':''}>${p}</option>`).join("")+`<option value="__add__">＋ 新しい費目を追加…</option>`;const ymSet=new Set(months.map(mo=>mo.ym));let vlist="",any=false;VARCOSTS.forEach((v,idx)=>{if(ymSet.has(v.ym)){any=true;vlist+=`<div class="vrow"><span class="vym">${v.ym.slice(5)}月</span><span style="flex:1">${v.label}</span><span style="font-weight:700">${yen(+v.amount||0)}</span><button class="vx" onclick="delVar(${idx})">✕</button></div>`;}});if(!any)vlist=`<p class="lead" style="margin:6px 0 0">変動費はまだありません。上で追加してください。</p>`;const total=mode==='year'?C.monVar.reduce((a,b)=>a+b,0):C.monVar[i];const totalLabel=mode==='year'?'変動費 年間合計':'変動費 当月合計';return `<h2 class="sec">変動費（手動入力）</h2><div class="card"><div class="vform"><select class="inp" id="varMonth">${monthOpts}</select><select class="inp" id="varLabel" onchange="onVarLabelChange(this)">${labelOpts}</select><input class="inp num" id="varAmt" type="number" placeholder="金額"><button class="addbtn" onclick="addVar()">追加</button></div>${vlist}<div class="frow" style="margin-top:6px"><div style="font-weight:800">${totalLabel}</div><div style="font-weight:800">${yen(total)}</div></div></div>`;}
 function pctChg(cur,prev){if(!prev)return null;return Math.round((cur-prev)/Math.abs(prev)*100);}
 function deltaTag(cur,prev,goodUp){const p=pctChg(cur,prev);if(p===null)return `<div class="delta">前年 —</div>`;const good=(p>=0)===goodUp;return `<div class="delta ${good?'up':'down'}">前年比 ${p>=0?'＋':'−'}${Math.abs(p)}%</div>`;}
 function yoyRow(label,cur,prev,goodUp){const p=pctChg(cur,prev);const cls=p===null?'':((p>=0)===goodUp?'pos':'neg');const chg=p===null?'—':`${p>=0?'＋':'−'}${Math.abs(p)}%`;return `<tr><td>${label}</td><td>${yen(cur)}</td><td>${yen(prev)}</td><td class="${cls}">${chg}</td></tr>`;}
