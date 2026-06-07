@@ -144,7 +144,7 @@
   .cust-index button:disabled{color:var(--sub);opacity:.3;cursor:default}
 
   /* ===== 経営ダッシュボード ===== */
-  .fy-bar{display:flex;align-items:center;gap:10px;margin:4px 0 14px}
+  .fy-bar{display:flex;align-items:center;gap:10px;margin:4px 0 14px;flex-wrap:wrap}
   .fy-bar .cal-nav button{width:32px;height:32px}
   .fy-title{font-weight:800;font-size:16px}
   .btab{width:100%;border-collapse:collapse;font-size:13px}
@@ -436,6 +436,8 @@ let fyStart=(today.getMonth()+1>=10)?today.getFullYear():today.getFullYear()-1;
 let FIXED=loadJSON('ap2_fixed',{rent:120000,net:6000});
 function defaultVarCosts(){const out=[];monthsOfFY(fyStart).forEach((mo,i)=>{out.push({ym:mo.ym,label:"光熱費",amount:12000+(i%3)*1500});if(i%2===0)out.push({ym:mo.ym,label:"発注費(薬品/印画紙)",amount:18000+(i%4)*2000});});return out;}
 let VARCOSTS=loadJSON('ap2_var',null)||defaultVarCosts();
+let bizMode='month';
+let bizMonth=(function(){const k=today.getFullYear()+"-"+String(today.getMonth()+1).padStart(2,"0");const idx=monthsOfFY(fyStart).findIndex(mo=>mo.ym===k);return idx>=0?idx:0;})();
 
 let EVENTS=[];
 function buildEvents(){
@@ -516,9 +518,41 @@ function bizCompute(fy){
   const monGross=months.map((mo,i)=>monSales[i]-monExp[i]);
   return {months,sales,resv,monSales,monVar,fixedMon,monExp,monGross};
 }
+function setBizMode(m){bizMode=m;renderBiz();}
+function monthMove(d){let i=bizMonth+d;if(i<0){fyStart--;bizMonth=11;}else if(i>11){fyStart++;bizMonth=0;}else{bizMonth=i;}renderBiz();}
+function bizPrev(){bizMode==='year'?fyMove(-1):monthMove(-1);}
+function bizNext(){bizMode==='year'?fyMove(1):monthMove(1);}
+function compHTML(cat,val,total,unit){const pct=total?Math.round(val/total*100):0;return `<div><div class="comp"><span class="cdot" style="background:${cat[2]}"></span><span class="clab">${cat[1]}</span><span class="cval">${unit==='¥'?yen(val):val+'件'}</span><span class="cpct">${pct}%</span></div><div class="compbar"><i style="width:${pct}%;background:${cat[2]}"></i></div></div>`;}
+function fixedBlock(C){const annFixed=C.fixedMon*12;return `<h2 class="sec">固定費（毎月）</h2><div class="card"><div class="frow"><div>家賃</div><div><input class="inp num" type="number" value="${FIXED.rent}" onchange="setFixed('rent',this.value)"> 円/月</div></div><div class="frow"><div>ネット回線</div><div><input class="inp num" type="number" value="${FIXED.net}" onchange="setFixed('net',this.value)"> 円/月</div></div><div class="frow"><div style="font-weight:800">固定費 月合計</div><div style="font-weight:800">${yen(C.fixedMon)}／月　（年間 ${yen(annFixed)}）</div></div></div>`;}
+function varBlock(C,mode,i){const months=mode==='year'?C.months:[C.months[i]];const monthOpts=months.map(mo=>`<option value="${mo.ym}">${mo.y}/${String(mo.m).padStart(2,'0')}</option>`).join("");const ymSet=new Set(months.map(mo=>mo.ym));let vlist="",any=false;VARCOSTS.forEach((v,idx)=>{if(ymSet.has(v.ym)){any=true;vlist+=`<div class="vrow"><span class="vym">${v.ym.slice(5)}月</span><span style="flex:1">${v.label}</span><span style="font-weight:700">${yen(+v.amount||0)}</span><button class="vx" onclick="delVar(${idx})">✕</button></div>`;}});if(!any)vlist=`<p class="lead" style="margin:6px 0 0">変動費はまだありません。上で追加してください。</p>`;const total=mode==='year'?C.monVar.reduce((a,b)=>a+b,0):C.monVar[i];const totalLabel=mode==='year'?'変動費 年間合計':'変動費 当月合計';return `<h2 class="sec">変動費（手動入力）</h2><div class="card"><div class="vform"><select class="inp" id="varMonth">${monthOpts}</select><input class="inp" id="varLabel" placeholder="費目（例：光熱費・発注費）"><input class="inp num" id="varAmt" type="number" placeholder="金額"><button class="addbtn" onclick="addVar()">追加</button></div>${vlist}<div class="frow" style="margin-top:6px"><div style="font-weight:800">${totalLabel}</div><div style="font-weight:800">${yen(total)}</div></div></div>`;}
 function renderBiz(){
   if(!["owner","admin"].includes(current)){bizBody.innerHTML=`<div class="lock">🔒 経営ダッシュボードはオーナー・管理者のみ閲覧できます</div>`;return;}
   const C=bizCompute(fyStart);
+  const navTitle=bizMode==='year'?`${fyStart}年10月 〜 ${fyStart+1}年9月`:`${C.months[bizMonth].y}年${C.months[bizMonth].m}月`;
+  const head=`<div class="fy-bar"><div class="seg"><button class="${bizMode==='month'?'active':''}" onclick="setBizMode('month')">月次</button><button class="${bizMode==='year'?'active':''}" onclick="setBizMode('year')">年次</button></div><div class="cal-nav"><button onclick="bizPrev()">‹</button><button onclick="bizNext()">›</button></div><span class="fy-title">${navTitle}</span></div>`;
+  bizBody.innerHTML=head+(bizMode==='year'?yearHTML(C):monthHTML(C,bizMonth));
+}
+function monthHTML(C,i){
+  const mo=C.months[i], s=C.sales[i], r=C.resv[i];
+  const mSales=C.monSales[i], mExp=C.monExp[i], mGross=C.monGross[i], mVar=C.monVar[i];
+  const gRate=mSales?Math.round(mGross/mSales*100):0;
+  const resvTot=RESV_CATS.reduce((a,c)=>a+r[c[0]],0)||1;
+  let h=`<div class="kpi-grid">
+    <div class="kpi"><div class="label">${mo.m}月 売上</div><div class="val">${yen(mSales)}</div></div>
+    <div class="kpi"><div class="label">${mo.m}月 経費</div><div class="val">${yen(mExp)}</div></div>
+    <div class="kpi"><div class="label">${mo.m}月 粗利益</div><div class="val ${mGross>=0?'pos':'neg'}">${yen(mGross)}</div></div>
+    <div class="kpi"><div class="label">粗利率</div><div class="val ${mGross>=0?'pos':'neg'}">${gRate}%</div></div></div>`;
+  h+=`<h2 class="sec">売上内訳（${mo.m}月）</h2><div class="card">${SALES_CATS.map(c=>compHTML(c,s[c[0]],mSales,'¥')).join("")}<div class="frow" style="margin-top:4px"><div style="font-weight:800">売上 計</div><div style="font-weight:800">${yen(mSales)}</div></div></div>`;
+  h+=`<h2 class="sec">予約数（${mo.m}月 計${resvTot}件）</h2><div class="card">${RESV_CATS.map(c=>compHTML(c,r[c[0]],resvTot,'件')).join("")}</div>`;
+  h+=fixedBlock(C)+varBlock(C,'month',i);
+  h+=`<h2 class="sec">粗利益（${mo.m}月）</h2><div class="card">
+    <div class="frow"><div>売上</div><div style="font-weight:700">${yen(mSales)}</div></div>
+    <div class="frow"><div>経費（固定 ${yen(C.fixedMon)} ＋ 変動 ${yen(mVar)}）</div><div style="font-weight:700">− ${yen(mExp)}</div></div>
+    <div class="frow"><div style="font-weight:800">粗利益</div><div style="font-weight:800" class="${mGross>=0?'pos':'neg'}">${yen(mGross)}（粗利率 ${gRate}%）</div></div></div>
+    <p class="note">※ 売上・予約数はサンプル値（本番ではSquare／予約データから自動集計）。固定費・変動費の入力はこの端末に保存されます。</p>`;
+  return h;
+}
+function yearHTML(C){
   const annSales=C.monSales.reduce((a,b)=>a+b,0);
   const annExp=C.monExp.reduce((a,b)=>a+b,0);
   const annGross=annSales-annExp;
@@ -529,10 +563,7 @@ function renderBiz(){
   const resvTotal=Object.values(resvAnn).reduce((a,b)=>a+b,0)||1;
   const maxSales=Math.max(...C.monSales,1);
 
-  // FY セレクタ＋年間KPI
-  let h=`<div class="fy-bar"><div class="cal-nav"><button onclick="fyMove(-1)">‹</button><button onclick="fyMove(1)">›</button></div>
-    <span class="fy-title">${fyStart}年10月 〜 ${fyStart+1}年9月</span></div>
-    <div class="kpi-grid">
+  let h=`<div class="kpi-grid">
       <div class="kpi"><div class="label">年間売上</div><div class="val">${yen(annSales)}</div></div>
       <div class="kpi"><div class="label">年間経費</div><div class="val">${yen(annExp)}</div></div>
       <div class="kpi"><div class="label">年間粗利益</div><div class="val ${annGross>=0?'pos':'neg'}">${yen(annGross)}</div></div>
@@ -566,26 +597,7 @@ function renderBiz(){
     <div class="compbar"><i style="width:${pct}%;background:${c[2]}"></i></div></div>`;});
   h+=`</div>`;
 
-  // 固定費
-  h+=`<h2 class="sec">固定費（毎月）</h2><div class="card">
-    <div class="frow"><div>家賃</div><div><input class="inp num" type="number" value="${FIXED.rent}" onchange="setFixed('rent',this.value)"> 円/月</div></div>
-    <div class="frow"><div>ネット回線</div><div><input class="inp num" type="number" value="${FIXED.net}" onchange="setFixed('net',this.value)"> 円/月</div></div>
-    <div class="frow"><div style="font-weight:800">固定費 月合計</div><div style="font-weight:800">${yen(C.fixedMon)}／月　（年間 ${yen(annFixed)}）</div></div></div>`;
-
-  // 変動費（手動入力）
-  const monthOpts=C.months.map(mo=>`<option value="${mo.ym}">${mo.y}/${String(mo.m).padStart(2,'0')}</option>`).join("");
-  let vlist=""; let anyVar=false;
-  VARCOSTS.forEach((v,idx)=>{ if(C.months.some(mo=>mo.ym===v.ym)){ anyVar=true;
-    vlist+=`<div class="vrow"><span class="vym">${v.ym.slice(5)}月</span><span style="flex:1">${v.label}</span><span style="font-weight:700">${yen(+v.amount||0)}</span><button class="vx" onclick="delVar(${idx})">✕</button></div>`;}});
-  if(!anyVar)vlist=`<p class="lead" style="margin:6px 0 0">この年度の変動費はまだありません。上で追加してください。</p>`;
-  h+=`<h2 class="sec">変動費（手動入力）</h2><div class="card">
-    <div class="vform">
-      <select class="inp" id="varMonth">${monthOpts}</select>
-      <input class="inp" id="varLabel" placeholder="費目（例：光熱費・発注費）">
-      <input class="inp num" id="varAmt" type="number" placeholder="金額">
-      <button class="addbtn" onclick="addVar()">追加</button>
-    </div>${vlist}
-    <div class="frow" style="margin-top:6px"><div style="font-weight:800">変動費 年間合計</div><div style="font-weight:800">${yen(annVar)}</div></div></div>`;
+  h+=fixedBlock(C)+varBlock(C,'year',0);
 
   // 粗利まとめ
   h+=`<h2 class="sec">粗利益（年間）</h2><div class="card">
@@ -593,8 +605,7 @@ function renderBiz(){
     <div class="frow"><div>経費（固定 ${yen(annFixed)} ＋ 変動 ${yen(annVar)}）</div><div style="font-weight:700">− ${yen(annExp)}</div></div>
     <div class="frow"><div style="font-weight:800">粗利益</div><div style="font-weight:800" class="${annGross>=0?'pos':'neg'}">${yen(annGross)}（粗利率 ${grossRate}%）</div></div></div>
     <p class="note">※ 売上・予約数はサンプル値（本番ではSquare／予約データから自動集計）。固定費・変動費の入力はこの端末に保存されます。決算用ではなく、利益感を把握するための簡易表示です。</p>`;
-
-  bizBody.innerHTML=h;
+  return h;
 }
 function openMonth(i){
   const C=bizCompute(fyStart), mo=C.months[i], s=C.sales[i], r=C.resv[i];
