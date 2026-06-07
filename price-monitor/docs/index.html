@@ -49,6 +49,10 @@
            background:#334155; color:var(--muted); margin-left:.4rem; }
   .badge.paused { background:#451a1a; color:#fca5a5; }
   .empty { color:var(--muted); text-align:center; padding:3rem 1rem; }
+  .section-title { margin:1.8rem .2rem .2rem; font-size:.95rem; font-weight:700; color:var(--fg);
+                   border-top:1px solid #33415577; padding-top:1.2rem; }
+  .section-note { font-size:.72rem; color:var(--muted); font-weight:400; margin-left:.4rem; }
+  .unit { font-size:.78rem; color:var(--muted); font-weight:400; margin-left:.2rem; }
   footer { text-align:center; color:var(--muted); font-size:.72rem; margin-top:1.5rem; }
   .target { color:var(--accent); }
 </style>
@@ -222,6 +226,117 @@ async function drawChart(p){
   charts.push({ chart, dataMin, dataMax });
 }
 
+// ── 参考指標（地金・為替）。商品とは別系列。time軸/ズームは商品グラフと共通 ──
+function makeTimeChart(ctx, datasets, dataMin, dataMax, opt){
+  const chart = new Chart(ctx, {
+    type:"line", data:{ datasets },
+    options:{
+      responsive:true, maintainAspectRatio:false, animation:false,
+      interaction:{ mode:"index", intersect:false },
+      plugins:{
+        legend:{ display: !!opt.legend, labels:{color:"#94a3b8",boxWidth:12,font:{size:10}} },
+        tooltip:{ callbacks:{
+          title:(it)=> new Date(it[0].parsed.x).toLocaleString("ja-JP",
+                  {year:"numeric",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}),
+          label:(it)=> opt.tip(it) } },
+        zoom:{ pan:{enabled:true,mode:"x"}, zoom:{wheel:{enabled:true},pinch:{enabled:true},mode:"x"},
+               limits:{ x:{min:dataMin,max:dataMax} } }
+      },
+      scales:{
+        x:{ type:"time",
+            time:{ unit:"day", displayFormats:{ hour:"M/d HH:mm", day:"M/d", week:"M/d", month:"yyyy/M" } },
+            ticks:{ color:"#94a3b8", maxRotation:0, autoSkip:true, maxTicksLimit:6 }, grid:{ color:"#33415533" } },
+        y:{ position:"left", ticks:{color:"#94a3b8",callback:opt.leftTick}, grid:{color:"#33415555"} },
+        yR:{ position:"right", display:!!opt.rightOn,
+             ticks:{color:"#f59e0b",callback:opt.rightTick}, grid:{display:false} }
+      }
+    }
+  });
+  charts.push({ chart, dataMin, dataMax });
+}
+
+function drawMetalChart(canvasId, points){
+  const usd = points.map(x => ({x:new Date(x.t).getTime(), y:x.usd}));
+  const jpy = points.filter(x => x.jpy_g != null).map(x => ({x:new Date(x.t).getTime(), y:x.jpy_g}));
+  if(!usd.length) return;
+  const color = "#a78bfa";
+  const ds = [{ label:"USD/oz", yAxisID:"y", data:usd, borderColor:color, backgroundColor:color+"22",
+                fill:true, tension:0, pointRadius:0, pointHoverRadius:3, borderWidth:2 }];
+  if(jpy.length) ds.push({ label:"円/g", yAxisID:"yR", data:jpy, borderColor:"#f59e0b",
+                backgroundColor:"transparent", fill:false, tension:0, pointRadius:0, borderWidth:1.5, borderDash:[4,3] });
+  makeTimeChart(document.getElementById(canvasId), ds, usd[0].x, usd[usd.length-1].x, {
+    legend: jpy.length>0, rightOn: jpy.length>0,
+    leftTick:(v)=>"$"+Number(v).toLocaleString(),
+    rightTick:(v)=>"¥"+Number(v).toLocaleString(),
+    tip:(it)=> it.dataset.label==="円/g"
+      ? "円/g: ¥"+Number(it.parsed.y).toLocaleString()
+      : "USD/oz: $"+Number(it.parsed.y).toLocaleString() });
+}
+
+function drawFxChart(canvasId, points){
+  const d = points.map(x => ({x:new Date(x.t).getTime(), y:x.usdjpy}));
+  if(!d.length) return;
+  const color = "#38bdf8";
+  makeTimeChart(document.getElementById(canvasId),
+    [{ label:"USD/JPY", yAxisID:"y", data:d, borderColor:color, backgroundColor:color+"22",
+       fill:true, tension:0, pointRadius:0, pointHoverRadius:3, borderWidth:2 }],
+    d[0].x, d[d.length-1].x, {
+      legend:false, rightOn:false,
+      leftTick:(v)=>"¥"+Number(v).toFixed(0),
+      tip:(it)=>"1$ = "+Number(it.parsed.y).toFixed(2)+"円" });
+}
+
+function refMetalCard(key, m){
+  const pts=m.points, last=pts[pts.length-1], first=pts[0];
+  const ci=changeInfo(first.usd, last.usd);
+  const jpy = last.jpy_g!=null ? `<span class="jpy">≒ ¥${Number(last.jpy_g).toLocaleString()}/g</span>` : "";
+  return `<div class="card">
+    <div class="row">
+      <div class="name">${m.label}<span class="unit">地金スポット</span></div>
+      <div class="price">
+        <div><span class="now">${Number(last.usd).toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2})}</span><span class="cur">USD/oz</span></div>
+        <div class="chg ${ci.cls}">${ci.txt}</div>
+        ${jpy}
+      </div>
+    </div>
+    <div class="stats"><span>記録 <b>${pts.length}</b> 回</span><span>初回 <b>$${Number(first.usd).toLocaleString()}</b></span></div>
+    <div class="chart-box"><canvas id="rc-metal-${key}"></canvas></div>
+  </div>`;
+}
+
+function refFxCard(fx){
+  const pts=fx.points, last=pts[pts.length-1], first=pts[0];
+  const ci=changeInfo(first.usdjpy, last.usdjpy);
+  return `<div class="card">
+    <div class="row">
+      <div class="name">為替<span class="unit">USD/JPY</span></div>
+      <div class="price">
+        <div><span class="now">${Number(last.usdjpy).toFixed(2)}</span><span class="cur">円</span></div>
+        <div class="chg ${ci.cls}">${ci.txt}</div>
+      </div>
+    </div>
+    <div class="stats"><span>記録 <b>${pts.length}</b> 回</span><span>初回 <b>${Number(first.usdjpy).toFixed(2)}円</b></span></div>
+    <div class="chart-box"><canvas id="rc-fx"></canvas></div>
+  </div>`;
+}
+
+async function drawReference(){
+  let metals=null, fx=null;
+  try { metals = await getJSON("data/metals.json"); } catch(e){}
+  try { fx = await getJSON("data/fx_usdjpy.json"); } catch(e){}
+  const cards=[], draws=[];
+  for(const key of ["platinum","palladium"]){
+    const m = metals && metals[key];
+    if(m && (m.points||[]).length){ cards.push(refMetalCard(key, m)); draws.push(()=>drawMetalChart(`rc-metal-${key}`, m.points)); }
+  }
+  if(fx && (fx.points||[]).length){ cards.push(refFxCard(fx)); draws.push(()=>drawFxChart("rc-fx", fx.points)); }
+  if(!cards.length) return;
+  const sec=document.createElement("div");
+  sec.innerHTML = `<div class="section-title">参考指標（地金・為替）<span class="section-note">※購入商品ではありません</span></div>` + cards.join("");
+  document.getElementById("app").appendChild(sec);
+  draws.forEach(fn => fn());
+}
+
 async function main(){
   let index;
   try { index = await getJSON("data/index.json"); }
@@ -237,6 +352,8 @@ async function main(){
 
   document.getElementById("app").innerHTML = products.map(renderCard).join("");
   for(const p of products){ await drawChart(p); }
+
+  await drawReference();
 
   if(charts.length){
     document.getElementById("toolbar").style.display = "flex";

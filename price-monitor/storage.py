@@ -75,6 +75,40 @@ def append_point(
     return history
 
 
+# 1 トロイオンス = 31.1034768 グラム（地金の円/g換算に使う）
+GRAMS_PER_TROY_OUNCE = 31.1034768
+
+
+def usd_oz_to_jpy_g(usd_per_oz: float, usdjpy: float | None) -> int | None:
+    """USD/トロイオンス → 円/グラム（日本での地金表示単位）。"""
+    if usd_per_oz is None or not usdjpy:
+        return None
+    return round(usd_per_oz * usdjpy / GRAMS_PER_TROY_OUNCE)
+
+
+def record_metals(metals: list, usdjpy: float | None) -> None:
+    """地金（プラチナ・パラジウム）の推移を data/metals.json に記録する。
+
+    各点: USD/oz（国際標準）と 円/g（日本の地金表示）を保存。
+    metals は metals.MetalResult のリスト。
+    """
+    if not metals:
+        return
+    DATA_DIR.mkdir(parents=True, exist_ok=True)
+    path = DATA_DIR / "metals.json"
+    data = json.loads(path.read_text(encoding="utf-8")) if path.exists() else {}
+    t = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    for m in metals:
+        entry = data.setdefault(m.key, {"label": m.label, "unit": "USD/oz", "points": []})
+        entry["label"] = m.label
+        point = {"t": t, "usd": round(m.usd, 2), "source": m.source}
+        jpy_g = usd_oz_to_jpy_g(m.usd, usdjpy)
+        if jpy_g is not None:
+            point["jpy_g"] = jpy_g
+        entry.setdefault("points", []).append(point)
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def record_fx(usdjpy: float, source: str) -> None:
     """USD/JPY の推移を独立した系列としても記録する（為替単体の振り返り用）。"""
     DATA_DIR.mkdir(parents=True, exist_ok=True)
