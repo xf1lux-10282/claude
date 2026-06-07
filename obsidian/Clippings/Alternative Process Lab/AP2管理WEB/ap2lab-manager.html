@@ -117,6 +117,30 @@
   .ev .et{font-weight:700;line-height:1.2}
   .ev .es{opacity:.9;font-size:10px}
 
+  /* holidays */
+  .mcell .hol{font-size:9px;color:#d93025;font-weight:700;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .dn.hol-day{color:#d93025!important}
+  .tg-head .dh.hol .dd{color:#d93025}
+  .tg-allday{display:grid;border-bottom:1px solid var(--line);min-height:24px}
+  .tg-allday .ad-label{font-size:9px;color:var(--sub);display:flex;align-items:center;justify-content:flex-end;padding-right:6px}
+  .tg-allday .ad-cell{border-left:1px solid var(--line);padding:3px}
+  .ad-hol{font-size:10px;color:#fff;background:#d93025;border-radius:5px;padding:2px 5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}
+  .nowline{position:absolute;left:0;right:0;height:2px;background:#ea4335;z-index:5}
+  .nowline::before{content:"";position:absolute;left:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:#ea4335}
+
+  /* ===== Light theme (Googleカレンダー風) ===== */
+  body.light{--bg:#f1f3f4;--card:#ffffff;--card2:#f1f3f4;--line:#dadce0;--text:#202124;--sub:#5f6368;
+    --accent:#1a73e8;--accent2:#188038;--warn:#e8710a;--danger:#d93025;--purple:#8430ce}
+  body.light .topbar{background:#fff;color:#202124}
+  body.light .nav{background:#fff}
+  body.light .b-paid,body.light .b-done{color:#188038}
+  body.light .b-unpaid{color:#b06000}
+  body.light .b-web,body.light .b-doing{color:#1967d2}
+  body.light .b-store,body.light .b-todo{color:#5f6368}
+  body.light .pbar{background:#e6e8eb}
+  body.light .tag{background:#f1f3f4}
+  body.light .avatar-sm{background:#9aa0a6}
+
   /* overlay / modal */
   .overlay{position:fixed;inset:0;background:rgba(5,8,12,.86);backdrop-filter:blur(6px);z-index:100;display:none;align-items:center;justify-content:center;padding:20px}
   .overlay.show{display:flex}
@@ -165,6 +189,7 @@
         <div class="role-pill" id="whoRole">—</div>
       </div>
       <div class="avatar" id="whoAv">A</div>
+      <button class="switch-btn" id="themeBtn" onclick="toggleTheme()" title="テーマ切替">🌙</button>
       <button class="switch-btn" onclick="openLogin()">切替</button>
     </div>
   </header>
@@ -262,6 +287,23 @@ const PERMS={
   worker:["s-home","s-book","s-task"],
 };
 const WD=["日","月","火","水","木","金","土"];
+
+/* 日本の祝祭日（2025〜2027・振替休日/国民の休日を含む。内蔵のためオフラインでも動作） */
+const HOLIDAYS={
+  "2025-01-01":"元日","2025-01-13":"成人の日","2025-02-11":"建国記念の日","2025-02-23":"天皇誕生日","2025-02-24":"振替休日",
+  "2025-03-20":"春分の日","2025-04-29":"昭和の日","2025-05-03":"憲法記念日","2025-05-04":"みどりの日","2025-05-05":"こどもの日","2025-05-06":"振替休日",
+  "2025-07-21":"海の日","2025-08-11":"山の日","2025-09-15":"敬老の日","2025-09-23":"秋分の日","2025-10-13":"スポーツの日",
+  "2025-11-03":"文化の日","2025-11-23":"勤労感謝の日","2025-11-24":"振替休日",
+  "2026-01-01":"元日","2026-01-12":"成人の日","2026-02-11":"建国記念の日","2026-02-23":"天皇誕生日","2026-03-20":"春分の日",
+  "2026-04-29":"昭和の日","2026-05-03":"憲法記念日","2026-05-04":"みどりの日","2026-05-05":"こどもの日","2026-05-06":"振替休日",
+  "2026-07-20":"海の日","2026-08-11":"山の日","2026-09-21":"敬老の日","2026-09-22":"国民の休日","2026-09-23":"秋分の日","2026-10-12":"スポーツの日",
+  "2026-11-03":"文化の日","2026-11-23":"勤労感謝の日",
+  "2027-01-01":"元日","2027-01-11":"成人の日","2027-02-11":"建国記念の日","2027-02-23":"天皇誕生日","2027-03-21":"春分の日","2027-03-22":"振替休日",
+  "2027-04-29":"昭和の日","2027-05-03":"憲法記念日","2027-05-04":"みどりの日","2027-05-05":"こどもの日",
+  "2027-07-19":"海の日","2027-08-11":"山の日","2027-09-20":"敬老の日","2027-09-23":"秋分の日","2027-10-11":"スポーツの日",
+  "2027-11-03":"文化の日","2027-11-23":"勤労感謝の日",
+};
+function holidayName(d){const k=d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");return HOLIDAYS[k]||null;}
 
 /* 予約（day=今日からのオフセット, sh/eh=開始終了の小数時） */
 const BOOKINGS=[
@@ -419,12 +461,15 @@ function renderMonth(){
     const d=new Date(start);d.setDate(start.getDate()+i);
     const out=d.getMonth()!==m, isToday=sameDay(d,today);
     const dayEvs=evs.filter(e=>sameDay(e.date,d)).sort((a,b)=>a.sh-b.sh);
-    const chips=dayEvs.slice(0,3).map(e=>`<div class="chip ${evClass(e)}" onclick="event.stopPropagation();openEvent('${e.id}')">${fmtH(e.sh)} ${evLabel(e)}</div>`).join("");
-    const more=dayEvs.length>3?`<div class="more">＋${dayEvs.length-3}件</div>`:"";
-    const dnCls=d.getDay()===0?'sun':d.getDay()===6?'sat':'';
+    const hn=holidayName(d);
+    const limit=hn?2:3;
+    const chips=dayEvs.slice(0,limit).map(e=>`<div class="chip ${evClass(e)}" onclick="event.stopPropagation();openEvent('${e.id}')">${fmtH(e.sh)} ${evLabel(e)}</div>`).join("");
+    const more=dayEvs.length>limit?`<div class="more">＋${dayEvs.length-limit}件</div>`:"";
+    const dnCls=(hn||d.getDay()===0)?'sun hol-day':d.getDay()===6?'sat':'';
+    const holLabel=hn?`<div class="hol">${hn}</div>`:"";
     const off=Math.round((d-today)/86400000);
     html+=`<div class="mcell ${out?'out':''} ${isToday?'today':''}" onclick="openDay(${off})">
-      <div class="dn ${dnCls}">${d.getDate()}</div>${chips}${more}</div>`;
+      <div class="dn ${dnCls}">${d.getDate()}</div>${holLabel}${chips}${more}</div>`;
   }
   html+="</div>";
   calBody.innerHTML=html;
@@ -435,14 +480,22 @@ function renderTimeGrid(nDays){
   calTitle.textContent=`${days[0].getMonth()+1}/${days[0].getDate()} – ${days[nDays-1].getMonth()+1}/${days[nDays-1].getDate()}`;
   const evs=eventsForRole();
   const cols=`52px repeat(${nDays},1fr)`;
+  // ヘッダー（祝日は赤）
   let head=`<div class="tg-head" style="grid-template-columns:${cols}"><div class="corner"></div>`;
-  days.forEach(d=>{const t=sameDay(d,today);const wd=d.getDay();
-    head+=`<div class="dh ${t?'today':''}"><div class="wd ${wd===0?'sun':wd===6?'sat':''}">${WD[wd]}</div><div class="dd">${d.getDate()}</div></div>`;});
+  days.forEach(d=>{const t=sameDay(d,today);const wd=d.getDay();const hn=holidayName(d);
+    const wdCls=(hn||wd===0)?'sun':wd===6?'sat':'';
+    head+=`<div class="dh ${t?'today':''} ${hn?'hol':''}"><div class="wd ${wdCls}">${WD[wd]}</div><div class="dd">${d.getDate()}</div></div>`;});
   head+="</div>";
+  // 終日（祝日名）行 — Googleカレンダー風
+  let allday=`<div class="tg-allday" style="grid-template-columns:${cols}"><div class="ad-label">終日</div>`;
+  days.forEach(d=>{const hn=holidayName(d);allday+=`<div class="ad-cell">${hn?`<div class="ad-hol">${hn}</div>`:""}</div>`;});
+  allday+="</div>";
+  // 本体
   const colH=(EH-SH)*HH;
   let gutter=`<div class="tg-gutter" style="height:${colH}px">`;
   for(let h=SH;h<EH;h++)gutter+=`<div class="hl">${h}:00</div>`;
   gutter+="</div>";
+  const now=new Date(); const nowH=now.getHours()+now.getMinutes()/60;
   let cells="";
   days.forEach(d=>{
     const dayEvs=evs.filter(e=>sameDay(e.date,d));
@@ -452,9 +505,13 @@ function renderTimeGrid(nDays){
       blocks+=`<div class="ev ${evClass(e)}" style="top:${top}px;height:${h}px" onclick="openEvent('${e.id}')">
         <div class="et">${evLabel(e)}</div><div class="es">${fmtH(e.sh)}–${fmtH(e.eh)}</div></div>`;
     });
+    if(sameDay(d,today)&&nowH>=SH&&nowH<=EH) blocks+=`<div class="nowline" style="top:${(nowH-SH)*HH}px"></div>`;
     cells+=`<div class="tg-col" style="height:${colH}px">${blocks}</div>`;
   });
-  calBody.innerHTML=`<div class="tg-wrap">${head}<div class="tg-body"><div class="tg-grid" style="grid-template-columns:${cols}">${gutter}${cells}</div></div></div>`;
+  calBody.innerHTML=`<div class="tg-wrap">${head}${allday}<div class="tg-body"><div class="tg-grid" style="grid-template-columns:${cols}">${gutter}${cells}</div></div></div>`;
+  // 現在時刻（営業時間内）あたりまでスクロール
+  const tb=calBody.querySelector('.tg-body');
+  if(tb){const f=Math.min(Math.max(isFinite(nowH)?nowH:9,SH),EH);tb.scrollTop=Math.max(0,(f-SH)*HH-60);}
 }
 
 /* ---------- 詳細モーダル ---------- */
@@ -517,7 +574,21 @@ function login(role){
 }
 function openLogin(){document.getElementById('login').classList.add('show');}
 
+/* テーマ切替（ライト=Googleカレンダー風 / ダーク） */
+function toggleTheme(){
+  const isLight=document.body.classList.toggle('light');
+  document.getElementById('themeBtn').textContent=isLight?'🌙':'☀️';
+  try{localStorage.setItem('ap2theme',isLight?'light':'dark');}catch(e){}
+}
+function initTheme(){
+  let pref='light';
+  try{pref=localStorage.getItem('ap2theme')||'light';}catch(e){}
+  document.body.classList.toggle('light',pref==='light');
+  document.getElementById('themeBtn').textContent=pref==='light'?'🌙':'☀️';
+}
+
 /* init */
+initTheme();
 buildEvents();
 setView('month');
 </script>
