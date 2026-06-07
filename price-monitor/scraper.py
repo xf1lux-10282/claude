@@ -16,6 +16,8 @@ from __future__ import annotations
 
 import json
 import re
+import time
+import random
 from dataclasses import dataclass
 from html import unescape as _html_unescape
 
@@ -231,18 +233,9 @@ def _from_regex(html: str, pattern: str) -> PriceResult | None:
     return PriceResult(value=value, raw=raw, method="regex")
 
 
-def fetch_price(url: str, extract: dict, *, user_agent: str, timeout: int) -> PriceResult:
-    """1商品の価格を取得する。失敗時は例外を投げる。"""
-    headers = {
-        "User-Agent": user_agent,
-        "Accept-Language": "en-US,en;q=0.9,ja;q=0.8",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    }
-    resp = requests.get(url, headers=headers, timeout=timeout)
-    resp.raise_for_status()
-    html = resp.text
+def _extract_from_html(html: str, extract: dict) -> PriceResult | None:
+    """取得済み HTML から価格を抽出する（戦略を順に試し、最初の成功を返す）。"""
     soup = BeautifulSoup(html, "html.parser")
-
     extract = extract or {}
     strategies = []
     # サイズ指定（変動商品で「25ml」など特定サイズの価格を確実に取る）を最優先。
@@ -251,7 +244,7 @@ def fetch_price(url: str, extract: dict, *, user_agent: str, timeout: int) -> Pr
     # メイン価格抽出（関連商品カルーセルを除外）。variant が取れない時のフォールバック。
     if extract.get("main_price"):
         strategies.append(lambda: _from_main_price(soup))
-    # ユーザー指定があればそれを最優先する
+    # ユーザー指定があればそれを優先する
     if extract.get("css_selector"):
         strategies.append(lambda: _from_css(soup, extract["css_selector"]))
     if extract.get("regex"):
@@ -268,8 +261,38 @@ def fetch_price(url: str, extract: dict, *, user_agent: str, timeout: int) -> Pr
             result = None
         if result is not None:
             return result
+    return None
+
+
+def fetch_price(
+    url: str, extract: dict, *, user_agent: str, timeout: int, retries: int = 3
+) -> PriceResult:
+    """1商品の価格を取得する。失敗時は例外を投げる。
+
+    対象サイトがボット対策で時々「商品データの無いページ」を返す（断続ブロック）ため、
+    取得失敗・通信エラー時は指数バックオフ＋ジッターで数回リトライする。
+    """
+    headers = {
+        "User-Agent": user_agent,
+        "Accept-Language": "en-US,en;q=0.9,ja;q=0.8",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    }
+    last_error: Exception | None = None
+    for attempt in range(retries):
+        try:
+            resp = requests.get(url, headers=headers, timeout=timeout)
+            resp.raise_for_status()
+            result = _extract_from_html(resp.text, extract)
+            if result is not None:
+                return result
+            last_error = ValueError("価格を抽出できませんでした（ページに商品データが無い可能性）。")
+        except requests.RequestException as exc:
+            last_error = exc
+        # 最終試行でなければ待ってリトライ（1.5s, 3s, 6s ... ＋ジッター）
+        if attempt < retries - 1:
+            time.sleep(1.5 * (2 ** attempt) + random.uniform(0, 1.0))
 
     raise ValueError(
-        "価格を抽出できませんでした。config.json の extract.css_selector か "
-        "extract.regex を指定してください。"
+        f"価格を抽出できませんでした（{retries}回試行）。サイトの一時的なブロックの可能性。"
+        f" 直近のエラー: {last_error}"
     )

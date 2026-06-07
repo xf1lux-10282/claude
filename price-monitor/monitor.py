@@ -16,6 +16,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from pathlib import Path
 
 import fx as fx_module
@@ -101,15 +102,23 @@ def main(argv: list[str] | None = None) -> int:
 
     print(f"== {len(products)} 件の商品をチェックします ==")
     ok = 0
-    for product in products:
+    for i, product in enumerate(products):
+        if i > 0:
+            time.sleep(1.5)  # 連続アクセスでブロックされにくくする小休止
         if check_product(product, settings, usdjpy):
             ok += 1
 
     # ダッシュボード用インデックスは全商品分を出力（無効商品も履歴は残す）
     storage.write_index(config.get("products", []))
 
-    print(f"\n完了: {ok}/{len(products)} 件成功")
-    return 0 if ok == len(products) else 2
+    failed = len(products) - ok
+    print(f"\n完了: {ok}/{len(products)} 件成功" + (f"（{failed}件は今回取得できず）" if failed else ""))
+    # 1件でも取得できれば成功扱い（サイトの一時的ブロックで失敗通知を乱発しないため）。
+    # 全件失敗のときだけ異常終了し、本当の問題に気づけるようにする。
+    if ok == 0:
+        print("⚠ 全商品で取得に失敗しました。サイトの一時ブロックか、構造変化の可能性があります。")
+        return 2
+    return 0
 
 
 if __name__ == "__main__":
