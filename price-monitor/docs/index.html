@@ -66,12 +66,14 @@
   <span class="meta" id="updated"></span>
 </header>
 <div class="toolbar" id="toolbar" style="display:none">
-  <span class="label">表示</span>
-  <button class="range-btn" data-range="fit">全体</button>
-  <button class="range-btn active" data-range="z1">拡大</button>
-  <button class="range-btn" data-range="z2">さらに</button>
-  <button class="range-btn" data-range="z3">最大</button>
-  <span class="hint">「拡大」以上でグラフを指/マウスで左右にスクロール</span>
+  <span class="label">表示期間</span>
+  <button class="range-btn active" data-range="all">全体</button>
+  <button class="range-btn" data-range="1Y">1年</button>
+  <button class="range-btn" data-range="3M">3ヶ月</button>
+  <button class="range-btn" data-range="1M">1ヶ月</button>
+  <button class="range-btn" data-range="1W">1週間</button>
+  <button class="range-btn" data-range="3D">3日</button>
+  <span class="hint">期間を選ぶ → グラフを指/マウスで左右にスクロール</span>
 </div>
 <div class="wrap" id="app">
   <div class="empty">読み込み中…</div>
@@ -129,10 +131,10 @@ function renderCard(p){
 }
 
 const DAY = 86400000;
-// 拡大率 = 1データ点あたりの横ピクセル数。null=全体を画面幅に収める（スクロールなし）。
-// 点数が多いほどキャンバスが横に広がり、はみ出した分を左右スクロールで見られる。
-const ZOOM = { "fit": null, "z1": 16, "z2": 34, "z3": 70 };
-let currentRange = "z1";
+// 表示期間（1画面に収める時間幅）。null=全期間を画面幅にフィット。
+// 総期間がこれより長いとき、はみ出す分だけキャンバスを広げて左右スクロールできる。
+const RANGES = { "all": null, "1Y": 365*DAY, "3M": 90*DAY, "1M": 30*DAY, "1W": 7*DAY, "3D": 3*DAY };
+let currentRange = "all";
 
 // 期間に応じた x 軸の表示単位（ラベルの粒度）を決める
 function unitFor(spanMs){
@@ -142,20 +144,19 @@ function unitFor(spanMs){
   return "hour";   // データが少ない初期は時刻まで表示
 }
 
-// 1つのチャートに拡大率を適用する（横スクロール方式）。
-// 全データを横長キャンバスに描画し、点数×拡大率でキャンバス幅を決める。
-// 画面（.chart-box）からはみ出した分を、指/マウスで左右にスクロールして見る。
+// 1つのチャートに表示期間を適用する（横スクロール方式）。
+// 全データを横長キャンバスに描画し、選んだ期間が1画面に収まるようキャンバス幅を決める。
+// 画面（.chart-box）からはみ出した分を、指/マウスで左右にスクロールして前後の期間を見る。
 function applyRangeToChart(entry){
-  const { chart, inner, dataMin, dataMax, n } = entry;
+  const { chart, inner, dataMin, dataMax } = entry;
   const box = inner.parentElement;            // .chart-box（表示窓）
   const boxW = box.clientWidth || 1;
   const total = Math.max(1, dataMax - dataMin);
-  const pxPer = ZOOM[currentRange];           // 1点あたりのpx / null=全体フィット
-  // 全体フィットは画面幅、拡大時は「点数×px」で広げる（最低でも画面幅）
-  const widthPx = pxPer == null ? boxW : Math.max(boxW, Math.round(n * pxPer));
+  const win = RANGES[currentRange];           // 1画面に収める期間(ms) / null=全期間
+  // 総期間が窓より長いときだけ、その比率でキャンバスを広げる（最低でも画面幅）
+  let widthPx = boxW, visibleSpan = total;
+  if(win && total > win){ widthPx = Math.round(boxW * total / win); visibleSpan = win; }
   inner.style.width = widthPx + "px";
-  // x軸は常に全データ範囲。1画面に見える期間に合わせてラベル粒度を決める
-  const visibleSpan = total * boxW / widthPx;
   chart.options.scales.x.min = dataMin;
   chart.options.scales.x.max = dataMax;
   chart.options.scales.x.ticks.maxTicksLimit = Math.max(6, Math.round(6 * widthPx / boxW));
