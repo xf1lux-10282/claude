@@ -27,6 +27,7 @@ _UA = (
 _METALS = [
     ("platinum", "プラチナ", "PL=F", "xptusd"),
     ("palladium", "パラジウム", "PA=F", "xpdusd"),
+    ("silver", "銀", "SI=F", "xagusd"),
 ]
 
 

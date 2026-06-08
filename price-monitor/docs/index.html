@@ -324,7 +324,7 @@ async function drawReference(){
   try { metals = await getJSON("data/metals.json"); } catch(e){}
   try { fx = await getJSON("data/fx_usdjpy.json"); } catch(e){}
   const cards=[], draws=[];
-  for(const key of ["platinum","palladium"]){
+  for(const key of ["platinum","palladium","silver"]){
     const m = metals && metals[key];
     if(m && (m.points||[]).length){ cards.push(refMetalCard(key, m)); draws.push(()=>drawMetalChart(`rc-metal-${key}`, m.points)); }
   }
