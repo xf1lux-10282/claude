@@ -200,6 +200,25 @@ body {
     margin-bottom: 0;
 }
 
+.text-content ul {
+    list-style: none;
+    margin: 0 0 1.5em;
+    padding: 0;
+}
+
+.text-content ul li {
+    position: relative;
+    padding-left: 1.4em;
+    margin-bottom: 0.7em;
+}
+
+.text-content ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: #999;
+}
+
 .text-content .lead {
     font-size: 1.1em;
     line-height: 2em;
