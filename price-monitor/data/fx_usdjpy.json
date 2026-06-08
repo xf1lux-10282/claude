@@ -810,6 +810,11 @@
       "t": "2026-06-08T04:00:35Z",
       "usdjpy": 160.257,
       "source": "open.er-api.com"
+    },
+    {
+      "t": "2026-06-08T04:15:26Z",
+      "usdjpy": 160.257,
+      "source": "open.er-api.com"
     }
   ]
 }
