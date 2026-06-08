@@ -10,7 +10,10 @@
       "Bash(git pull:*)",
       "Bash(git --version)",
       "Bash(git add *)",
-      "Bash(GIT_EDITOR=true git rebase --continue)"
+      "Bash(GIT_EDITOR=true git rebase --continue)",
+      "Bash(find . -ipath \"*コミュニティ*\")",
+      "Bash(find . -iname \"*引き継ぎ*\")",
+      "Bash(python3 -c \"import json; json.load\\(open\\('.claude/settings.local.json'\\)\\); print\\('valid JSON'\\)\")"
     ],
     "deny": [],
     "ask": []
