@@ -940,6 +940,21 @@
       "t": "2026-06-08T10:15:28Z",
       "usdjpy": 160.257,
       "source": "open.er-api.com"
+    },
+    {
+      "t": "2026-06-08T10:30:34Z",
+      "usdjpy": 160.257,
+      "source": "open.er-api.com"
+    },
+    {
+      "t": "2026-06-08T10:45:29Z",
+      "usdjpy": 160.257,
+      "source": "open.er-api.com"
+    },
+    {
+      "t": "2026-06-08T11:00:41Z",
+      "usdjpy": 160.257,
+      "source": "open.er-api.com"
     }
   ]
 }
