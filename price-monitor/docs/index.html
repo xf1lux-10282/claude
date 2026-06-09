@@ -136,31 +136,32 @@ const DAY = 86400000;
 const RANGES = { "all": null, "1Y": 365*DAY, "3M": 90*DAY, "1M": 30*DAY, "1W": 7*DAY, "3D": 3*DAY };
 let currentRange = "all";
 
-// 期間に応じた x 軸の表示単位（ラベルの粒度）を決める
+// 期間に応じた x 軸の表示単位（ラベルの粒度）を決める。
+// 全グラフで同じ単位を使い、表記（日付＋時刻 / 日付 …）をそろえる。
 function unitFor(spanMs){
   if(spanMs == null || spanMs > 200*DAY) return "month";
   if(spanMs > 60*DAY) return "week";
-  if(spanMs > 2*DAY) return "day";
-  return "hour";   // データが少ない初期は時刻まで表示
+  if(spanMs > 5*DAY) return "day";
+  return "hour";   // 数日以内は「M/d HH:mm」と時刻まで表示（銀と同じ表記）
 }
 
 // 1つのチャートに表示期間を適用する（横スクロール方式）。
 // 全データを横長キャンバスに描画し、選んだ期間が1画面に収まるようキャンバス幅を決める。
 // 画面（.chart-box）からはみ出した分を、指/マウスで左右にスクロールして前後の期間を見る。
-function applyRangeToChart(entry){
+function applyRangeToChart(entry, unit){
   const { chart, inner, dataMin, dataMax } = entry;
   const box = inner.parentElement;            // .chart-box（表示窓）
   const boxW = box.clientWidth || 1;
   const total = Math.max(1, dataMax - dataMin);
   const win = RANGES[currentRange];           // 1画面に収める期間(ms) / null=全期間
   // 総期間が窓より長いときだけ、その比率でキャンバスを広げる（最低でも画面幅）
-  let widthPx = boxW, visibleSpan = total;
-  if(win && total > win){ widthPx = Math.round(boxW * total / win); visibleSpan = win; }
+  let widthPx = boxW;
+  if(win && total > win){ widthPx = Math.round(boxW * total / win); }
   inner.style.width = widthPx + "px";
   chart.options.scales.x.min = dataMin;
   chart.options.scales.x.max = dataMax;
   chart.options.scales.x.ticks.maxTicksLimit = Math.max(6, Math.round(6 * widthPx / boxW));
-  chart.options.scales.x.time.unit = unitFor(visibleSpan);
+  chart.options.scales.x.time.unit = unit;    // 全グラフ共通の表記にそろえる
   chart.resize();                              // inner幅に追従させる
   chart.update("none");
   box.scrollLeft = box.scrollWidth;            // 最新（右端）を表示
@@ -170,7 +171,12 @@ function applyRange(range){
   currentRange = range;
   document.querySelectorAll(".range-btn").forEach(b =>
     b.classList.toggle("active", b.dataset.range === range));
-  charts.forEach(applyRangeToChart);
+  // 横軸の表記を全グラフでそろえるため、表示単位は共通の基準スパンから1つだけ決める
+  const win = RANGES[range];
+  let spanForUnit = win || 1;
+  if(!win) charts.forEach(e => { spanForUnit = Math.max(spanForUnit, e.dataMax - e.dataMin); });
+  const unit = unitFor(spanForUnit);
+  charts.forEach(e => applyRangeToChart(e, unit));
 }
 
 // 画面回転・リサイズ時に幅を再計算
