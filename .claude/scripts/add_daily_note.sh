@@ -15,7 +15,7 @@ WORK_TITLE="$1"
 WORK_CONTENT="$2"
 
 # 作業ディレクトリ
-WORK_DIR="/Users/daisukekinoshita/Library/Mobile Documents/iCloud~md~obsidian/Documents"
+WORK_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 cd "$WORK_DIR"
 
 # 現在の日付を取得

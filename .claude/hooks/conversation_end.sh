@@ -3,7 +3,7 @@
 # セッション終了時フック
 # 自動コミット＆GitHubプッシュ
 
-WORK_DIR="/Users/daisukekinoshita/Library/Mobile Documents/iCloud~md~obsidian/Documents"
+WORK_DIR="${CLAUDE_PROJECT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)}"
 cd "$WORK_DIR" || exit 1
 
 DAILY_NOTE="$WORK_DIR/obsidian/DailyNotes/$(date '+%Y/%m/%Y-%m-%d').md"
