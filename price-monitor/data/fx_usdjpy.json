@@ -1435,6 +1435,11 @@
       "t": "2026-06-09T09:45:27Z",
       "usdjpy": 160.1411,
       "source": "open.er-api.com"
+    },
+    {
+      "t": "2026-06-09T10:00:48Z",
+      "usdjpy": 160.19,
+      "source": "Yahoo Finance"
     }
   ]
 }
