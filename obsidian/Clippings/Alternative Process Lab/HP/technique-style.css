@@ -200,6 +200,109 @@ body {
     margin-bottom: 0;
 }
 
+.text-content ul {
+    list-style: none;
+    margin: 0 0 1.5em;
+    padding: 0;
+}
+
+.text-content ul li {
+    position: relative;
+    padding-left: 1.4em;
+    margin-bottom: 0.7em;
+}
+
+.text-content ul li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: #999;
+}
+
+.text-content .lead {
+    font-size: 1.1em;
+    line-height: 2em;
+    color: #222;
+    margin-bottom: 2.5em;
+}
+
+.text-content h4 {
+    font-family: 'Antic Didone', 'Noto Serif JP', serif;
+    font-size: 1em;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: #222;
+    margin: 3em 0 1.2em;
+    padding-bottom: 0.6em;
+    border-bottom: 1px solid #eaeaea;
+}
+
+/* ===========================
+   CTA (Call to Action)
+   =========================== */
+.cta {
+    max-width: 900px;
+    margin: 4.5rem auto 0;
+    padding: 3rem 2.5rem;
+    background: #fafafa;
+    border: 1px solid #eaeaea;
+    text-align: center;
+}
+
+.cta-title {
+    font-family: 'Antic Didone', 'Noto Serif JP', serif;
+    font-size: 1.15em;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    color: #222;
+    margin-bottom: 1.2em;
+}
+
+.cta-text {
+    font-family: 'Antic Didone', 'Noto Serif JP', serif;
+    font-size: 0.9em;
+    line-height: 1.9em;
+    letter-spacing: 0.05em;
+    color: #555;
+    margin-bottom: 2em;
+}
+
+.cta-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.cta-button {
+    display: inline-block;
+    padding: 0.9em 2.2em;
+    font-family: 'Antic Didone', 'Noto Serif JP', serif;
+    font-size: 0.85em;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: #fff;
+    background: #000;
+    border: 1px solid #000;
+    transition: all 0.25s ease;
+}
+
+.cta-button:hover {
+    background: #fff;
+    color: #000;
+}
+
+.cta-button.secondary {
+    color: #000;
+    background: transparent;
+}
+
+.cta-button.secondary:hover {
+    background: #000;
+    color: #fff;
+}
+
 /* ===========================
    Footer
    =========================== */
@@ -384,6 +487,19 @@ body {
     .text-content p {
         margin-bottom: 1.2rem;
         text-align: left;
+    }
+
+    .cta {
+        padding: 2rem 1.5rem;
+        margin-top: 3rem;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+    }
+
+    .cta-button {
+        width: 100%;
     }
 
     .footer {
