@@ -152,6 +152,26 @@ def test_metals_parsing():
     _check("為替なしは None", storage.usd_oz_to_jpy_g(1000.0, None) is None)
 
 
+def test_fx_yahoo():
+    print("test_fx（Yahoo USDJPY=X のパース）")
+    import fx as fx_mod
+
+    class _Resp:
+        def __init__(self, payload): self._p = payload
+        def raise_for_status(self): pass
+        def json(self): return self._p
+
+    payload = {"chart": {"result": [{"meta": {"regularMarketPrice": 160.145}}], "error": None}}
+    orig = fx_mod.requests.get
+    fx_mod.requests.get = lambda *a, **k: _Resp(payload)
+    try:
+        r = fx_mod._from_yahoo(5)
+        _check("Yahoo から 160.145 / source=Yahoo Finance",
+               r is not None and r.usdjpy == 160.145 and r.source == "Yahoo Finance")
+    finally:
+        fx_mod.requests.get = orig
+
+
 if __name__ == "__main__":
     test_to_float()
     test_json_ld()
@@ -159,5 +179,6 @@ if __name__ == "__main__":
     test_main_price_excludes_carousel()
     test_variation_picks_requested_size()
     test_metals_parsing()
+    test_fx_yahoo()
     test_strategy_order()
     print("\nすべてのテストに合格しました ✅")
