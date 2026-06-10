@@ -1935,6 +1935,11 @@
       "t": "2026-06-10T10:30:37Z",
       "usdjpy": 160.457,
       "source": "Yahoo Finance"
+    },
+    {
+      "t": "2026-06-10T10:45:25Z",
+      "usdjpy": 160.463,
+      "source": "Yahoo Finance"
     }
   ]
 }
