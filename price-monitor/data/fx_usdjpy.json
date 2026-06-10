@@ -2155,6 +2155,11 @@
       "t": "2026-06-10T21:30:30Z",
       "usdjpy": 160.476,
       "source": "Yahoo Finance"
+    },
+    {
+      "t": "2026-06-10T21:45:30Z",
+      "usdjpy": 160.478,
+      "source": "Yahoo Finance"
     }
   ]
 }
