@@ -1,5 +1,5 @@
 {
-  "generated": "2026-06-10T09:15:34Z",
+  "generated": "2026-06-10T09:30:41Z",
   "products": [
     {
       "id": "bs-na2-platinum-20",
@@ -9,11 +9,11 @@
       "enabled": true,
       "target_price": null,
       "latest_price": 170.3,
-      "latest_time": "2026-06-10T09:15:30Z",
-      "latest_price_jpy": 27317,
-      "latest_fx": 160.407,
+      "latest_time": "2026-06-10T09:30:37Z",
+      "latest_price_jpy": 27319,
+      "latest_fx": 160.418,
       "first_price": 170.3,
-      "points": 296
+      "points": 297
     },
     {
       "id": "bs-platinum-3-25",
@@ -23,11 +23,11 @@
       "enabled": true,
       "target_price": null,
       "latest_price": 375.0,
-      "latest_time": "2026-06-10T09:15:32Z",
-      "latest_price_jpy": 60153,
-      "latest_fx": 160.407,
+      "latest_time": "2026-06-10T09:30:39Z",
+      "latest_price_jpy": 60157,
+      "latest_fx": 160.418,
       "first_price": 375.0,
-      "points": 296
+      "points": 297
     },
     {
       "id": "bs-palladium-3-25",
@@ -37,12 +37,12 @@
       "enabled": true,
       "target_price": null,
       "latest_price": 200.77,
-      "latest_time": "2026-06-10T09:15:34Z",
-      "latest_price_jpy": 32205,
-      "latest_fx": 160.407,
+      "latest_time": "2026-06-10T09:30:41Z",
+      "latest_price_jpy": 32207,
+      "latest_fx": 160.418,
       "first_price": 200.77,
-      "points": 296
+      "points": 297
     }
   ],
-  "fx_usdjpy": 160.407
+  "fx_usdjpy": 160.418
 }
