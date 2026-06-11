@@ -2480,6 +2480,11 @@
       "t": "2026-06-11T13:45:28Z",
       "usdjpy": 160.503,
       "source": "Yahoo Finance"
+    },
+    {
+      "t": "2026-06-11T14:00:52Z",
+      "usdjpy": 160.484,
+      "source": "Yahoo Finance"
     }
   ]
 }
