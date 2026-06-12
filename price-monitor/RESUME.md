@@ -33,7 +33,8 @@
   | `bs-na2-platinum-20` | Sodium Platinum (Na2) 20% | 10ml | **$170.30** | `variation:10ml` |
   | `bs-platinum-3-25` | Platinum Solution #3 | 25ml | **$375.00** | `variation:25ml` |
   | `bs-palladium-3-25` | Palladium Solution #3 | 25ml | **$200.77** | `variation:25ml` |
-  - 為替も記録中（例: 1$=160.163、open.er-api.com）
+  - 為替も記録中（例: 1$≈160.19）。**出典は Yahoo Finance に統一**（地金と同じ。旧 open.er-api.com から変更、PR #24）。
+    Yahoo はほぼリアルタイム。落ちた時のみ er-api/frankfurter にフォールバック。円換算(price_jpy)・金属の円/gにも反映。
 - ✅ ダッシュボードのグラフ改善（日付軸・**ネイティブ横スクロール**・期間 全体/1年/3ヶ月/1ヶ月/1週間/3日）公開済み
   - スクロール方式: 全データを横長キャンバスに描画し、選んだ期間が1画面に収まるよう幅を調整、
     はみ出す分を `.chart-box` の横スクロールで見る（PR #20〜#22）。SWキャッシュは現在 v8。

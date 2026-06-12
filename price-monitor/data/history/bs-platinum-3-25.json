@@ -1463,6 +1463,1721 @@
       "method": "variation:25ml",
       "fx_usdjpy": 160.1411,
       "price_jpy": 60053
+    },
+    {
+      "t": "2026-06-09T08:30:44Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.1411,
+      "price_jpy": 60053
+    },
+    {
+      "t": "2026-06-09T09:00:45Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.1411,
+      "price_jpy": 60053
+    },
+    {
+      "t": "2026-06-09T09:15:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.1411,
+      "price_jpy": 60053
+    },
+    {
+      "t": "2026-06-09T09:30:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.1411,
+      "price_jpy": 60053
+    },
+    {
+      "t": "2026-06-09T09:45:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.1411,
+      "price_jpy": 60053
+    },
+    {
+      "t": "2026-06-09T10:00:50Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.19,
+      "price_jpy": 60071
+    },
+    {
+      "t": "2026-06-09T10:30:39Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.159,
+      "price_jpy": 60060
+    },
+    {
+      "t": "2026-06-09T10:57:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.163,
+      "price_jpy": 60061
+    },
+    {
+      "t": "2026-06-09T11:00:48Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.161,
+      "price_jpy": 60060
+    },
+    {
+      "t": "2026-06-09T11:15:31Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.156,
+      "price_jpy": 60058
+    },
+    {
+      "t": "2026-06-09T11:30:35Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.146,
+      "price_jpy": 60055
+    },
+    {
+      "t": "2026-06-09T11:45:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.173,
+      "price_jpy": 60065
+    },
+    {
+      "t": "2026-06-09T12:00:43Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.162,
+      "price_jpy": 60061
+    },
+    {
+      "t": "2026-06-09T12:15:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.158,
+      "price_jpy": 60059
+    },
+    {
+      "t": "2026-06-09T12:30:39Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.177,
+      "price_jpy": 60066
+    },
+    {
+      "t": "2026-06-09T12:45:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.177,
+      "price_jpy": 60066
+    },
+    {
+      "t": "2026-06-09T13:00:48Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.184,
+      "price_jpy": 60069
+    },
+    {
+      "t": "2026-06-09T13:15:36Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.187,
+      "price_jpy": 60070
+    },
+    {
+      "t": "2026-06-09T13:30:45Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.192,
+      "price_jpy": 60072
+    },
+    {
+      "t": "2026-06-09T13:45:35Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.214,
+      "price_jpy": 60080
+    },
+    {
+      "t": "2026-06-09T14:00:48Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.203,
+      "price_jpy": 60076
+    },
+    {
+      "t": "2026-06-09T14:30:46Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.183,
+      "price_jpy": 60069
+    },
+    {
+      "t": "2026-06-09T14:45:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.196,
+      "price_jpy": 60074
+    },
+    {
+      "t": "2026-06-09T15:30:54Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.25,
+      "price_jpy": 60094
+    },
+    {
+      "t": "2026-06-09T15:46:03Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.292,
+      "price_jpy": 60110
+    },
+    {
+      "t": "2026-06-09T16:00:47Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.22,
+      "price_jpy": 60082
+    },
+    {
+      "t": "2026-06-09T16:15:35Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.296,
+      "price_jpy": 60111
+    },
+    {
+      "t": "2026-06-09T16:30:44Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.342,
+      "price_jpy": 60128
+    },
+    {
+      "t": "2026-06-09T16:46:02Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.431,
+      "price_jpy": 60162
+    },
+    {
+      "t": "2026-06-09T17:00:45Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.402,
+      "price_jpy": 60151
+    },
+    {
+      "t": "2026-06-09T17:15:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.379,
+      "price_jpy": 60142
+    },
+    {
+      "t": "2026-06-09T17:30:37Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.298,
+      "price_jpy": 60112
+    },
+    {
+      "t": "2026-06-09T17:32:20Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.302,
+      "price_jpy": 60113
+    },
+    {
+      "t": "2026-06-09T17:45:39Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.302,
+      "price_jpy": 60113
+    },
+    {
+      "t": "2026-06-09T18:00:43Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.345,
+      "price_jpy": 60129
+    },
+    {
+      "t": "2026-06-09T18:15:48Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.35,
+      "price_jpy": 60131
+    },
+    {
+      "t": "2026-06-09T18:45:45Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.363,
+      "price_jpy": 60136
+    },
+    {
+      "t": "2026-06-09T19:15:29Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.382,
+      "price_jpy": 60143
+    },
+    {
+      "t": "2026-06-09T19:45:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.398,
+      "price_jpy": 60149
+    },
+    {
+      "t": "2026-06-09T20:00:54Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.418,
+      "price_jpy": 60157
+    },
+    {
+      "t": "2026-06-09T20:15:35Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.368,
+      "price_jpy": 60138
+    },
+    {
+      "t": "2026-06-09T20:30:36Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.36,
+      "price_jpy": 60135
+    },
+    {
+      "t": "2026-06-09T21:00:38Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.301,
+      "price_jpy": 60113
+    },
+    {
+      "t": "2026-06-09T21:15:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.312,
+      "price_jpy": 60117
+    },
+    {
+      "t": "2026-06-09T21:30:39Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.36,
+      "price_jpy": 60135
+    },
+    {
+      "t": "2026-06-09T21:45:31Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.363,
+      "price_jpy": 60136
+    },
+    {
+      "t": "2026-06-09T22:00:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.357,
+      "price_jpy": 60134
+    },
+    {
+      "t": "2026-06-09T22:30:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.353,
+      "price_jpy": 60132
+    },
+    {
+      "t": "2026-06-09T22:45:27Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.38,
+      "price_jpy": 60142
+    },
+    {
+      "t": "2026-06-09T23:00:39Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.398,
+      "price_jpy": 60149
+    },
+    {
+      "t": "2026-06-09T23:15:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.406,
+      "price_jpy": 60152
+    },
+    {
+      "t": "2026-06-09T23:30:37Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.408,
+      "price_jpy": 60153
+    },
+    {
+      "t": "2026-06-09T23:45:25Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.392,
+      "price_jpy": 60147
+    },
+    {
+      "t": "2026-06-10T00:45:24Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.385,
+      "price_jpy": 60144
+    },
+    {
+      "t": "2026-06-10T01:00:39Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.375,
+      "price_jpy": 60141
+    },
+    {
+      "t": "2026-06-10T01:15:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.337,
+      "price_jpy": 60126
+    },
+    {
+      "t": "2026-06-10T01:30:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.363,
+      "price_jpy": 60136
+    },
+    {
+      "t": "2026-06-10T01:45:28Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.359,
+      "price_jpy": 60135
+    },
+    {
+      "t": "2026-06-10T02:00:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.37,
+      "price_jpy": 60139
+    },
+    {
+      "t": "2026-06-10T02:15:29Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.338,
+      "price_jpy": 60127
+    },
+    {
+      "t": "2026-06-10T02:30:34Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.341,
+      "price_jpy": 60128
+    },
+    {
+      "t": "2026-06-10T02:45:27Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.344,
+      "price_jpy": 60129
+    },
+    {
+      "t": "2026-06-10T03:00:43Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.363,
+      "price_jpy": 60136
+    },
+    {
+      "t": "2026-06-10T03:30:35Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.348,
+      "price_jpy": 60131
+    },
+    {
+      "t": "2026-06-10T03:45:38Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.351,
+      "price_jpy": 60132
+    },
+    {
+      "t": "2026-06-10T04:00:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.359,
+      "price_jpy": 60135
+    },
+    {
+      "t": "2026-06-10T04:15:37Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.352,
+      "price_jpy": 60132
+    },
+    {
+      "t": "2026-06-10T04:30:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.355,
+      "price_jpy": 60133
+    },
+    {
+      "t": "2026-06-10T04:45:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.35,
+      "price_jpy": 60131
+    },
+    {
+      "t": "2026-06-10T05:00:41Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.363,
+      "price_jpy": 60136
+    },
+    {
+      "t": "2026-06-10T05:15:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.364,
+      "price_jpy": 60136
+    },
+    {
+      "t": "2026-06-10T05:30:34Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.342,
+      "price_jpy": 60128
+    },
+    {
+      "t": "2026-06-10T05:45:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.336,
+      "price_jpy": 60126
+    },
+    {
+      "t": "2026-06-10T06:00:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.328,
+      "price_jpy": 60123
+    },
+    {
+      "t": "2026-06-10T06:15:28Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.337,
+      "price_jpy": 60126
+    },
+    {
+      "t": "2026-06-10T06:30:39Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.365,
+      "price_jpy": 60137
+    },
+    {
+      "t": "2026-06-10T06:45:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.371,
+      "price_jpy": 60139
+    },
+    {
+      "t": "2026-06-10T07:00:42Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.377,
+      "price_jpy": 60141
+    },
+    {
+      "t": "2026-06-10T07:15:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.362,
+      "price_jpy": 60136
+    },
+    {
+      "t": "2026-06-10T07:30:39Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.374,
+      "price_jpy": 60140
+    },
+    {
+      "t": "2026-06-10T07:45:34Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.358,
+      "price_jpy": 60134
+    },
+    {
+      "t": "2026-06-10T08:00:50Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.396,
+      "price_jpy": 60148
+    },
+    {
+      "t": "2026-06-10T08:15:36Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.402,
+      "price_jpy": 60151
+    },
+    {
+      "t": "2026-06-10T08:30:44Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.396,
+      "price_jpy": 60148
+    },
+    {
+      "t": "2026-06-10T08:45:38Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.397,
+      "price_jpy": 60149
+    },
+    {
+      "t": "2026-06-10T09:00:50Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.434,
+      "price_jpy": 60163
+    },
+    {
+      "t": "2026-06-10T09:15:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.407,
+      "price_jpy": 60153
+    },
+    {
+      "t": "2026-06-10T09:30:39Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.418,
+      "price_jpy": 60157
+    },
+    {
+      "t": "2026-06-10T09:45:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.442,
+      "price_jpy": 60166
+    },
+    {
+      "t": "2026-06-10T10:00:50Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.439,
+      "price_jpy": 60165
+    },
+    {
+      "t": "2026-06-10T10:15:28Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.447,
+      "price_jpy": 60168
+    },
+    {
+      "t": "2026-06-10T10:30:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.457,
+      "price_jpy": 60171
+    },
+    {
+      "t": "2026-06-10T10:45:27Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.463,
+      "price_jpy": 60174
+    },
+    {
+      "t": "2026-06-10T11:00:57Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.462,
+      "price_jpy": 60173
+    },
+    {
+      "t": "2026-06-10T11:10:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.506,
+      "price_jpy": 60190
+    },
+    {
+      "t": "2026-06-10T11:15:31Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.475,
+      "price_jpy": 60178
+    },
+    {
+      "t": "2026-06-10T11:30:37Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.476,
+      "price_jpy": 60178
+    },
+    {
+      "t": "2026-06-10T12:00:51Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.491,
+      "price_jpy": 60184
+    },
+    {
+      "t": "2026-06-10T12:15:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.462,
+      "price_jpy": 60173
+    },
+    {
+      "t": "2026-06-10T12:30:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.372,
+      "price_jpy": 60140
+    },
+    {
+      "t": "2026-06-10T12:45:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.381,
+      "price_jpy": 60143
+    },
+    {
+      "t": "2026-06-10T13:00:48Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.431,
+      "price_jpy": 60162
+    },
+    {
+      "t": "2026-06-10T13:15:37Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.4,
+      "price_jpy": 60150
+    },
+    {
+      "t": "2026-06-10T13:30:47Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.395,
+      "price_jpy": 60148
+    },
+    {
+      "t": "2026-06-10T13:45:36Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.36,
+      "price_jpy": 60135
+    },
+    {
+      "t": "2026-06-10T14:00:52Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.383,
+      "price_jpy": 60144
+    },
+    {
+      "t": "2026-06-10T14:15:36Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.389,
+      "price_jpy": 60146
+    },
+    {
+      "t": "2026-06-10T14:30:46Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.419,
+      "price_jpy": 60157
+    },
+    {
+      "t": "2026-06-10T14:45:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.419,
+      "price_jpy": 60157
+    },
+    {
+      "t": "2026-06-10T15:00:45Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.494,
+      "price_jpy": 60185
+    },
+    {
+      "t": "2026-06-10T15:30:37Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.45,
+      "price_jpy": 60169
+    },
+    {
+      "t": "2026-06-10T15:45:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.478,
+      "price_jpy": 60179
+    },
+    {
+      "t": "2026-06-10T16:00:45Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.454,
+      "price_jpy": 60170
+    },
+    {
+      "t": "2026-06-10T16:30:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.466,
+      "price_jpy": 60175
+    },
+    {
+      "t": "2026-06-10T16:45:35Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.481,
+      "price_jpy": 60180
+    },
+    {
+      "t": "2026-06-10T17:00:44Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.469,
+      "price_jpy": 60176
+    },
+    {
+      "t": "2026-06-10T17:15:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.495,
+      "price_jpy": 60186
+    },
+    {
+      "t": "2026-06-10T17:30:43Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.484,
+      "price_jpy": 60182
+    },
+    {
+      "t": "2026-06-10T18:00:45Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.487,
+      "price_jpy": 60183
+    },
+    {
+      "t": "2026-06-10T18:15:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.48,
+      "price_jpy": 60180
+    },
+    {
+      "t": "2026-06-10T18:30:36Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.47,
+      "price_jpy": 60176
+    },
+    {
+      "t": "2026-06-10T18:45:38Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.461,
+      "price_jpy": 60173
+    },
+    {
+      "t": "2026-06-10T19:00:47Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.498,
+      "price_jpy": 60187
+    },
+    {
+      "t": "2026-06-10T19:15:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.515,
+      "price_jpy": 60193
+    },
+    {
+      "t": "2026-06-10T19:30:41Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.506,
+      "price_jpy": 60190
+    },
+    {
+      "t": "2026-06-10T19:45:31Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.51,
+      "price_jpy": 60191
+    },
+    {
+      "t": "2026-06-10T20:00:45Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.533,
+      "price_jpy": 60200
+    },
+    {
+      "t": "2026-06-10T20:15:28Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.542,
+      "price_jpy": 60203
+    },
+    {
+      "t": "2026-06-10T20:30:39Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.544,
+      "price_jpy": 60204
+    },
+    {
+      "t": "2026-06-10T21:00:44Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.468,
+      "price_jpy": 60175
+    },
+    {
+      "t": "2026-06-10T21:15:28Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.479,
+      "price_jpy": 60180
+    },
+    {
+      "t": "2026-06-10T21:27:20Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.473,
+      "price_jpy": 60177
+    },
+    {
+      "t": "2026-06-10T21:45:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.478,
+      "price_jpy": 60179
+    },
+    {
+      "t": "2026-06-10T22:00:41Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.492,
+      "price_jpy": 60184
+    },
+    {
+      "t": "2026-06-10T22:15:27Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.521,
+      "price_jpy": 60195
+    },
+    {
+      "t": "2026-06-10T22:30:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.527,
+      "price_jpy": 60198
+    },
+    {
+      "t": "2026-06-10T22:45:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.526,
+      "price_jpy": 60197
+    },
+    {
+      "t": "2026-06-10T23:00:42Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.554,
+      "price_jpy": 60208
+    },
+    {
+      "t": "2026-06-10T23:15:29Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.542,
+      "price_jpy": 60203
+    },
+    {
+      "t": "2026-06-10T23:30:36Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.529,
+      "price_jpy": 60198
+    },
+    {
+      "t": "2026-06-10T23:45:27Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.519,
+      "price_jpy": 60195
+    },
+    {
+      "t": "2026-06-11T00:00:41Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.524,
+      "price_jpy": 60196
+    },
+    {
+      "t": "2026-06-11T00:15:29Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.505,
+      "price_jpy": 60189
+    },
+    {
+      "t": "2026-06-11T00:30:34Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.532,
+      "price_jpy": 60200
+    },
+    {
+      "t": "2026-06-11T00:45:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.52,
+      "price_jpy": 60195
+    },
+    {
+      "t": "2026-06-11T01:00:39Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.517,
+      "price_jpy": 60194
+    },
+    {
+      "t": "2026-06-11T01:15:28Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.466,
+      "price_jpy": 60175
+    },
+    {
+      "t": "2026-06-11T01:30:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.444,
+      "price_jpy": 60166
+    },
+    {
+      "t": "2026-06-11T01:45:26Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.453,
+      "price_jpy": 60170
+    },
+    {
+      "t": "2026-06-11T02:00:37Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.483,
+      "price_jpy": 60181
+    },
+    {
+      "t": "2026-06-11T02:15:29Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.495,
+      "price_jpy": 60186
+    },
+    {
+      "t": "2026-06-11T02:30:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.505,
+      "price_jpy": 60189
+    },
+    {
+      "t": "2026-06-11T02:45:31Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.521,
+      "price_jpy": 60195
+    },
+    {
+      "t": "2026-06-11T03:15:28Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.524,
+      "price_jpy": 60196
+    },
+    {
+      "t": "2026-06-11T03:45:28Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.524,
+      "price_jpy": 60196
+    },
+    {
+      "t": "2026-06-11T04:15:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.518,
+      "price_jpy": 60194
+    },
+    {
+      "t": "2026-06-11T05:00:44Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.499,
+      "price_jpy": 60187
+    },
+    {
+      "t": "2026-06-11T05:30:35Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.504,
+      "price_jpy": 60189
+    },
+    {
+      "t": "2026-06-11T05:45:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.502,
+      "price_jpy": 60188
+    },
+    {
+      "t": "2026-06-11T06:00:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.546,
+      "price_jpy": 60205
+    },
+    {
+      "t": "2026-06-11T06:15:28Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.538,
+      "price_jpy": 60202
+    },
+    {
+      "t": "2026-06-11T06:30:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.572,
+      "price_jpy": 60214
+    },
+    {
+      "t": "2026-06-11T06:45:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.565,
+      "price_jpy": 60212
+    },
+    {
+      "t": "2026-06-11T07:00:48Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.54,
+      "price_jpy": 60202
+    },
+    {
+      "t": "2026-06-11T07:15:31Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.51,
+      "price_jpy": 60191
+    },
+    {
+      "t": "2026-06-11T07:45:34Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.51,
+      "price_jpy": 60191
+    },
+    {
+      "t": "2026-06-11T08:15:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.511,
+      "price_jpy": 60192
+    },
+    {
+      "t": "2026-06-11T08:45:37Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.528,
+      "price_jpy": 60198
+    },
+    {
+      "t": "2026-06-11T09:15:36Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.534,
+      "price_jpy": 60200
+    },
+    {
+      "t": "2026-06-11T09:30:37Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.528,
+      "price_jpy": 60198
+    },
+    {
+      "t": "2026-06-11T09:45:50Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.527,
+      "price_jpy": 60198
+    },
+    {
+      "t": "2026-06-11T10:00:42Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.526,
+      "price_jpy": 60197
+    },
+    {
+      "t": "2026-06-11T10:30:41Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.539,
+      "price_jpy": 60202
+    },
+    {
+      "t": "2026-06-11T10:45:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.534,
+      "price_jpy": 60200
+    },
+    {
+      "t": "2026-06-11T11:30:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.515,
+      "price_jpy": 60193
+    },
+    {
+      "t": "2026-06-11T11:45:29Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.518,
+      "price_jpy": 60194
+    },
+    {
+      "t": "2026-06-11T12:15:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.525,
+      "price_jpy": 60197
+    },
+    {
+      "t": "2026-06-11T12:30:42Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.571,
+      "price_jpy": 60214
+    },
+    {
+      "t": "2026-06-11T12:45:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.57,
+      "price_jpy": 60214
+    },
+    {
+      "t": "2026-06-11T13:00:52Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.539,
+      "price_jpy": 60202
+    },
+    {
+      "t": "2026-06-11T13:15:36Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.54,
+      "price_jpy": 60202
+    },
+    {
+      "t": "2026-06-11T13:30:45Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.529,
+      "price_jpy": 60198
+    },
+    {
+      "t": "2026-06-11T13:45:31Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.503,
+      "price_jpy": 60189
+    },
+    {
+      "t": "2026-06-11T14:00:55Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.484,
+      "price_jpy": 60182
+    },
+    {
+      "t": "2026-06-11T14:15:36Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.506,
+      "price_jpy": 60190
+    },
+    {
+      "t": "2026-06-11T14:26:31Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.523,
+      "price_jpy": 60196
+    },
+    {
+      "t": "2026-06-11T14:30:47Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.538,
+      "price_jpy": 60202
+    },
+    {
+      "t": "2026-06-11T14:45:35Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.511,
+      "price_jpy": 60192
+    },
+    {
+      "t": "2026-06-11T15:00:59Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.494,
+      "price_jpy": 60185
+    },
+    {
+      "t": "2026-06-11T15:15:37Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.494,
+      "price_jpy": 60185
+    },
+    {
+      "t": "2026-06-11T15:30:43Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.483,
+      "price_jpy": 60181
+    },
+    {
+      "t": "2026-06-11T15:45:44Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.51,
+      "price_jpy": 60191
+    },
+    {
+      "t": "2026-06-11T16:15:35Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.535,
+      "price_jpy": 60201
+    },
+    {
+      "t": "2026-06-11T16:30:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.537,
+      "price_jpy": 60201
+    },
+    {
+      "t": "2026-06-11T16:45:39Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.519,
+      "price_jpy": 60195
+    },
+    {
+      "t": "2026-06-11T17:00:47Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.532,
+      "price_jpy": 60200
+    },
+    {
+      "t": "2026-06-11T17:15:31Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.523,
+      "price_jpy": 60196
+    },
+    {
+      "t": "2026-06-11T17:30:43Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.355,
+      "price_jpy": 60133
+    },
+    {
+      "t": "2026-06-11T17:45:35Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.069,
+      "price_jpy": 60026
+    },
+    {
+      "t": "2026-06-11T18:00:50Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.141,
+      "price_jpy": 60053
+    },
+    {
+      "t": "2026-06-11T18:15:31Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.119,
+      "price_jpy": 60045
+    },
+    {
+      "t": "2026-06-11T18:30:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.112,
+      "price_jpy": 60042
+    },
+    {
+      "t": "2026-06-11T18:45:37Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.056,
+      "price_jpy": 60021
+    },
+    {
+      "t": "2026-06-11T19:00:50Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.021,
+      "price_jpy": 60008
+    },
+    {
+      "t": "2026-06-11T19:15:41Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 159.877,
+      "price_jpy": 59954
+    },
+    {
+      "t": "2026-06-11T19:30:43Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 159.764,
+      "price_jpy": 59912
+    },
+    {
+      "t": "2026-06-11T19:45:41Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 159.78,
+      "price_jpy": 59918
+    },
+    {
+      "t": "2026-06-11T20:00:41Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 159.796,
+      "price_jpy": 59924
+    },
+    {
+      "t": "2026-06-11T20:15:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 159.832,
+      "price_jpy": 59937
+    },
+    {
+      "t": "2026-06-11T20:30:38Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 159.861,
+      "price_jpy": 59948
+    },
+    {
+      "t": "2026-06-11T20:45:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 159.957,
+      "price_jpy": 59984
+    },
+    {
+      "t": "2026-06-11T21:00:55Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 159.929,
+      "price_jpy": 59973
+    },
+    {
+      "t": "2026-06-11T21:15:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 159.911,
+      "price_jpy": 59967
+    },
+    {
+      "t": "2026-06-11T21:30:34Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 159.895,
+      "price_jpy": 59961
+    },
+    {
+      "t": "2026-06-11T21:45:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 159.931,
+      "price_jpy": 59974
+    },
+    {
+      "t": "2026-06-11T22:00:41Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 159.92,
+      "price_jpy": 59970
+    },
+    {
+      "t": "2026-06-11T22:15:36Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.006,
+      "price_jpy": 60002
+    },
+    {
+      "t": "2026-06-11T22:30:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.04,
+      "price_jpy": 60015
+    },
+    {
+      "t": "2026-06-11T22:45:31Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.037,
+      "price_jpy": 60014
+    },
+    {
+      "t": "2026-06-11T23:00:38Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.009,
+      "price_jpy": 60003
+    },
+    {
+      "t": "2026-06-11T23:15:28Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.008,
+      "price_jpy": 60003
+    },
+    {
+      "t": "2026-06-11T23:30:39Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.048,
+      "price_jpy": 60018
+    },
+    {
+      "t": "2026-06-11T23:45:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.096,
+      "price_jpy": 60036
+    },
+    {
+      "t": "2026-06-12T00:00:45Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.146,
+      "price_jpy": 60055
+    },
+    {
+      "t": "2026-06-12T00:15:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.166,
+      "price_jpy": 60062
+    },
+    {
+      "t": "2026-06-12T00:30:40Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.165,
+      "price_jpy": 60062
+    },
+    {
+      "t": "2026-06-12T00:45:29Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.216,
+      "price_jpy": 60081
+    },
+    {
+      "t": "2026-06-12T01:30:37Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.163,
+      "price_jpy": 60061
+    },
+    {
+      "t": "2026-06-12T01:45:29Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.219,
+      "price_jpy": 60082
+    },
+    {
+      "t": "2026-06-12T02:00:41Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.253,
+      "price_jpy": 60095
+    },
+    {
+      "t": "2026-06-12T02:15:25Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.257,
+      "price_jpy": 60096
+    },
+    {
+      "t": "2026-06-12T02:30:32Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.283,
+      "price_jpy": 60106
+    },
+    {
+      "t": "2026-06-12T02:45:29Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.277,
+      "price_jpy": 60104
+    },
+    {
+      "t": "2026-06-12T03:45:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.227,
+      "price_jpy": 60085
+    },
+    {
+      "t": "2026-06-12T04:00:41Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.228,
+      "price_jpy": 60086
+    },
+    {
+      "t": "2026-06-12T04:15:28Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.234,
+      "price_jpy": 60088
+    },
+    {
+      "t": "2026-06-12T04:30:34Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.253,
+      "price_jpy": 60095
+    },
+    {
+      "t": "2026-06-12T04:45:28Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.24,
+      "price_jpy": 60090
+    },
+    {
+      "t": "2026-06-12T05:15:30Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.266,
+      "price_jpy": 60100
+    },
+    {
+      "t": "2026-06-12T05:30:34Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.282,
+      "price_jpy": 60106
+    },
+    {
+      "t": "2026-06-12T06:00:42Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.325,
+      "price_jpy": 60122
+    },
+    {
+      "t": "2026-06-12T06:15:31Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.302,
+      "price_jpy": 60113
+    },
+    {
+      "t": "2026-06-12T06:30:37Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.272,
+      "price_jpy": 60102
+    },
+    {
+      "t": "2026-06-12T06:45:33Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.31,
+      "price_jpy": 60116
+    },
+    {
+      "t": "2026-06-12T07:00:45Z",
+      "price": 375.0,
+      "method": "variation:25ml",
+      "fx_usdjpy": 160.321,
+      "price_jpy": 60120
     }
   ],
   "name": "Bostick & Sullivan: Platinum Solution #3 25ml",
