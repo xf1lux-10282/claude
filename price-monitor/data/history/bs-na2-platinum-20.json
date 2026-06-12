@@ -3178,6 +3178,174 @@
       "method": "variation:10ml",
       "fx_usdjpy": 160.321,
       "price_jpy": 27303
+    },
+    {
+      "t": "2026-06-12T07:30:38Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.369,
+      "price_jpy": 27311
+    },
+    {
+      "t": "2026-06-12T08:00:44Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.288,
+      "price_jpy": 27297
+    },
+    {
+      "t": "2026-06-12T08:15:33Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.236,
+      "price_jpy": 27288
+    },
+    {
+      "t": "2026-06-12T08:30:34Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.16,
+      "price_jpy": 27275
+    },
+    {
+      "t": "2026-06-12T08:45:32Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.085,
+      "price_jpy": 27262
+    },
+    {
+      "t": "2026-06-12T09:00:42Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.102,
+      "price_jpy": 27265
+    },
+    {
+      "t": "2026-06-12T09:15:27Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.058,
+      "price_jpy": 27258
+    },
+    {
+      "t": "2026-06-12T09:30:35Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 159.999,
+      "price_jpy": 27248
+    },
+    {
+      "t": "2026-06-12T09:45:28Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.024,
+      "price_jpy": 27252
+    },
+    {
+      "t": "2026-06-12T10:00:44Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.081,
+      "price_jpy": 27262
+    },
+    {
+      "t": "2026-06-12T10:30:35Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.149,
+      "price_jpy": 27273
+    },
+    {
+      "t": "2026-06-12T10:45:30Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.099,
+      "price_jpy": 27265
+    },
+    {
+      "t": "2026-06-12T11:15:29Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.139,
+      "price_jpy": 27272
+    },
+    {
+      "t": "2026-06-12T11:30:37Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.14,
+      "price_jpy": 27272
+    },
+    {
+      "t": "2026-06-12T11:31:28Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.136,
+      "price_jpy": 27271
+    },
+    {
+      "t": "2026-06-12T11:45:31Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.119,
+      "price_jpy": 27268
+    },
+    {
+      "t": "2026-06-12T12:00:44Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.176,
+      "price_jpy": 27278
+    },
+    {
+      "t": "2026-06-12T12:15:35Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.187,
+      "price_jpy": 27280
+    },
+    {
+      "t": "2026-06-12T12:30:37Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.248,
+      "price_jpy": 27290
+    },
+    {
+      "t": "2026-06-12T13:00:47Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.259,
+      "price_jpy": 27292
+    },
+    {
+      "t": "2026-06-12T13:15:38Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.256,
+      "price_jpy": 27292
+    },
+    {
+      "t": "2026-06-12T13:30:35Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.216,
+      "price_jpy": 27285
+    },
+    {
+      "t": "2026-06-12T13:45:31Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.279,
+      "price_jpy": 27296
+    },
+    {
+      "t": "2026-06-12T14:15:38Z",
+      "price": 170.3,
+      "method": "variation:10ml",
+      "fx_usdjpy": 160.24,
+      "price_jpy": 27289
     }
   ],
   "name": "Bostick & Sullivan: Sodium Platinum (Na2) 20% Solution 10ml",
